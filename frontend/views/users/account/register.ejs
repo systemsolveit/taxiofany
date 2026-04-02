@@ -2,22 +2,22 @@
 <%- include('../../shared/partials/legacy-header-nav') %>
 
   <main class="container py-5" style="max-width: 760px; margin: 0 auto;">
-    <h1>Create Your Account</h1>
-    <p style="color:#666;">Join Taxiofany and manage your rides from your personal account page.</p>
+    <h1><%= t('account.registerTitle') %></h1>
+    <p style="color:#666;"><%= t('account.registerSubtitle') %></p>
 
     <% if (errorMessage) { %>
       <div style="background:#fdecea;color:#b42318;padding:12px;border-radius:8px;margin-bottom:16px;"><%= errorMessage %></div>
     <% } %>
 
     <form action="/account/register" method="post" style="display:grid;gap:12px;">
-      <input type="text" name="fullName" placeholder="Full name" required />
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="password" name="password" placeholder="Password" required />
-      <input type="text" name="phone" placeholder="Phone (optional)" />
-      <button type="submit">Create Account</button>
+      <input type="text" name="fullName" placeholder="<%= t('account.fullNamePlaceholder') %>" required />
+      <input type="email" name="email" placeholder="<%= t('account.emailPlaceholder') %>" required />
+      <input type="password" name="password" placeholder="<%= t('account.passwordPlaceholder') %>" required />
+      <input type="text" name="phone" placeholder="<%= t('account.phonePlaceholder') %>" />
+      <button type="submit"><%= t('account.createAccount') %></button>
     </form>
 
-    <p style="margin-top:12px;">Already have an account? <a href="/account/login">Sign in</a></p>
+    <p style="margin-top:12px;"><%= t('account.haveAccount') %> <a href="/account/login"><%= t('account.signIn') %></a></p>
   </main>
 
   <%- include('../../shared/partials/legacy-footer') %>

@@ -6,14 +6,13 @@
                     <div class="col-lg-8">
                         <div class="brand">
                             <a class="footer-logo" href="/"><img src="/assets/img/logo-light.png" alt="logo"></a>
-                            <p>We successfully cope with tasks of varying complexity, provide long-term guarantees
-                                and regularly master new technologies.</p>
+                            <p><%= t('footer.description') %></p>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="footer-call">
                             <i class="las la-phone-volume"></i>
-                            <p><span>Call For Taxi</span><a href="tel:5267214392">5267-214-392</a></p>
+                            <p><span><%= t('footer.callForTaxi') %></span><a href="tel:5267214392">5267-214-392</a></p>
                         </div>
                     </div>
                 </div>
@@ -27,49 +26,49 @@
                 <div class="col-lg-3 col-md-6 sm-padding">
                     <div class="footer-item">
                         <div class="widget-title">
-                            <h3>Working Hours</h3>
+                            <h3><%= t('footer.workingHours') %></h3>
                         </div>
                         <ul class="footer-contact">
-                            <li><span>Monday - Friday:</span>9.00am To 8.00pm</li>
-                            <li><span>Saturday:</span>10.00am To 7.30pm</li>
-                            <li><span>Sunday:</span>Close Day!</li>
+                            <li><span><%= t('footer.mondayFriday') %></span>9.00am To 8.00pm</li>
+                            <li><span><%= t('footer.saturday') %></span>10.00am To 7.30pm</li>
+                            <li><span><%= t('footer.sunday') %></span><%= t('footer.closeDay') %></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 sm-padding">
                     <div class="footer-item footer-list">
                         <div class="widget-title">
-                            <h3>Usefull Links</h3>
+                            <h3><%= t('footer.usefulLinks') %></h3>
                         </div>
                         <ul class="footer-links">
-                            <li><a href="/book-taxi">Taxi Booking</a></li>
-                            <li><a href="/faqs">Help Center</a></li>
-                            <li><a href="/about">Privacy and Policy</a></li>
-                            <li><a href="/about/company">Terms of Use</a></li>
-                            <li><a href="/contact">Contact Us</a></li>
+                            <li><a href="/book-taxi"><%= t('footer.taxiBooking') %></a></li>
+                            <li><a href="/faqs"><%= t('footer.helpCenter') %></a></li>
+                            <li><a href="/about"><%= t('footer.privacyPolicy') %></a></li>
+                            <li><a href="/about/company"><%= t('footer.terms') %></a></li>
+                            <li><a href="/contact"><%= t('footer.contactUs') %></a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 sm-padding">
                     <div class="footer-item">
                         <div class="widget-title">
-                            <h3>Head Office</h3>
+                            <h3><%= t('footer.headOffice') %></h3>
                         </div>
                         <ul class="footer-contact">
-                            <li><span>Location:</span>153 Williamson Plaza, Maggieberg, MT 09514</li>
-                            <li><span>Join Us:</span>Info@YourGmail24.com</li>
+                            <li><span><%= t('footer.location') %></span>153 Williamson Plaza, Maggieberg, MT 09514</li>
+                            <li><span><%= t('footer.joinUs') %></span>Info@YourGmail24.com</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 sm-padding">
                     <div class="footer-item subscribe-wrap">
                         <div class="widget-title">
-                            <h3>Newsletter Signup</h3>
+                            <h3><%= t('footer.newsletter') %></h3>
                         </div>
                         <form action="#" class="subscribe-form">
-                            <input class="form-control" type="email" name="email" placeholder="Your Email" required="">
+                            <input class="form-control" type="email" name="email" placeholder="<%= t('footer.yourEmail') %>" required="">
                             <input type="hidden" name="action" value="mailchimpsubscribe">
-                            <button class="submit">Subscribe Now</button>
+                            <button class="submit"><%= t('footer.subscribeNow') %></button>
                             <div class="clearfix"></div>
                             <div id="subscribe-result">
                                 <div class="subscription-success"></div>
@@ -89,7 +88,7 @@
     <!--/.footer-mid-wrap-->
     <div class="copyright-wrap">
         <div class="container">
-            <p>© <span id="currentYear"></span> DynamicLayers All Rights Reserved.</p>
+            <p>© <span id="currentYear"></span> <%= t('footer.copyrightSuffix') %></p>
         </div>
     </div>
     <!--/.copyright-wrap-->

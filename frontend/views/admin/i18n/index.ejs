@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <h1>Translations</h1>
+          <form method="get" action="/admin/i18n" class="form-inline">
+            <label class="mr-2" for="locale">Locale</label>
+            <select class="form-control" id="locale" name="locale" onchange="this.form.submit()">
+              <% locales.forEach(function(locale) { %>
+                <option value="<%= locale %>" <%= selectedLocale === locale ? 'selected' : '' %>><%= locale %></option>
+              <% }) %>
+            </select>
+            <button class="btn btn-outline-primary ml-2" type="submit" name="autoTranslate" value="1">Google Translate Block</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Update Translation Key</h3>
+            </div>
+            <div class="card-body">
+              <form method="post" action="/admin/i18n" class="row">
+                <div class="form-group col-md-2">
+                  <label for="localeInput">Locale</label>
+                  <input id="localeInput" class="form-control" name="locale" value="<%= selectedLocale %>" required />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="keyInput">Key</label>
+                  <input id="keyInput" class="form-control" name="key" placeholder="header.nav.home" required />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="valueInput">Value</label>
+                  <input id="valueInput" class="form-control" name="value" placeholder="Home" required />
+                </div>
+                <div class="form-group col-md-2 d-flex align-items-end">
+                  <button type="submit" class="btn btn-primary btn-block">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Current Keys (<%= selectedLocale %>)</h3>
+            </div>
+            <div class="card-body table-responsive p-0" style="max-height: 560px;">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% entries.forEach(function(entry) { %>
+                    <tr>
+                      <td><code><%= entry.key %></code></td>
+                      <td><%= entry.value %></td>
+                      <td>
+                        <span class="badge badge-<%= entry.source === 'db' ? 'success' : 'secondary' %>">
+                          <%= entry.source %>
+                        </span>
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h3 class="card-title">Extracted Keywords From All User EJS Pages</h3>
+              <div class="d-flex align-items-center">
+                <button type="button" class="btn btn-sm btn-outline-primary mr-2" onclick="selectAllKeywords()">Select All</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary mr-2" onclick="deselectAllKeywords()">Deselect All</button>
+                <span class="badge badge-info"><%= extractedKeywords.length %> keywords</span>
+              </div>
+            </div>
+            <div class="card-body table-responsive p-0" style="max-height: 520px;">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Source Text</th>
+                    <th>Suggested Key</th>
+                    <th>Google Translation</th>
+                    <th>File</th>
+                    <th>Action</th>
+                    <th>Select</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% extractedKeywords.forEach(function(item, index) { %>
+                    <tr>
+                      <td style="max-width: 320px; white-space: normal;"><%= item.text %></td>
+                      <td><code><%= item.suggestedKey %></code></td>
+                      <td style="max-width: 320px; white-space: normal;"><%= item.translated || '-' %></td>
+                      <td><small><%= item.file %></small></td>
+                      <td>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-success"
+                          onclick="fillTranslation('<%= encodeURIComponent(item.suggestedKey) %>', '<%= encodeURIComponent(item.translated || item.text) %>')"
+                        >Use</button>
+                      </td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          class="keyword-select"
+                          data-key="<%= item.suggestedKey %>"
+                          data-value="<%= item.translated || item.text %>"
+                          aria-label="Select keyword <%= item.suggestedKey %>"
+                        />
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+  <script>
+    function selectAllKeywords() {
+      document.querySelectorAll('.keyword-select').forEach(function (checkbox) {
+        checkbox.checked = true;
+      });
+    }
+
+    function deselectAllKeywords() {
+      document.querySelectorAll('.keyword-select').forEach(function (checkbox) {
+        checkbox.checked = false;
+      });
+    }
+
+    function fillTranslation(encodedKey, encodedValue) {
+      document.getElementById('keyInput').value = decodeURIComponent(encodedKey);
+      document.getElementById('valueInput').value = decodeURIComponent(encodedValue);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

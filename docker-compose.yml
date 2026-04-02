@@ -23,6 +23,9 @@ services:
     environment:
       PORT: ${BACKEND_PORT:-3000}
       MONGO_URI: ${MONGO_URI_DOCKER:-mongodb://mongo:27017/taxiofany}
+      I18N_USERS_VIEWS_DIR: /frontend/views/users
+    volumes:
+      - ./frontend/views:/frontend/views:ro
     depends_on:
       mongo:
         condition: service_healthy

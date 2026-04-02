@@ -2,27 +2,27 @@
 <%- include('../../shared/partials/legacy-header-nav') %>
 
   <main class="container py-5" style="max-width: 900px; margin: 0 auto;">
-    <h1>My Trips</h1>
-    <p style="color:#666;">Review your recent and upcoming rides.</p>
+    <h1><%= t('account.myTripsTitle') %></h1>
+    <p style="color:#666;"><%= t('account.tripsSubtitle') %></p>
 
     <nav class="account-tabs" aria-label="Account tabs">
-      <a class="account-tab <%= activeAccountTab === 'account' ? 'active' : '' %>" href="/account">Account</a>
-      <a class="account-tab <%= activeAccountTab === 'trips' ? 'active' : '' %>" href="/account/trips">Trips</a>
-      <a class="account-tab <%= activeAccountTab === 'password' ? 'active' : '' %>" href="/account/password">Password Management</a>
+      <a class="account-tab <%= activeAccountTab === 'account' ? 'active' : '' %>" href="/account"><%= t('account.tabs.account') %></a>
+      <a class="account-tab <%= activeAccountTab === 'trips' ? 'active' : '' %>" href="/account/trips"><%= t('account.tabs.trips') %></a>
+      <a class="account-tab <%= activeAccountTab === 'password' ? 'active' : '' %>" href="/account/password"><%= t('account.tabs.password') %></a>
     </nav>
 
     <section class="card">
-      <h3 style="margin-top:0;">Trips for <%= accountUser.fullName %></h3>
+      <h3 style="margin-top:0;"><%= t('account.tripsFor') %> <%= accountUser.fullName %></h3>
       <% if (!trips || trips.length === 0) { %>
-        <p>No trips yet. Start by booking your first ride.</p>
+        <p><%= t('account.noTrips') %></p>
       <% } else { %>
         <table style="width:100%; border-collapse:collapse;">
           <thead>
             <tr>
-              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Trip ID</th>
-              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Route</th>
-              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Date</th>
-              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Status</th>
+              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;"><%= t('account.tripId') %></th>
+              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;"><%= t('account.route') %></th>
+              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;"><%= t('account.date') %></th>
+              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;"><%= t('account.status') %></th>
             </tr>
           </thead>
           <tbody>
