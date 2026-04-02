@@ -14,19 +14,27 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true,
     },
+    passwordHash: {
+      type: String,
+      required: true,
+      select: false,
+    },
     phone: {
       type: String,
       trim: true,
     },
     role: {
       type: String,
-      enum: ['customer', 'admin', 'driver', 'dispatcher'],
+      enum: ['customer', 'admin', 'super_admin', 'driver', 'dispatcher'],
       default: 'customer',
     },
     status: {
       type: String,
       enum: ['active', 'pending', 'suspended'],
       default: 'active',
+    },
+    lastLoginAt: {
+      type: Date,
     },
   },
   {

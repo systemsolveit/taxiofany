@@ -9,8 +9,16 @@
   </ul>
 
   <ul class="navbar-nav ml-auto">
+    <li class="nav-item d-none d-sm-inline-block mt-1 mr-2 text-muted">
+      <%= adminSession && adminSession.user ? adminSession.user.fullName : 'Admin' %>
+    </li>
     <li class="nav-item d-none d-sm-inline-block">
       <a href="/" class="nav-link">Back to Website</a>
+    </li>
+    <li class="nav-item">
+      <form action="/admin/logout" method="post" class="mb-0">
+        <button type="submit" class="btn btn-link nav-link" style="cursor: pointer;">Logout</button>
+      </form>
     </li>
   </ul>
 </nav>

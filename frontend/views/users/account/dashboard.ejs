@@ -1,0 +1,31 @@
+<%- include('../../shared/partials/legacy-head') %>
+<%- include('../../shared/partials/legacy-header-nav') %>
+
+  <main class="container py-5" style="max-width: 860px; margin: 0 auto;">
+    <h1>My Account</h1>
+    <p style="color:#666;">Account overview inspired by WordPress-style profile pages.</p>
+
+    <nav class="account-tabs" aria-label="Account tabs">
+      <a class="account-tab <%= activeAccountTab === 'account' ? 'active' : '' %>" href="/account">Account</a>
+      <a class="account-tab <%= activeAccountTab === 'trips' ? 'active' : '' %>" href="/account/trips">Trips</a>
+      <a class="account-tab <%= activeAccountTab === 'password' ? 'active' : '' %>" href="/account/password">Password Management</a>
+    </nav>
+
+    <section class="card">
+      <h3 style="margin-top:0;">Profile</h3>
+      <p><strong>Name:</strong> <%= accountUser.fullName %></p>
+      <p><strong>Email:</strong> <%= accountUser.email %></p>
+      <p><strong>Role:</strong> <%= accountUser.role %></p>
+      <p><strong>Status:</strong> <%= accountUser.status %></p>
+    </section>
+
+    <section style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="/book-taxi">Book a ride</a>
+      <a href="/contact">Support</a>
+      <form action="/account/logout" method="post" style="margin:0;">
+        <button type="submit">Logout</button>
+      </form>
+    </section>
+  </main>
+
+  <%- include('../../shared/partials/legacy-footer') %>

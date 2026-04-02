@@ -1,0 +1,43 @@
+<%- include('../../shared/partials/legacy-head') %>
+<%- include('../../shared/partials/legacy-header-nav') %>
+
+  <main class="container py-5" style="max-width: 900px; margin: 0 auto;">
+    <h1>My Trips</h1>
+    <p style="color:#666;">Review your recent and upcoming rides.</p>
+
+    <nav class="account-tabs" aria-label="Account tabs">
+      <a class="account-tab <%= activeAccountTab === 'account' ? 'active' : '' %>" href="/account">Account</a>
+      <a class="account-tab <%= activeAccountTab === 'trips' ? 'active' : '' %>" href="/account/trips">Trips</a>
+      <a class="account-tab <%= activeAccountTab === 'password' ? 'active' : '' %>" href="/account/password">Password Management</a>
+    </nav>
+
+    <section class="card">
+      <h3 style="margin-top:0;">Trips for <%= accountUser.fullName %></h3>
+      <% if (!trips || trips.length === 0) { %>
+        <p>No trips yet. Start by booking your first ride.</p>
+      <% } else { %>
+        <table style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Trip ID</th>
+              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Route</th>
+              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Date</th>
+              <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% trips.forEach((trip) => { %>
+              <tr>
+                <td style="padding:8px; border-bottom:1px solid #f1f5f9;"><%= trip.id %></td>
+                <td style="padding:8px; border-bottom:1px solid #f1f5f9;"><%= trip.from %> -> <%= trip.to %></td>
+                <td style="padding:8px; border-bottom:1px solid #f1f5f9;"><%= trip.date %></td>
+                <td style="padding:8px; border-bottom:1px solid #f1f5f9;"><%= trip.status %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </section>
+  </main>
+
+  <%- include('../../shared/partials/legacy-footer') %>
