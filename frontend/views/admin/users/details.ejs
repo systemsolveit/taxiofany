@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <h1>User Details</h1>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                <img class="profile-user-img img-fluid img-circle" src="/assets/img/comment-1.png" alt="User profile picture" />
+              </div>
+
+              <h3 class="profile-username text-center"><%= user.name %></h3>
+              <p class="text-muted text-center"><%= user.role %></p>
+
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item"><b>ID</b> <span class="float-right"><%= user.id %></span></li>
+                <li class="list-group-item"><b>Email</b> <span class="float-right"><%= user.email %></span></li>
+                <li class="list-group-item"><b>Phone</b> <span class="float-right"><%= user.phone %></span></li>
+                <li class="list-group-item"><b>Status</b> <span class="float-right"><%= user.status %></span></li>
+                <li class="list-group-item"><b>Joined</b> <span class="float-right"><%= user.joinedAt %></span></li>
+              </ul>
+
+              <a href="/admin/users" class="btn btn-primary btn-block"><b>Back to Users</b></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <h1>Booking Details</h1>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <div class="card card-outline card-info">
+            <div class="card-header">
+              <h3 class="card-title">Trip <%= booking.id %></h3>
+            </div>
+            <div class="card-body">
+              <dl class="row mb-0">
+                <dt class="col-sm-3">Customer</dt>
+                <dd class="col-sm-9"><%= booking.customer %></dd>
+                <dt class="col-sm-3">Pickup</dt>
+                <dd class="col-sm-9"><%= booking.pickup %></dd>
+                <dt class="col-sm-3">Destination</dt>
+                <dd class="col-sm-9"><%= booking.destination %></dd>
+                <dt class="col-sm-3">Fare</dt>
+                <dd class="col-sm-9"><%= booking.fare %></dd>
+                <dt class="col-sm-3">Payment</dt>
+                <dd class="col-sm-9"><%= booking.paymentStatus %></dd>
+                <dt class="col-sm-3">Trip Status</dt>
+                <dd class="col-sm-9"><span class="badge badge-info"><%= booking.tripStatus %></span></dd>
+              </dl>
+            </div>
+            <div class="card-footer">
+              <a href="/admin/bookings" class="btn btn-primary">Back to Bookings</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>
