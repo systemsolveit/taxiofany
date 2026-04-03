@@ -5,6 +5,16 @@ const userFeaturesRouter = require('./features/user');
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /api/v1/status:
+ *   get:
+ *     tags: [System]
+ *     summary: Get API and database status
+ *     responses:
+ *       200:
+ *         description: Service health returned
+ */
 router.get('/api/v1/status', (req, res) => {
   res.json({
     success: true,

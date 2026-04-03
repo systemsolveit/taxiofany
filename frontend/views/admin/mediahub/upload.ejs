@@ -1,0 +1,17 @@
+<%- include('../shared/layouts/admin') %>
+<div class="container mt-4">
+  <h2>Media Hub Upload</h2>
+  <form id="media-upload-form" action="/admin/mediahub/upload" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="file" class="form-label">Select file</label>
+      <input class="form-control" type="file" id="file" name="file" required>
+    </div>
+    <!-- Add more metadata fields here if needed -->
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+  <% if (typeof uploadResult !== 'undefined') { %>
+    <div class="alert alert-info mt-3">
+      <%= uploadResult %>
+    </div>
+  <% } %>
+</div>
