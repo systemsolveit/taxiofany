@@ -1,14 +1,21 @@
 const express = require('express');
 const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
 const mediahubController = require('../../controllers/admin/mediahub.controller');
 
 const router = express.Router();
 
-// Multer config for temp storage before forwarding to backend
-const upload = multer({ dest: path.join(__dirname, '../../uploads/tmp') });
+const tempUploadDirectory = path.join(__dirname, '../../uploads/tmp');
+fs.mkdirSync(tempUploadDirectory, { recursive: true });
 
-router.get('/upload', mediahubController.uploadPage);
+const upload = multer({ dest: tempUploadDirectory });
+
+router.get('/', mediahubController.page);
+router.get('/upload', (req, res) => res.redirect('/admin/mediahub'));
+router.get('/assets/:filename', mediahubController.proxyAsset);
 router.post('/upload', upload.single('file'), mediahubController.handleUpload);
+router.post('/:filename/update', mediahubController.updateAsset);
+router.post('/:filename/delete', mediahubController.deleteAsset);
 
 module.exports = router;

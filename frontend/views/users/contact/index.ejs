@@ -12,12 +12,12 @@
                 <div class="col-md-6">
                     <div class="contact-details-wrap">
                         <div class="contact-title">
-                            <h2>Have Any <span>Questions?</span></h2>
-                            <p>Get in touch to discuss your employee wellbeing needs today. Please give us a call, drop us an email or fill out the contact form.</p>
+                            <h2><%= t('pages.users.contact.have_any', 'Have Any') %> <span><%= t('pages.users.contact.questions', 'Questions?') %></span></h2>
+                            <p><%= t('pages.users.contact.get_in_touch_to_discuss_your_employee_wellbeing_', 'Get in touch to discuss your employee wellbeing needs today. Please give us a call, drop us an email or fill out the contact form.') %></p>
                         </div>
                         <ul class="contact-details">
-                            <li><i class="fas fa-map-marker-alt"></i>962 Fifth Avenue,<br> New York, NY10022</li>
-                            <li><i class="fas fa-envelope"></i>hello@themeaster.net <br>Yourmail@gmail.com</li>
+                            <li><i class="fas fa-map-marker-alt"></i><%= t('pages.users.contact.962_fifth_avenue', '962 Fifth Avenue,') %><br> <%= t('pages.users.contact.new_york_ny10022', 'New York, NY10022') %></li>
+                            <li><i class="fas fa-envelope"></i><%= t('pages.users.contact.hello_themeaster_net', 'hello@themeaster.net') %> <br><%= t('pages.users.contact.yourmail_gmail_com', 'Yourmail@gmail.com') %></li>
                             <li><i class="fas fa-phone"></i>(+123) 456 789 101 <br>+1-302-123-4567</li>
                         </ul>
                     </div>
@@ -26,7 +26,7 @@
                     <div class="contact-form">
                         <form action="/contact/send" method="post" id="ajax_contact" class="form-horizontal">
                             <div class="contact-title">
-                                <h2>Contact With Us! <span></span></h2>
+                                <h2><%= t('pages.users.contact.contact_with_us', 'Contact With Us!') %> <span></span></h2>
                             </div>
                             <div class="contact-form-group">
                                 <div class="form-field">
@@ -45,7 +45,7 @@
                                     <textarea id="message" name="message" cols="30" rows="4" class="form-control" placeholder="Message" required></textarea>
                                 </div>
                                 <div class="form-field">
-                                    <button id="submit" class="default-btn" type="submit">Send Massage</button>
+                                    <button id="submit" class="default-btn" type="submit"><%= t('pages.users.contact.send_massage', 'Send Massage') %></button>
                                 </div>
                             </div>
                             <div id="form-messages" class="alert" role="alert"></div>
@@ -62,7 +62,18 @@
             <div class="row branches-lists">
                 <div class="col-lg-3 col-sm-6 sm-padding">
                     <div class="branches-list">
-                        <h3>Sydney (Head Office)</h3>
+                        <h3><%= t('pages.users.contact.sydney_head_office', 'Sydney (Head Office)') %></h3>
+                        <ul>
+                            <li><%= t('pages.users.contact.1_epping_road', '1 Epping Road') %></li>
+                            <li><%= t('pages.users.contact.north_ryde_nsw_2113', 'North Ryde, NSW 2113') %></li>
+                            <li><a href="#">+61 2 9870 7689</a></li>
+                            <li><a href="#"><%= t('pages.users.contact.email_example_com', 'email@example.com') %></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 sm-padding">
+                    <div class="branches-list">
+                        <h3><%= t('pages.users.contact.brisbane', 'Brisbane') %></h3>
                         <ul>
                             <li>1 Epping Road</li>
                             <li>North Ryde, NSW 2113</li>
@@ -73,7 +84,7 @@
                 </div>
                 <div class="col-lg-3 col-sm-6 sm-padding">
                     <div class="branches-list">
-                        <h3>Brisbane</h3>
+                        <h3><%= t('pages.users.contact.hobart', 'Hobart') %></h3>
                         <ul>
                             <li>1 Epping Road</li>
                             <li>North Ryde, NSW 2113</li>
@@ -84,18 +95,7 @@
                 </div>
                 <div class="col-lg-3 col-sm-6 sm-padding">
                     <div class="branches-list">
-                        <h3>Hobart</h3>
-                        <ul>
-                            <li>1 Epping Road</li>
-                            <li>North Ryde, NSW 2113</li>
-                            <li><a href="#">+61 2 9870 7689</a></li>
-                            <li><a href="#">email@example.com</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 sm-padding">
-                    <div class="branches-list">
-                        <h3>Melbourne</h3>
+                        <h3><%= t('pages.users.contact.melbourne', 'Melbourne') %></h3>
                         <ul>
                             <li>1 Epping Road</li>
                             <li>North Ryde, NSW 2113</li>

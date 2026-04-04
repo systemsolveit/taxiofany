@@ -4,10 +4,10 @@
 <section class="page-header error">
         <div class="container">
             <div class="page-header-info text-center mt-40">
-                <h4>Oops! Where are we?</h4>
-                <h2>404 Page <span>Not Found!</span></h2>
-                <p>Page not Found! The page you are looking for was moved, <br>removed, renamed or might never existed.</p>
-                <a href="/" class="default-btn mt-30">Back To Homepage</a>
+                <h4><%= t('pages.users.errors.not-found.oops_where_are_we', 'Oops! Where are we?') %></h4>
+                <h2><%= t('pages.users.errors.not-found.404_page', '404 Page') %> <span><%= t('pages.users.errors.not-found.not_found', 'Not Found!') %></span></h2>
+                <p><%= t('pages.users.errors.not-found.page_not_found_the_page_you_are_looking_for_was_', 'Page not Found! The page you are looking for was moved,') %> <br><%= t('pages.users.errors.not-found.removed_renamed_or_might_never_existed', 'removed, renamed or might never existed.') %></p>
+                <a href="/" class="default-btn mt-30"><%= t('pages.users.errors.not-found.back_to_homepage', 'Back To Homepage') %></a>
             </div>
         </div>
     </section>

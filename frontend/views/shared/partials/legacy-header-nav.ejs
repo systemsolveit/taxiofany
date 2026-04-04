@@ -11,13 +11,33 @@
                         <li><a href="/contact"><%= t('header.support') %></a></li>
                         <li><a href="/faqs"><%= t('header.faq') %></a></li>
                     </ul>
+                    <% var currentLocaleItem = (availableLocales || []).find(function(localeItem) { return localeItem.code === locale; }) || { code: locale || 'en', label: (locale || 'en').toUpperCase() }; %>
                     <div class="lang-switch" aria-label="Language switcher">
-                        <a class="lang-btn <%= locale === 'nl' ? 'active' : '' %>" href="<%= switchLangUrl('nl') %>" title="Nederlands">
-                            <span aria-hidden="true">🇧🇪</span>
-                        </a>
-                        <a class="lang-btn <%= locale === 'en' ? 'active' : '' %>" href="<%= switchLangUrl('en') %>" title="English">
-                            <span aria-hidden="true">🇬🇧</span>
-                        </a>
+                        <details class="lang-picker">
+                            <summary class="lang-picker-toggle">
+                                <span class="lang-picker-icon" aria-hidden="true"><i class="las la-globe"></i></span>
+                                <span class="lang-picker-meta">
+                                    <small>Language</small>
+                                    <strong><%= currentLocaleItem.label %> (<%= currentLocaleItem.code.toUpperCase() %>)</strong>
+                                </span>
+                                <span class="lang-picker-caret" aria-hidden="true"><i class="las la-angle-down"></i></span>
+                            </summary>
+                            <div class="lang-picker-menu">
+                                <% (availableLocales || []).forEach(function(localeItem) { %>
+                                    <a
+                                        class="lang-picker-option <%= locale === localeItem.code ? 'active' : '' %>"
+                                        href="<%= switchLangUrl(localeItem.code) %>"
+                                        title="<%= localeItem.label %>"
+                                    >
+                                        <span class="lang-picker-option-code"><%= localeItem.code.toUpperCase() %></span>
+                                        <span class="lang-picker-option-label"><%= localeItem.label %></span>
+                                        <% if (locale === localeItem.code) { %>
+                                            <span class="lang-picker-option-check" aria-hidden="true"><i class="las la-check"></i></span>
+                                        <% } %>
+                                    </a>
+                                <% }) %>
+                            </div>
+                        </details>
                     </div>
                     <ul class="header-social-share">
                         <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
@@ -143,7 +163,7 @@
 <div id="popup-search-box">
     <div class="box-inner-wrap d-flex align-items-center">
         <form id="form" action="#" method="get" role="search">
-            <input id="popup-search" type="text" name="s" placeholder="Type keywords here...">
+            <input id="popup-search" type="text" name="s" placeholder="<%= t('header.searchPlaceholder') %>">
             <button id="popup-search-button" type="submit" name="submit">
                 <i class="las la-search"></i>
             </button>
@@ -174,33 +194,163 @@
 
 <style>
     .lang-switch {
+        position: relative;
         display: inline-flex;
-        gap: 6px;
         margin-right: 10px;
         vertical-align: middle;
     }
 
-    .lang-btn {
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        background: transparent;
-        text-decoration: none;
-        color: #fff;
+    .lang-picker {
+        position: relative;
+    }
+
+    .lang-picker summary {
+        list-style: none;
+    }
+
+    .lang-picker summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .lang-picker-toggle {
+        min-width: 150px;
+        border: 1px solid #d8e1ea;
+        background: #ffffff;
+        color: #17324d;
         border-radius: 999px;
-        width: 30px;
-        height: 30px;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
+        gap: 0.55rem;
+        padding: 0.35rem 0.85rem 0.35rem 0.5rem;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+        transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .lang-picker-toggle:hover,
+    .lang-picker[open] .lang-picker-toggle {
+        background: #f8fbff;
+        border-color: #b8c9da;
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.12);
+    }
+
+    .lang-picker-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
         justify-content: center;
-        padding: 0;
         font-size: 14px;
+        flex: 0 0 auto;
     }
 
-    .lang-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
+    .lang-picker-meta {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.05;
+        text-align: left;
     }
 
-    .lang-btn.active {
-        background: rgba(255, 255, 255, 0.35);
+    .lang-picker-meta small {
+        font-size: 10px;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .lang-picker-meta strong {
+        font-size: 12px;
+        font-weight: 700;
+        color: #17324d;
+    }
+
+    .lang-picker-caret {
+        font-size: 14px;
+        color: #4a6680;
+        margin-left: auto;
+    }
+
+    .lang-picker-menu {
+        position: absolute;
+        top: calc(100% + 0.55rem);
+        right: 0;
+        min-width: 220px;
+        padding: 0.45rem;
+        background: #ffffff;
+        border-radius: 1rem;
+        box-shadow: 0 18px 32px rgba(15, 23, 42, 0.18);
+        z-index: 40;
+    }
+
+    .lang-picker-option {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        text-decoration: none;
+        color: #17324d;
+        padding: 0.7rem 0.8rem;
+        border-radius: 0.8rem;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .lang-picker-option:hover {
+        background: #eef5fb;
+        color: #17324d;
+    }
+
+    .lang-picker-option.active {
+        background: linear-gradient(135deg, #e8f2fb, #f4f9fd);
+        color: #17324d;
+        font-weight: 700;
+    }
+
+    .lang-picker-option-code {
+        width: 42px;
+        height: 32px;
+        border-radius: 999px;
+        background: #17324d;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        flex: 0 0 auto;
+    }
+
+    .lang-picker-option.active .lang-picker-option-code {
+        background: #c1292e;
+    }
+
+    .lang-picker-option-label {
+        font-size: 13px;
+        flex: 1 1 auto;
+    }
+
+    .lang-picker-option-check {
+        color: #0e7490;
+        font-size: 15px;
+    }
+
+    @media (max-width: 767.98px) {
+        .lang-picker-toggle {
+            min-width: auto;
+            padding-right: 0.7rem;
+        }
+
+        .lang-picker-meta small,
+        .lang-picker-meta strong {
+            display: none;
+        }
+
+        .lang-picker-menu {
+            right: auto;
+            left: 0;
+            min-width: 180px;
+        }
     }
 </style>

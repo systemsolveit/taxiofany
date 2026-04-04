@@ -12,7 +12,7 @@ async function getDictionary(req, res, next) {
 
 async function getLocales(req, res, next) {
   try {
-    const locales = service.listSupportedLocales();
+    const locales = await service.listSupportedLocales();
     return res.json({ success: true, data: locales });
   } catch (error) {
     return next(error);

@@ -1,17 +1,502 @@
-<%- include('../shared/layouts/admin') %>
-<div class="container mt-4">
-  <h2>Media Hub Upload</h2>
-  <form id="media-upload-form" action="/admin/mediahub/upload" method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-      <label for="file" class="form-label">Select file</label>
-      <input class="form-control" type="file" id="file" name="file" required>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .mediahub-shell {
+      padding-bottom: 2rem;
+    }
+
+    .mediahub-hero {
+      background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 34%),
+        linear-gradient(135deg, #0f3d56 0%, #11698e 52%, #21b6a8 100%);
+      border-radius: 1rem;
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 18px 40px rgba(17, 105, 142, 0.24);
+    }
+
+    .mediahub-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 18px 18px;
+      opacity: 0.22;
+      pointer-events: none;
+    }
+
+    .mediahub-hero .card-body {
+      position: relative;
+      z-index: 1;
+      padding: 1.75rem;
+    }
+
+    .mediahub-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .mediahub-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    .mediahub-stat {
+      background: rgba(7, 28, 40, 0.24);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 0.9rem;
+      padding: 0.95rem 1rem;
+      backdrop-filter: blur(6px);
+    }
+
+    .mediahub-stat .value {
+      display: block;
+      font-size: 1.55rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .mediahub-panel {
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(15, 61, 86, 0.08);
+    }
+
+    .mediahub-upload-zone {
+      border: 2px dashed rgba(17, 105, 142, 0.22);
+      border-radius: 1rem;
+      background: linear-gradient(180deg, rgba(17, 105, 142, 0.05), rgba(17, 105, 142, 0.015));
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .mediahub-library-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .mediahub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .mediahub-card {
+      border: 1px solid #e9eef3;
+      border-radius: 1rem;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 12px 24px rgba(17, 105, 142, 0.08);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .mediahub-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 32px rgba(17, 105, 142, 0.12);
+    }
+
+    .mediahub-preview {
+      background: linear-gradient(145deg, #f2f8fb, #e3eff5);
+      min-height: 210px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .mediahub-preview img,
+    .mediahub-preview video {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mediahub-preview audio {
+      width: calc(100% - 2rem);
+    }
+
+    .mediahub-preview-fallback {
+      text-align: center;
+      color: #11698e;
+    }
+
+    .mediahub-preview-fallback i {
+      font-size: 2.7rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .mediahub-card-body {
+      padding: 1rem;
+    }
+
+    .mediahub-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.7rem;
+    }
+
+    .mediahub-tag {
+      background: #eef7fb;
+      color: #11698e;
+      border-radius: 999px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .mediahub-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin-top: 1rem;
+    }
+
+    .mediahub-url {
+      font-size: 0.83rem;
+      background: #f6f9fb;
+      border: 1px solid #dde8ee;
+      border-radius: 0.6rem;
+      padding: 0.65rem 0.75rem;
+      color: #46606f;
+      word-break: break-all;
+      margin-top: 0.9rem;
+    }
+
+    .mediahub-empty {
+      border: 2px dashed #d5e5ee;
+      border-radius: 1rem;
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      color: #5f7280;
+      background: linear-gradient(180deg, #fbfdfe, #f3f8fb);
+    }
+
+    @media (max-width: 991.98px) {
+      .mediahub-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .mediahub-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
+          <div>
+            <h1 class="mb-1">Media Hub</h1>
+            <p class="text-muted mb-0">Upload, organize, preview, and clean your media library from one place.</p>
+          </div>
+          <a href="/admin" class="btn btn-outline-secondary mt-2 mt-sm-0">Back to Dashboard</a>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid mediahub-shell">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="card mediahub-hero mb-4">
+            <div class="card-body">
+              <span class="mediahub-eyebrow"><i class="fas fa-photo-video"></i> Creative Operations</span>
+              <div class="row align-items-end mt-3">
+                <div class="col-lg-7">
+                  <h2 class="mb-2">A focused control room for your media library.</h2>
+                  <p class="mb-0" style="max-width: 42rem; color: rgba(255,255,255,0.82);">
+                    Use the upload studio for new assets, then edit metadata, copy links, preview files, or remove clutter without leaving the dashboard.
+                  </p>
+                </div>
+                <div class="col-lg-5">
+                  <div class="mediahub-stats">
+                    <div class="mediahub-stat">
+                      <span class="text-uppercase small">Assets</span>
+                      <span class="value"><%= summary.totalItems || 0 %></span>
+                    </div>
+                    <div class="mediahub-stat">
+                      <span class="text-uppercase small">Images</span>
+                      <span class="value"><%= (summary.byKind && summary.byKind.image) || 0 %></span>
+                    </div>
+                    <div class="mediahub-stat">
+                      <span class="text-uppercase small">Documents</span>
+                      <span class="value"><%= (summary.byKind && summary.byKind.document) || 0 %></span>
+                    </div>
+                    <div class="mediahub-stat">
+                      <span class="text-uppercase small">Storage</span>
+                      <span class="value"><%= storageLabel %></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card mediahub-panel card-primary card-outline">
+                <div class="card-header border-0">
+                  <h3 class="card-title"><i class="fas fa-cloud-upload-alt mr-2"></i>Upload Studio</h3>
+                </div>
+                <div class="card-body">
+                  <form id="media-upload-form" action="/admin/mediahub/upload" method="post" enctype="multipart/form-data">
+                    <div class="mediahub-upload-zone">
+                      <div class="form-group mb-0">
+                        <label for="file">Choose media file</label>
+                        <input class="form-control-file" type="file" id="file" name="file" required>
+                        <small class="form-text text-muted">Images, video, audio, and documents are supported.</small>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="title">Title</label>
+                      <input class="form-control" type="text" id="title" name="title" placeholder="Hero image, invoice template, campaign reel...">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="altText">Alt text</label>
+                      <input class="form-control" type="text" id="altText" name="altText" placeholder="Describe the asset for accessibility">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="tags">Tags</label>
+                      <input class="form-control" type="text" id="tags" name="tags" placeholder="homepage, driver, cairo">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="description">Description</label>
+                      <textarea class="form-control" id="description" name="description" rows="4" placeholder="Add internal notes for the team"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Upload Asset</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-8">
+              <div class="card mediahub-panel">
+                <div class="card-body border-bottom">
+                  <form method="get" action="/admin/mediahub">
+                    <div class="row align-items-end">
+                      <div class="col-md-7">
+                        <label for="q">Search library</label>
+                        <input id="q" class="form-control" type="text" name="q" value="<%= filters.q %>" placeholder="Search by title, tags, filename, or description">
+                      </div>
+                      <div class="col-md-3 mt-3 mt-md-0">
+                        <label for="type">Type</label>
+                        <select id="type" class="form-control" name="type">
+                          <option value="all" <%= filters.type === 'all' ? 'selected' : '' %>>All types</option>
+                          <option value="image" <%= filters.type === 'image' ? 'selected' : '' %>>Images</option>
+                          <option value="video" <%= filters.type === 'video' ? 'selected' : '' %>>Videos</option>
+                          <option value="audio" <%= filters.type === 'audio' ? 'selected' : '' %>>Audio</option>
+                          <option value="document" <%= filters.type === 'document' ? 'selected' : '' %>>Documents</option>
+                          <option value="other" <%= filters.type === 'other' ? 'selected' : '' %>>Other</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 mt-3 mt-md-0">
+                        <button type="submit" class="btn btn-outline-primary btn-block">Filter</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="card-body">
+                  <div class="mediahub-library-header mb-3">
+                    <div>
+                      <h3 class="card-title mb-1">Library</h3>
+                      <p class="text-muted mb-0">Showing <strong><%= filteredCount %></strong> item<%= filteredCount === 1 ? '' : 's' %>.</p>
+                    </div>
+                    <div class="d-flex flex-wrap align-items-center" style="gap: 0.5rem;">
+                      <span class="badge badge-light">Images: <%= (summary.byKind && summary.byKind.image) || 0 %></span>
+                      <span class="badge badge-light">Video: <%= (summary.byKind && summary.byKind.video) || 0 %></span>
+                      <span class="badge badge-light">Audio: <%= (summary.byKind && summary.byKind.audio) || 0 %></span>
+                      <span class="badge badge-light">Docs: <%= (summary.byKind && summary.byKind.document) || 0 %></span>
+                    </div>
+                  </div>
+
+                  <% if (!library.length) { %>
+                    <div class="mediahub-empty">
+                      <i class="fas fa-box-open fa-2x mb-3"></i>
+                      <h4 class="mb-2">No media matched this view</h4>
+                      <p class="mb-0">Upload a new asset or adjust your filters to expand the library.</p>
+                    </div>
+                  <% } else { %>
+                    <div class="mediahub-grid">
+                      <% library.forEach(function(item) { %>
+                        <article class="mediahub-card">
+                          <div class="mediahub-preview">
+                            <% if (item.kind === 'image') { %>
+                              <img src="<%= item.previewUrl %>" alt="<%= item.altText || item.titleLabel %>">
+                            <% } else if (item.kind === 'video') { %>
+                              <video src="<%= item.previewUrl %>" controls preload="metadata"></video>
+                            <% } else if (item.kind === 'audio') { %>
+                              <div class="w-100 px-3">
+                                <div class="mediahub-preview-fallback mb-3">
+                                  <i class="<%= item.kindIcon %>"></i>
+                                  <div>Audio asset</div>
+                                </div>
+                                <audio src="<%= item.previewUrl %>" controls preload="metadata"></audio>
+                              </div>
+                            <% } else { %>
+                              <div class="mediahub-preview-fallback">
+                                <i class="<%= item.kindIcon %>"></i>
+                                <div><strong><%= (item.extension || item.kind || 'file').toUpperCase() %></strong></div>
+                              </div>
+                            <% } %>
+                          </div>
+
+                          <div class="mediahub-card-body">
+                            <div class="d-flex justify-content-between align-items-start" style="gap: 0.75rem;">
+                              <div>
+                                <h4 class="h6 mb-1"><%= item.titleLabel %></h4>
+                                <p class="text-muted mb-0"><%= item.originalname %></p>
+                              </div>
+                              <span class="badge badge-info text-uppercase"><%= item.kind %></span>
+                            </div>
+
+                            <% if (item.description) { %>
+                              <p class="text-muted mt-2 mb-0"><%= item.description %></p>
+                            <% } %>
+
+                            <div class="mediahub-meta">
+                              <span class="mediahub-tag"><%= item.sizeLabel %></span>
+                              <span class="mediahub-tag"><%= item.uploadedAtLabel %></span>
+                              <% (item.tags || []).forEach(function(tag) { %>
+                                <span class="mediahub-tag"><%= tag %></span>
+                              <% }) %>
+                            </div>
+
+                            <div class="mediahub-url"><%= item.previewUrl %></div>
+
+                            <div class="mediahub-actions">
+                              <a class="btn btn-sm btn-outline-primary" href="<%= item.previewUrl %>" target="_blank" rel="noreferrer">Open</a>
+                              <button
+                                class="btn btn-sm btn-outline-secondary js-copy-url"
+                                type="button"
+                                data-url="<%= item.previewUrl %>">
+                                Copy Link
+                              </button>
+                              <button
+                                class="btn btn-sm btn-outline-info js-edit-asset"
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#editAssetModal"
+                                data-filename="<%= item.filename %>"
+                                data-title="<%= item.title || '' %>"
+                                data-alt="<%= item.altText || '' %>"
+                                data-description="<%= item.description || '' %>"
+                                data-tags="<%= (item.tags || []).join(', ') %>">
+                                Edit
+                              </button>
+                              <form method="post" action="/admin/mediahub/<%= encodeURIComponent(item.filename) %>/delete" onsubmit="return confirm('Delete this media item?');">
+                                <input type="hidden" name="q" value="<%= filters.q %>">
+                                <input type="hidden" name="type" value="<%= filters.type %>">
+                                <button class="btn btn-sm btn-outline-danger btn-block" type="submit">Delete</button>
+                              </form>
+                            </div>
+                          </div>
+                        </article>
+                      <% }) %>
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-    <!-- Add more metadata fields here if needed -->
-    <button type="submit" class="btn btn-primary">Upload</button>
-  </form>
-  <% if (typeof uploadResult !== 'undefined') { %>
-    <div class="alert alert-info mt-3">
-      <%= uploadResult %>
+
+    <div class="modal fade" id="editAssetModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <form method="post" id="editAssetForm">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Media Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="q" value="<%= filters.q %>">
+              <input type="hidden" name="type" value="<%= filters.type %>">
+              <div class="form-group">
+                <label for="edit-title">Title</label>
+                <input class="form-control" type="text" id="edit-title" name="title">
+              </div>
+              <div class="form-group">
+                <label for="edit-alt">Alt text</label>
+                <input class="form-control" type="text" id="edit-alt" name="altText">
+              </div>
+              <div class="form-group">
+                <label for="edit-tags">Tags</label>
+                <input class="form-control" type="text" id="edit-tags" name="tags">
+              </div>
+              <div class="form-group mb-0">
+                <label for="edit-description">Description</label>
+                <textarea class="form-control" id="edit-description" name="description" rows="4"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-  <% } %>
-</div>
+
+    <%- include('../../shared/partials/admin-scripts') %>
+    <script>
+      document.querySelectorAll('.js-copy-url').forEach(function(button) {
+        button.addEventListener('click', function() {
+          const assetUrl = new URL(button.dataset.url, window.location.origin).toString();
+          navigator.clipboard.writeText(assetUrl).then(function() {
+            const previousText = button.textContent;
+            button.textContent = 'Copied';
+            setTimeout(function() {
+              button.textContent = previousText;
+            }, 1200);
+          });
+        });
+      });
+
+      document.querySelectorAll('.js-edit-asset').forEach(function(button) {
+        button.addEventListener('click', function() {
+          document.getElementById('editAssetForm').action = '/admin/mediahub/' + encodeURIComponent(button.dataset.filename) + '/update';
+          document.getElementById('edit-title').value = button.dataset.title || '';
+          document.getElementById('edit-alt').value = button.dataset.alt || '';
+          document.getElementById('edit-tags').value = button.dataset.tags || '';
+          document.getElementById('edit-description').value = button.dataset.description || '';
+        });
+      });
+    </script>
+  </div>
+</body>
+</html>

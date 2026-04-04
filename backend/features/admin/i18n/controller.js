@@ -2,7 +2,26 @@ const service = require('./service');
 
 async function getLocales(req, res, next) {
   try {
-    return res.json({ success: true, data: service.listLocales() });
+    const locales = await service.listLocales();
+    return res.json({ success: true, data: locales });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function getLocaleRegistry(req, res, next) {
+  try {
+    const locales = await service.listLocaleRegistry();
+    return res.json({ success: true, data: locales });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function getUiPages(req, res, next) {
+  try {
+    const pages = service.listUiPages();
+    return res.json({ success: true, data: pages });
   } catch (error) {
     return next(error);
   }
@@ -27,6 +46,60 @@ async function saveEntry(req, res, next) {
       value,
       updatedBy: req.auth && req.auth.sub ? req.auth.sub : undefined,
     });
+    return res.json({ success: true, data: result });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function bulkSaveEntries(req, res, next) {
+  try {
+    const { locale, entries } = req.body;
+    const result = await service.bulkUpsertEntries({
+      locale,
+      entries,
+      updatedBy: req.auth && req.auth.sub ? req.auth.sub : undefined,
+    });
+    return res.json({
+      success: true,
+      data: {
+        count: result.count,
+        entries: result.entries,
+        templateUpdates: result.templateUpdates,
+      },
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function createLocale(req, res, next) {
+  try {
+    const result = await service.createLocale({
+      ...req.body,
+      updatedBy: req.auth && req.auth.sub ? req.auth.sub : undefined,
+    });
+    return res.status(201).json({ success: true, data: result });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function updateLocale(req, res, next) {
+  try {
+    const result = await service.updateLocale(req.params.code, {
+      ...req.body,
+      updatedBy: req.auth && req.auth.sub ? req.auth.sub : undefined,
+    });
+    return res.json({ success: true, data: result });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function populateLocaleFromBase(req, res, next) {
+  try {
+    const result = await service.populateLocaleFromBase(req.params.code);
     return res.json({ success: true, data: result });
   } catch (error) {
     return next(error);
@@ -68,8 +141,14 @@ async function translateKeywords(req, res, next) {
 
 module.exports = {
   getLocales,
+  getLocaleRegistry,
+  getUiPages,
   getEntries,
   saveEntry,
+  bulkSaveEntries,
+  createLocale,
+  updateLocale,
+  populateLocaleFromBase,
   extractKeywords,
   translateKeywords,
 };

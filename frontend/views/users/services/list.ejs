@@ -5,9 +5,9 @@
         <div class="page-header-shape"></div>
         <div class="container">
             <div class="page-header-info">
-                <h4>Our Services!</h4>
-                <h2>Start your journey with <br><span>Ridek Taxi</span> Company!</h2>
-                <p>Everything your taxi business <br>needs is already here! </p>
+                <h4><%= t('pages.services.list.header.eyebrow') %></h4>
+                <h2><%= t('pages.services.list.header.titleLine1') %> <br><span><%= t('pages.services.list.header.titleBrand') %></span> <%= t('pages.services.list.header.titleLine2') %></h2>
+                <p><%= t('pages.services.list.header.description') %></p>
             </div>
         </div>
     </section>
@@ -26,9 +26,9 @@
                             <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
                         </div>
                         <div class="service-content">
-                            <h3><a href="/services/details">Regular Transport</a></h3>
-                            <p>Everything your taxi business needs is already here! Ridek made for taxi service companies!</p>
-                            <a class="read-more" href="/services/details">Read More</a>
+                            <h3><a href="/services/details"><%= t('home.services.regularTransport') %></a></h3>
+                            <p><%= t('home.services.itemDescription') %></p>
+                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
                         </div>
                     </div>
                 </div>
@@ -42,9 +42,9 @@
                             <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
                         </div>
                         <div class="service-content">
-                            <h3><a href="/services/details">Airport Transport</a></h3>
-                            <p>Everything your taxi business needs is already here! Ridek made for taxi service companies!</p>
-                            <a class="read-more" href="/services/details">Read More</a>
+                            <h3><a href="/services/details"><%= t('home.services.airportTransport') %></a></h3>
+                            <p><%= t('home.services.itemDescription') %></p>
+                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
                         </div>
                     </div>
                 </div>
@@ -58,9 +58,9 @@
                             <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
                         </div>
                         <div class="service-content">
-                            <h3><a href="/services/details">Luggage Transport</a></h3>
-                            <p>Everything your taxi business needs is already here! Ridek made for taxi service companies!</p>
-                            <a class="read-more" href="/services/details">Read More</a>
+                            <h3><a href="/services/details"><%= t('home.services.luggageTransport') %></a></h3>
+                            <p><%= t('home.services.itemDescription') %></p>
+                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
                         </div>
                     </div>
                 </div>
@@ -74,9 +74,9 @@
                             <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
                         </div>
                         <div class="service-content">
-                            <h3><a href="/services/details">City Transport</a></h3>
-                            <p>Everything your taxi business needs is already here! Ridek made for taxi service companies!</p>
-                            <a class="read-more" href="/services/details">Read More</a>
+                            <h3><a href="/services/details"><%= t('home.services.cityTransport') %></a></h3>
+                            <p><%= t('home.services.itemDescription') %></p>
+                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
                         </div>
                     </div>
                 </div>
@@ -90,9 +90,9 @@
                             <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
                         </div>
                         <div class="service-content">
-                            <h3><a href="/services/details">Business Transport</a></h3>
-                            <p>Everything your taxi business needs is already here! Ridek made for taxi service companies!</p>
-                            <a class="read-more" href="/services/details">Read More</a>
+                            <h3><a href="/services/details"><%= t('home.services.businessTransport') %></a></h3>
+                            <p><%= t('home.services.itemDescription') %></p>
+                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
                         </div>
                     </div>
                 </div>
@@ -106,9 +106,9 @@
                             <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
                         </div>
                         <div class="service-content">
-                            <h3><a href="/services/details">Local Transport</a></h3>
-                            <p>Everything your taxi business needs is already here! Ridek made for taxi service companies!</p>
-                            <a class="read-more" href="/services/details">Read More</a>
+                            <h3><a href="/services/details"><%= t('pages.services.list.localTransport') %></a></h3>
+                            <p><%= t('home.services.itemDescription') %></p>
+                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
                         </div>
                     </div>
                 </div>
@@ -122,17 +122,17 @@
             <div class="row align-items-center">
                 <div class="col-lg-4">
                     <div class="cta-content">
-                        <h4>Ridek Taxi Services!</h4>
-                        <h2>Feel your journey with Ridek!</h2>
-                        <a href="/book-taxi" class="default-btn">Book a Taxi</a>
+                        <h4><%= t('home.cta.serviceLabel') %></h4>
+                        <h2><%= t('home.cta.feelYourJourney') %></h2>
+                        <a href="/book-taxi" class="default-btn"><%= t('home.cta.bookTaxiBtn') %></a>
                     </div>
                 </div>
                 <div class="col-lg-5">
                     <ul class="check-list">
-                        <li><i class="las la-arrow-right"></i>Easy payment systems.</li>
-                        <li><i class="las la-arrow-right"></i>Make safety a top priority.</li>
-                        <li><i class="las la-arrow-right"></i>First and quick pickups.</li>
-                        <li><i class="las la-arrow-right"></i>Access Ridek globally.</li>
+                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item1') %></li>
+                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item2') %></li>
+                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item3') %></li>
+                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item4') %></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
@@ -146,9 +146,9 @@
     <section class="blog-section bg-grey padding">
         <div class="container">
             <div class="section-heading text-center mb-40">
-                <h4><span></span>Recent Posts!</h4>
-                <h2>News And Insights!</h2>
-                <p>We successfully cope with tasks of varying complexity, provide long-term <br>guarantees and regularly master new technologies.</p>
+                <h4><span></span><%= t('home.blog.eyebrow') %></h4>
+                <h2><%= t('home.blog.title') %></h2>
+                <p><%= t('home.blog.description') %></p>
             </div>
             <!--/.section-heading-->
             <div class="row grid-post">
@@ -156,19 +156,19 @@
                     <div class="post-card">
                         <div class="post-thumb">
                             <img src="/assets/img/post-1.jpg" alt="post" />
-                            <a href="/blog/details" class="post-category">Business</a>
+                            <a href="/blog/details" class="post-category"><%= t('home.blog.categoryBusiness') %></a>
                         </div>
                         <div class="post-content-wrap">
                             <ul class="post-meta">
-                                <li><i class="las la-calendar"></i>Jan 01 2022</li>
-                                <li><i class="las la-user"></i>Elliot Alderson</li>
+                                <li><i class="las la-calendar"></i><%= t('home.blog.postDate') %></li>
+                                <li><i class="las la-user"></i><%= t('home.blog.author') %></li>
                             </ul>
                             <div class="post-content">
                                 <h3>
-                                    <a href="/blog/details" class="hover">How to start initiating an startup in few days.</a>
+                                    <a href="/blog/details" class="hover"><%= t('home.blog.post1Title') %></a>
                                 </h3>
-                                <p>Financial experts support or help you to to find out which way you can raise your funds more...</p>
-                                <a href="/blog/details" class="read-more">Read More</a>
+                                <p><%= t('home.blog.postExcerpt') %></p>
+                                <a href="/blog/details" class="read-more"><%= t('home.blog.readMore') %></a>
                             </div>
                         </div>
                     </div>
@@ -177,19 +177,19 @@
                     <div class="post-card">
                         <div class="post-thumb">
                             <img src="/assets/img/post-2.jpg" alt="post" />
-                            <a href="/blog/details" class="post-category">Startup</a>
+                            <a href="/blog/details" class="post-category"><%= t('home.blog.categoryStartup') %></a>
                         </div>
                         <div class="post-content-wrap">
                             <ul class="post-meta">
-                                <li><i class="las la-calendar"></i>Jan 01 2022</li>
-                                <li><i class="las la-user"></i>Elliot Alderson</li>
+                                <li><i class="las la-calendar"></i><%= t('home.blog.postDate') %></li>
+                                <li><i class="las la-user"></i><%= t('home.blog.author') %></li>
                             </ul>
                             <div class="post-content">
                                 <h3>
-                                    <a href="/blog/details">Financial experts support help you to find out.</a>
+                                    <a href="/blog/details"><%= t('home.blog.post2Title') %></a>
                                 </h3>
-                                <p>Financial experts support or help you to to find out which way you can raise your funds more...</p>
-                                <a href="/blog/details" class="read-more">Read More</a>
+                                <p><%= t('home.blog.postExcerpt') %></p>
+                                <a href="/blog/details" class="read-more"><%= t('home.blog.readMore') %></a>
                             </div>
                         </div>
                     </div>
@@ -198,19 +198,19 @@
                     <div class="post-card">
                         <div class="post-thumb">
                             <img src="/assets/img/post-3.jpg" alt="post" />
-                            <a href="/blog/details" class="post-category">Finance</a>
+                            <a href="/blog/details" class="post-category"><%= t('home.blog.categoryFinance') %></a>
                         </div>
                         <div class="post-content-wrap">
                             <ul class="post-meta">
-                                <li><i class="las la-calendar"></i>Jan 01 2022</li>
-                                <li><i class="las la-user"></i>Elliot Alderson</li>
+                                <li><i class="las la-calendar"></i><%= t('home.blog.postDate') %></li>
+                                <li><i class="las la-user"></i><%= t('home.blog.author') %></li>
                             </ul>
                             <div class="post-content">
                                 <h3>
-                                    <a href="/blog/details">Innovative business all over the world.</a>
+                                    <a href="/blog/details"><%= t('home.blog.post3Title') %></a>
                                 </h3>
-                                <p>Financial experts support or help you to to find out which way you can raise your funds more...</p>
-                                <a href="/blog/details" class="read-more">Read More</a>
+                                <p><%= t('home.blog.postExcerpt') %></p>
+                                <a href="/blog/details" class="read-more"><%= t('home.blog.readMore') %></a>
                             </div>
                         </div>
                     </div>

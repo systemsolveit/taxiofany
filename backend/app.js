@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -22,6 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan(config.nodeEnv === 'production' ? 'combined' : 'dev', { stream: morganStream }));
 app.use(requestLogger);
+
+app.use('/mediahub/uploads', express.static(path.join(__dirname, 'uploads/mediahub')));
 
 if (config.enableSwagger) {
   app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));

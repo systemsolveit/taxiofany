@@ -1,15 +1,20 @@
 const express = require('express');
 const controller = require('./controller');
 const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
+const { requireAdminAuth } = require('../auth/middleware');
 // const validateRequest = require('../../../middlewares/validateRequest');
 // const { someValidation } = require('./validation');
+
+const uploadDirectory = path.join(__dirname, '../../../uploads/mediahub');
 
 // Configure multer for disk storage (uploads/mediahub/)
 const upload = multer({
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
-			cb(null, path.join(__dirname, '../../../../uploads/mediahub'));
+			fs.mkdirSync(uploadDirectory, { recursive: true });
+			cb(null, uploadDirectory);
 		},
 		filename: (req, file, cb) => {
 			const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -31,7 +36,7 @@ const router = express.Router();
  *       200:
  *         description: Media assets returned
  */
-router.get('/', controller.listMedia);
+router.get('/', requireAdminAuth, controller.listMedia);
 
 
 /**
@@ -54,6 +59,8 @@ router.get('/', controller.listMedia);
  *       201:
  *         description: Media asset uploaded
  */
-router.post('/', upload.single('file'), controller.uploadMedia);
+router.post('/', requireAdminAuth, upload.single('file'), controller.uploadMedia);
+router.patch('/:filename', requireAdminAuth, controller.updateMedia);
+router.delete('/:filename', requireAdminAuth, controller.deleteMedia);
 
 module.exports = router;

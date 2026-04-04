@@ -1,7 +1,7 @@
 const config = require('../config');
 
 const cache = new Map();
-const CACHE_TTL_MS = 60 * 1000;
+const LOCALES_CACHE_TTL_MS = 60 * 1000;
 
 function normalizeBaseUrl(value) {
   return (value || 'http://localhost:3000').replace(/\/$/, '');
@@ -15,13 +15,15 @@ function buildUrl(locale) {
   return `${base}/api/v1/user/i18n/${locale}`;
 }
 
-async function fetchDictionary(locale) {
-  const now = Date.now();
-  const cached = cache.get(locale);
-  if (cached && cached.expiresAt > now) {
-    return cached.value;
+function buildLocalesUrl() {
+  const base = normalizeBaseUrl(config.apiBaseUrl);
+  if (base.endsWith('/api/v1')) {
+    return `${base}/user/i18n/locales`;
   }
+  return `${base}/api/v1/user/i18n/locales`;
+}
 
+async function fetchDictionary(locale) {
   const response = await fetch(buildUrl(locale));
   const payload = await response.json().catch(() => ({}));
 
@@ -29,15 +31,37 @@ async function fetchDictionary(locale) {
     throw new Error(payload?.error?.message || 'Failed to load translations.');
   }
 
-  const dictionary = payload.data.dictionary;
-  cache.set(locale, {
-    value: dictionary,
-    expiresAt: now + CACHE_TTL_MS,
+  return payload.data.dictionary;
+}
+
+async function fetchLocales() {
+  const cacheKey = '__locales__';
+  const now = Date.now();
+  const cached = cache.get(cacheKey);
+  if (cached && cached.expiresAt > now) {
+    return cached.value;
+  }
+
+  const response = await fetch(buildLocalesUrl());
+  const payload = await response.json().catch(() => ({}));
+
+  if (!response.ok || !payload.success || !Array.isArray(payload.data)) {
+    throw new Error(payload?.error?.message || 'Failed to load locales.');
+  }
+
+  const locales = payload.data
+    .filter((code) => typeof code === 'string' && code.trim())
+    .map((code) => code.trim().toLowerCase());
+
+  cache.set(cacheKey, {
+    value: locales,
+    expiresAt: now + LOCALES_CACHE_TTL_MS,
   });
 
-  return dictionary;
+  return locales;
 }
 
 module.exports = {
   fetchDictionary,
+  fetchLocales,
 };

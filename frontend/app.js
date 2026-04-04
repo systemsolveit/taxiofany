@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const { createSessionMiddleware, attachSessionLocals } = require('./middleware/sessionManager');
-const { attachI18n, setLanguage } = require('./middleware/i18n');
+const { attachI18n, setLanguage, handleLocalePrefix } = require('./middleware/i18n');
 
 const routes = require('./routes');
 const notFound = require('./middleware/notFound');
@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(createSessionMiddleware());
 app.use(attachSessionLocals);
+app.use(handleLocalePrefix);
 app.use(attachI18n);
 
 app.use(express.static(path.join(__dirname, 'public')));

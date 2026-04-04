@@ -2,8 +2,8 @@ const service = require('./service');
 
 async function listMedia(req, res, next) {
   try {
-    // Placeholder: return empty list
-    return res.json({ success: true, data: [] });
+    const result = await service.listMedia(req.query);
+    return res.json({ success: true, data: result });
   } catch (error) {
     return next(error);
   }
@@ -25,7 +25,27 @@ async function uploadMedia(req, res, next) {
   }
 }
 
+async function updateMedia(req, res, next) {
+  try {
+    const result = await service.updateMedia(req.params.filename, req.body);
+    return res.json({ success: true, data: result });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function deleteMedia(req, res, next) {
+  try {
+    const result = await service.deleteMedia(req.params.filename);
+    return res.json({ success: true, data: result });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   listMedia,
   uploadMedia,
+  updateMedia,
+  deleteMedia,
 };

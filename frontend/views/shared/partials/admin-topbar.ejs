@@ -4,7 +4,7 @@
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="/admin" class="nav-link">Dashboard</a>
+      <a href="/admin" class="nav-link"><i class="fas fa-gauge-high mr-1"></i>Dashboard</a>
     </li>
   </ul>
 
@@ -13,11 +13,11 @@
       <%= adminSession && adminSession.user ? adminSession.user.fullName : 'Admin' %>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="/" class="nav-link">Back to Website</a>
+      <a href="/" class="nav-link"><i class="fas fa-arrow-up-right-from-square mr-1"></i>Back to Website</a>
     </li>
     <li class="nav-item">
       <form action="/admin/logout" method="post" class="mb-0">
-        <button type="submit" class="btn btn-link nav-link" style="cursor: pointer;">Logout</button>
+        <button type="submit" class="btn btn-link nav-link" style="cursor: pointer;"><i class="fas fa-right-from-bracket mr-1"></i>Logout</button>
       </form>
     </li>
   </ul>

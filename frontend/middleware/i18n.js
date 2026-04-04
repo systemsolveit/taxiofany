@@ -1,15 +1,44 @@
 const i18nApi = require('../services/i18nApi');
 
-const SUPPORTED = new Set(['nl', 'en']);
+const DEFAULT_SUPPORTED = ['nl', 'en'];
 const FALLBACK_LOCALE = 'nl';
+
+function shouldSkipLocalePrefix(pathname) {
+  const path = String(pathname || '/').toLowerCase();
+  return (
+    path.startsWith('/admin') ||
+    path.startsWith('/set-language') ||
+    path.startsWith('/assets') ||
+    path.startsWith('/css') ||
+    path.startsWith('/js') ||
+    path.startsWith('/uploads') ||
+    path === '/favicon.ico' ||
+    path === '/robots.txt' ||
+    path === '/sitemap.xml'
+  );
+}
 
 function getNestedValue(obj, key) {
   return key.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
 }
 
-function resolveLocale(req) {
+async function getSupportedLocales() {
+  try {
+    const locales = await i18nApi.fetchLocales();
+    if (Array.isArray(locales) && locales.length > 0) {
+      return Array.from(new Set(locales.map((item) => String(item).toLowerCase())));
+    }
+  } catch (error) {
+    // Fail soft so i18n still works when locale API is unavailable.
+  }
+
+  return DEFAULT_SUPPORTED;
+}
+
+async function resolveLocale(req, supportedLocales) {
+  const supported = new Set(supportedLocales.map((item) => item.toLowerCase()));
   const queryLang = req.query && typeof req.query.lang === 'string' ? req.query.lang.toLowerCase() : '';
-  if (SUPPORTED.has(queryLang)) {
+  if (supported.has(queryLang)) {
     if (req.session) {
       req.session.uiLang = queryLang;
     }
@@ -17,7 +46,7 @@ function resolveLocale(req) {
   }
 
   const sessionLang = req.session && typeof req.session.uiLang === 'string' ? req.session.uiLang.toLowerCase() : '';
-  if (SUPPORTED.has(sessionLang)) {
+  if (supported.has(sessionLang)) {
     return sessionLang;
   }
 
@@ -25,7 +54,9 @@ function resolveLocale(req) {
 }
 
 async function attachI18n(req, res, next) {
-  const locale = resolveLocale(req);
+  const supportedLocales = await getSupportedLocales();
+  const supportedLocaleSet = new Set(supportedLocales.map((item) => item.toLowerCase()));
+  const locale = await resolveLocale(req, supportedLocales);
   let dict = {};
 
   try {
@@ -41,6 +72,10 @@ async function attachI18n(req, res, next) {
   }
 
   res.locals.locale = locale;
+  res.locals.availableLocales = supportedLocales.map((code) => ({
+    code,
+    label: code.toUpperCase(),
+  }));
   res.locals.t = (key, fallback = '') => {
     const value = getNestedValue(dict, key);
     if (typeof value === 'string') {
@@ -53,26 +88,78 @@ async function attachI18n(req, res, next) {
   };
 
   res.locals.switchLangUrl = (langCode) => {
-    const safeLang = SUPPORTED.has(String(langCode).toLowerCase()) ? String(langCode).toLowerCase() : FALLBACK_LOCALE;
-    const redirect = encodeURIComponent(req.originalUrl || '/');
-    return `/set-language/${safeLang}?redirect=${redirect}`;
+    const safeLang = String(langCode || '').toLowerCase();
+    const normalized = supportedLocales.includes(safeLang) ? safeLang : FALLBACK_LOCALE;
+    const originalUrl = req.originalUrl || req.url || '/';
+    const queryIndex = originalUrl.indexOf('?');
+    const pathOnly = queryIndex >= 0 ? originalUrl.slice(0, queryIndex) : originalUrl;
+    const queryString = queryIndex >= 0 ? originalUrl.slice(queryIndex) : '';
+    const segments = String(pathOnly || '/')
+      .split('/')
+      .filter(Boolean);
+
+    if (segments.length > 0 && supportedLocaleSet.has(String(segments[0]).toLowerCase())) {
+      segments.shift();
+    }
+
+    const targetPath = segments.length > 0 ? `/${segments.join('/')}` : '';
+    return `/${normalized}${targetPath}${queryString}`;
   };
 
   return next();
 }
 
-function setLanguage(req, res) {
+async function setLanguage(req, res) {
+  const supportedLocales = await getSupportedLocales();
+  const supported = new Set(supportedLocales.map((item) => item.toLowerCase()));
   const lang = (req.params.lang || '').toLowerCase();
   const redirectTo = typeof req.query.redirect === 'string' ? req.query.redirect : '/';
 
-  if (SUPPORTED.has(lang) && req.session) {
+  if (supported.has(lang) && req.session) {
     req.session.uiLang = lang;
   }
 
   return res.redirect(redirectTo || '/');
 }
 
+async function handleLocalePrefix(req, res, next) {
+  const supportedLocales = await getSupportedLocales();
+  const supported = new Set(supportedLocales.map((item) => item.toLowerCase()));
+  const path = req.path || '/';
+  const segments = path.split('/').filter(Boolean);
+  const queryIndex = (req.url || '').indexOf('?');
+  const queryString = queryIndex >= 0 ? req.url.slice(queryIndex) : '';
+
+  if (segments.length === 0) {
+    if ((req.method === 'GET' || req.method === 'HEAD') && !shouldSkipLocalePrefix(path)) {
+      const locale = await resolveLocale(req, supportedLocales);
+      return res.redirect(`/${locale}${queryString}`);
+    }
+    return next();
+  }
+
+  const firstSegment = String(segments[0] || '').toLowerCase();
+  if (!supported.has(firstSegment)) {
+    if ((req.method === 'GET' || req.method === 'HEAD') && !shouldSkipLocalePrefix(path)) {
+      const locale = await resolveLocale(req, supportedLocales);
+      return res.redirect(`/${locale}${path}${queryString}`);
+    }
+    return next();
+  }
+
+  if (req.session) {
+    req.session.uiLang = firstSegment;
+  }
+
+  const rest = segments.slice(1).join('/');
+  const rewrittenPath = rest ? `/${rest}` : '/';
+  req.url = `${rewrittenPath}${queryString}`;
+
+  return next();
+}
+
 module.exports = {
   attachI18n,
   setLanguage,
+  handleLocalePrefix,
 };

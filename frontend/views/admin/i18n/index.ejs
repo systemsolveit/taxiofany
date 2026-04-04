@@ -2,6 +2,189 @@
 <html lang="en">
 <head>
   <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .i18n-shell {
+      padding-bottom: 2rem;
+    }
+
+    .i18n-hero {
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 30%),
+        linear-gradient(135deg, #16324f 0%, #235789 52%, #c1292e 100%);
+      border-radius: 1rem;
+      color: #fff;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(22, 50, 79, 0.24);
+    }
+
+    .i18n-hero .card-body {
+      padding: 1.75rem;
+    }
+
+    .i18n-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .i18n-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    .i18n-metric {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 0.9rem;
+      padding: 0.95rem 1rem;
+    }
+
+    .i18n-metric strong {
+      display: block;
+      font-size: 1.5rem;
+      line-height: 1.1;
+    }
+
+    .i18n-panel {
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(22, 50, 79, 0.08);
+    }
+
+    .i18n-toolbar {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .i18n-toolbar .form-inline {
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .i18n-sticky {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .i18n-entry-group,
+    .i18n-keyword-group {
+      border: 1px solid #e6edf3;
+      border-radius: 1rem;
+      background: #fff;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .i18n-group-header {
+      padding: 1rem 1.1rem;
+      background: linear-gradient(180deg, #fbfdff, #f4f8fb);
+      border-bottom: 1px solid #e6edf3;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .i18n-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .i18n-key-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: #eef4f8;
+      color: #31536b;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .i18n-entry-table td,
+    .i18n-entry-table th {
+      vertical-align: top;
+    }
+
+    .i18n-keyword-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.9rem;
+      padding: 1rem;
+    }
+
+    .i18n-keyword-card {
+      border: 1px solid #e7edf2;
+      border-radius: 0.9rem;
+      padding: 1rem;
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+      box-shadow: 0 8px 18px rgba(22, 50, 79, 0.05);
+    }
+
+    .i18n-keyword-card p {
+      min-height: 3rem;
+    }
+
+    .i18n-sidebar-card {
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+
+    .i18n-locale-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .i18n-locale-item {
+      border: 1px solid #e5edf3;
+      border-radius: 0.9rem;
+      padding: 0.85rem 0.9rem;
+      background: linear-gradient(180deg, #fff, #f9fbfd);
+    }
+
+    .i18n-locale-item form {
+      margin-top: 0.75rem;
+    }
+
+    .i18n-empty {
+      border: 2px dashed #d8e4ec;
+      border-radius: 1rem;
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      color: #5c7281;
+      background: linear-gradient(180deg, #fbfdfe, #f4f8fb);
+    }
+
+    @media (max-width: 991.98px) {
+      .i18n-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .i18n-sticky {
+        position: static;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .i18n-metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
@@ -10,129 +193,503 @@
 
     <div class="content-wrapper">
       <section class="content-header">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-          <h1>Translations</h1>
+        <div class="container-fluid i18n-toolbar">
+          <div>
+            <h1 class="mb-1">Translation Operations</h1>
+            <p class="text-muted mb-0">Organize translation keys by namespace, discover untranslated copy by page, and scale content updates with structure.</p>
+          </div>
           <form method="get" action="/admin/i18n" class="form-inline">
-            <label class="mr-2" for="locale">Locale</label>
-            <select class="form-control" id="locale" name="locale" onchange="this.form.submit()">
-              <% locales.forEach(function(locale) { %>
-                <option value="<%= locale %>" <%= selectedLocale === locale ? 'selected' : '' %>><%= locale %></option>
-              <% }) %>
-            </select>
-            <button class="btn btn-outline-primary ml-2" type="submit" name="autoTranslate" value="1">Google Translate Block</button>
+            <div>
+              <label class="mr-2" for="locale">Locale</label>
+              <select class="form-control" id="locale" name="locale" onchange="this.form.submit()">
+                <% locales.forEach(function(locale) { %>
+                  <option value="<%= locale %>" <%= selectedLocale === locale ? 'selected' : '' %>><%= locale %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div>
+              <label class="mr-2" for="autoTranslate">Assist</label>
+              <select class="form-control" id="autoTranslate" name="autoTranslate" onchange="this.form.submit()">
+                <option value="1" <%= autoTranslate ? 'selected' : '' %>>Google Translate On</option>
+                <option value="0" <%= !autoTranslate ? 'selected' : '' %>>Google Translate Off</option>
+              </select>
+            </div>
           </form>
         </div>
       </section>
 
       <section class="content">
-        <div class="container-fluid">
+        <div class="container-fluid i18n-shell">
           <% if (notice) { %>
             <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
           <% } %>
 
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Update Translation Key</h3>
-            </div>
+          <div class="card i18n-hero mb-4">
             <div class="card-body">
-              <form method="post" action="/admin/i18n" class="row">
-                <div class="form-group col-md-2">
-                  <label for="localeInput">Locale</label>
-                  <input id="localeInput" class="form-control" name="locale" value="<%= selectedLocale %>" required />
+              <span class="i18n-pill"><i class="fas fa-language"></i> Scalable Localization</span>
+              <div class="row align-items-end mt-3">
+                <div class="col-lg-7">
+                  <h2 class="mb-2">Designed for growth across pages, locales, and teams.</h2>
+                  <p class="mb-0" style="max-width: 43rem; color: rgba(255,255,255,0.84);">
+                    The interface below separates active translation namespaces from newly extracted page content, so your team can manage existing copy while continuously discovering untranslated text by page.
+                  </p>
                 </div>
-                <div class="form-group col-md-4">
-                  <label for="keyInput">Key</label>
-                  <input id="keyInput" class="form-control" name="key" placeholder="header.nav.home" required />
+                <div class="col-lg-5">
+                  <div class="i18n-metrics">
+                    <div class="i18n-metric">
+                      <span class="text-uppercase small">Entries</span>
+                      <strong><%= summary.totalEntries %></strong>
+                    </div>
+                    <div class="i18n-metric">
+                      <span class="text-uppercase small">Namespaces</span>
+                      <strong><%= summary.namespaces %></strong>
+                    </div>
+                    <div class="i18n-metric">
+                      <span class="text-uppercase small">Extracted</span>
+                      <strong><%= summary.extractedKeywords %></strong>
+                    </div>
+                    <div class="i18n-metric">
+                      <span class="text-uppercase small">Pages</span>
+                      <strong><%= summary.pageGroups %></strong>
+                    </div>
+                    <div class="i18n-metric">
+                      <span class="text-uppercase small">Coverage</span>
+                      <strong><%= summary.completionRate %>%</strong>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group col-md-4">
-                  <label for="valueInput">Value</label>
-                  <input id="valueInput" class="form-control" name="value" placeholder="Home" required />
-                </div>
-                <div class="form-group col-md-2 d-flex align-items-end">
-                  <button type="submit" class="btn btn-primary btn-block">Save</button>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Current Keys (<%= selectedLocale %>)</h3>
-            </div>
-            <div class="card-body table-responsive p-0" style="max-height: 560px;">
-              <table class="table table-hover text-nowrap">
-                <thead>
-                  <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                    <th>Source</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% entries.forEach(function(entry) { %>
-                    <tr>
-                      <td><code><%= entry.key %></code></td>
-                      <td><%= entry.value %></td>
-                      <td>
-                        <span class="badge badge-<%= entry.source === 'db' ? 'success' : 'secondary' %>">
-                          <%= entry.source %>
-                        </span>
-                      </td>
-                    </tr>
-                  <% }) %>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <h3 class="card-title">Extracted Keywords From All User EJS Pages</h3>
-              <div class="d-flex align-items-center">
-                <button type="button" class="btn btn-sm btn-outline-primary mr-2" onclick="selectAllKeywords()">Select All</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary mr-2" onclick="deselectAllKeywords()">Deselect All</button>
-                <span class="badge badge-info"><%= extractedKeywords.length %> keywords</span>
               </div>
             </div>
-            <div class="card-body table-responsive p-0" style="max-height: 520px;">
-              <table class="table table-hover text-nowrap">
-                <thead>
-                  <tr>
-                    <th>Source Text</th>
-                    <th>Suggested Key</th>
-                    <th>Google Translation</th>
-                    <th>File</th>
-                    <th>Action</th>
-                    <th>Select</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% extractedKeywords.forEach(function(item, index) { %>
-                    <tr>
-                      <td style="max-width: 320px; white-space: normal;"><%= item.text %></td>
-                      <td><code><%= item.suggestedKey %></code></td>
-                      <td style="max-width: 320px; white-space: normal;"><%= item.translated || '-' %></td>
-                      <td><small><%= item.file %></small></td>
-                      <td>
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-success"
-                          onclick="fillTranslation('<%= encodeURIComponent(item.suggestedKey) %>', '<%= encodeURIComponent(item.translated || item.text) %>')"
-                        >Use</button>
-                      </td>
-                      <td>
-                        <input
-                          type="checkbox"
-                          class="keyword-select"
-                          data-key="<%= item.suggestedKey %>"
-                          data-value="<%= item.translated || item.text %>"
-                          aria-label="Select keyword <%= item.suggestedKey %>"
-                        />
-                      </td>
-                    </tr>
-                  <% }) %>
-                </tbody>
-              </table>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-4 col-lg-5">
+              <div class="i18n-sticky">
+                <div class="card i18n-panel i18n-sidebar-card card-primary card-outline mb-4">
+                  <div class="card-header border-0">
+                    <h3 class="card-title"><i class="fas fa-pen-nib mr-2"></i>Translation Composer</h3>
+                  </div>
+                  <div class="card-body">
+                    <form method="post" action="/admin/i18n">
+                      <div class="form-group">
+                        <label for="localeInput">Locale</label>
+                        <input id="localeInput" class="form-control" name="locale" value="<%= selectedLocale %>" required />
+                      </div>
+                      <div class="form-group">
+                        <label for="keyInput">Key</label>
+                        <input id="keyInput" class="form-control" name="key" placeholder="pages.home.hero.title" required />
+                        <small class="form-text text-muted">Use namespaced keys so copy stays page-aware at scale.</small>
+                      </div>
+                      <div class="form-group">
+                        <label for="valueInput">Value</label>
+                        <textarea id="valueInput" class="form-control" name="value" rows="5" placeholder="Localized value" required></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-primary btn-block">Save Translation</button>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="card i18n-panel i18n-sidebar-card">
+                  <div class="card-header border-0">
+                    <h3 class="card-title"><i class="fas fa-sitemap mr-2"></i>Coverage Snapshot</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2"><span>Database overrides</span><strong><%= summary.databaseEntries %></strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Fallback entries</span><strong><%= summary.fallbackEntries %></strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Translated keys</span><strong><%= summary.translatedKeywords %></strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Untranslated keys</span><strong><%= summary.untranslatedKeywords %></strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Missing keys</span><strong><%= summary.missingKeywords %></strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Detected page groups</span><strong><%= summary.pageGroups %></strong></div>
+                    <div class="d-flex justify-content-between"><span>Current locale</span><strong><%= selectedLocale.toUpperCase() %></strong></div>
+                  </div>
+                </div>
+
+                <% var currentLocaleInfo = localeRegistry.find(function(l){ return l.code === selectedLocale; }); %>
+                <% if (currentLocaleInfo && currentLocaleInfo.baseLocale && summary.fallbackEntries > 0) { %>
+                <div class="card i18n-panel i18n-sidebar-card mt-4" style="border: 2px solid #f0ad4e;">
+                  <div class="card-header border-0" style="background: linear-gradient(135deg,#fff8ec,#fff3d8);">
+                    <h3 class="card-title" style="color:#8a5c00;"><i class="fas fa-magic mr-2"></i>Auto-Translate</h3>
+                  </div>
+                  <div class="card-body">
+                    <p class="mb-2" style="font-size:0.88rem;">
+                      This locale has <strong><%= summary.fallbackEntries %></strong> entries inherited from
+                      <strong><%= currentLocaleInfo.baseLocale.toUpperCase() %></strong>.
+                      Click below to auto-translate all of them into
+                      <strong><%= selectedLocale.toUpperCase() %></strong> using Google Translate.
+                    </p>
+                    <p class="text-muted mb-3" style="font-size:0.8rem;">Entries you already translated manually will not be overwritten.</p>
+                    <button
+                      type="button"
+                      class="btn btn-warning btn-block font-weight-bold"
+                      id="sidebarAutoTranslateBtn"
+                      onclick="sidebarPopulateFromBase(this)"
+                      data-locale="<%= encodeURIComponent(selectedLocale) %>"
+                      data-base="<%= encodeURIComponent(currentLocaleInfo.baseLocale) %>"
+                    >
+                      <i class="fas fa-language mr-1"></i>
+                      Translate <%= summary.fallbackEntries %> keys (<%= currentLocaleInfo.baseLocale.toUpperCase() %> → <%= selectedLocale.toUpperCase() %>)
+                    </button>
+                  </div>
+                </div>
+                <% } %>
+
+                <div class="card i18n-panel i18n-sidebar-card mt-4">
+                  <div class="card-header border-0">
+                    <h3 class="card-title"><i class="fas fa-globe mr-2"></i>Locale Registry</h3>
+                  </div>
+                  <div class="card-body">
+                    <form method="post" action="/admin/i18n/locales" class="mb-4">
+                      <input type="hidden" name="selectedLocale" value="<%= selectedLocale %>">
+                      <input type="hidden" name="autoTranslate" value="<%= autoTranslate ? '1' : '0' %>">
+                      <div class="form-group">
+                        <label for="locale-code">Locale code</label>
+                        <input id="locale-code" class="form-control" name="code" placeholder="fr or ar-eg" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="locale-label">Label</label>
+                        <input id="locale-label" class="form-control" name="label" placeholder="French" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="locale-base">Inherit translations from</label>
+                        <select id="locale-base" class="form-control" name="baseLocale">
+                          <% localeRegistry.forEach(function(localeItem) { %>
+                            <% if (localeItem.isActive) { %>
+                              <option value="<%= localeItem.code %>" <%= localeItem.code === selectedLocale ? 'selected' : '' %>><%= localeItem.label %> (<%= localeItem.code %>)</option>
+                            <% } %>
+                          <% }) %>
+                        </select>
+                        <small class="form-text text-muted">The new locale will fall back to this locale for any key you haven&apos;t translated yet. Use <strong>Auto-Translate</strong> on the created locale to pre-fill all keys instantly.</small>
+                      </div>
+                      <button type="submit" class="btn btn-outline-primary btn-block">Create Locale</button>
+                    </form>
+
+                    <div class="i18n-locale-list">
+                      <% localeRegistry.forEach(function(localeItem) { %>
+                        <div class="i18n-locale-item">
+                          <div class="d-flex justify-content-between align-items-start" style="gap: 0.75rem;">
+                            <div>
+                              <strong><%= localeItem.label %></strong>
+                              <div class="text-muted"><code><%= localeItem.code %></code></div>
+                            </div>
+                            <span class="badge badge-<%= localeItem.isActive ? 'success' : 'secondary' %>"><%= localeItem.isActive ? 'Active' : 'Inactive' %></span>
+                          </div>
+                          <div class="text-muted mt-2">
+                            Base: <strong><%= localeItem.baseLocale || '-' %></strong>
+                            <% if (localeItem.hasDefaultFile) { %>
+                              <span class="badge badge-light ml-2">Default file</span>
+                            <% } %>
+                          </div>
+                          <form method="post" action="/admin/i18n/locales/<%= encodeURIComponent(localeItem.code) %>">
+                            <input type="hidden" name="selectedLocale" value="<%= selectedLocale %>">
+                            <input type="hidden" name="autoTranslate" value="<%= autoTranslate ? '1' : '0' %>">
+                            <div class="form-group mb-2">
+                              <label class="mb-1">Label</label>
+                              <input class="form-control form-control-sm" name="label" value="<%= localeItem.label %>" required>
+                            </div>
+                            <div class="form-group mb-2">
+                              <label class="mb-1">Inherit from</label>
+                              <select class="form-control form-control-sm" name="baseLocale">
+                                <% localeRegistry.forEach(function(baseItem) { %>
+                                  <% if (baseItem.isActive || baseItem.code === localeItem.baseLocale) { %>
+                                    <option value="<%= baseItem.code %>" <%= (localeItem.baseLocale || '') === baseItem.code ? 'selected' : '' %>><%= baseItem.code %></option>
+                                  <% } %>
+                                <% }) %>
+                              </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="isActive" value="true" id="locale-active-<%= localeItem.code %>" <%= localeItem.isActive ? 'checked' : '' %>>
+                                <label class="form-check-label" for="locale-active-<%= localeItem.code %>">Active</label>
+                              </div>
+                              <div class="d-flex" style="gap: 0.4rem;">
+                                <% if (localeItem.baseLocale) { %>
+                                  <button
+                                    type="button"
+                                    class="btn btn-sm btn-outline-success"
+                                    onclick="populateFromBase('<%= encodeURIComponent(localeItem.code) %>', '<%= encodeURIComponent(localeItem.baseLocale) %>', this)"
+                                    title="Auto-translate all base locale keys into this locale using Google Translate"
+                                  >Auto-Translate</button>
+                                <% } %>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      <% }) %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-8 col-lg-7">
+              <% var inheritedCount = entries.filter(function(e){ return e.source !== 'db'; }).length; %>
+              <% if (inheritedCount > 0) { %>
+              <div class="card mb-4" style="border:2px solid #f0ad4e; border-radius:1rem; overflow:hidden;">
+                <div class="card-header border-0 d-flex justify-content-between align-items-center" style="background:linear-gradient(135deg,#fff8ec,#fff3d8);">
+                  <h3 class="card-title mb-0" style="color:#8a5c00;"><i class="fas fa-magic mr-2"></i>Bulk Auto-Translate</h3>
+                  <span class="badge badge-warning" style="font-size:0.9rem;"><%= inheritedCount %> inherited keys</span>
+                </div>
+                <div class="card-body">
+                  <p class="mb-2" style="font-size:0.9rem;">
+                    <strong><%= inheritedCount %> keys</strong> are still <em>inherited</em> (showing another locale's text) for
+                    <strong><%= selectedLocale.toUpperCase() %></strong>.
+                    Click <strong>Translate All</strong> to auto-translate every one of them with Google Translate and save directly.
+                  </p>
+                  <p class="text-muted mb-3" style="font-size:0.8rem;">Already-saved (db) entries will not be touched. Takes ~1 min for 500 keys.</p>
+                  <div id="bulkTranslateProgressWrap" style="display:none; margin-bottom:0.75rem;">
+                    <div class="progress" style="height:1.1rem; border-radius:999px;">
+                      <div id="bulkTranslateBar" class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width:0%; color:#7a4e00; font-weight:600; font-size:0.75rem;"></div>
+                    </div>
+                    <small id="bulkTranslateStatus" class="text-muted mt-1 d-block"></small>
+                  </div>
+                  <button
+                    type="button"
+                    id="bulkTranslateBtn"
+                    class="btn btn-warning btn-lg font-weight-bold"
+                    onclick="startBulkTranslate(this)"
+                    data-locale="<%= selectedLocale %>"
+                  >
+                    <i class="fas fa-language mr-2"></i>Translate All <%= inheritedCount %> keys → <%= selectedLocale.toUpperCase() %>
+                  </button>
+                </div>
+              </div>
+              <% } %>
+
+              <div class="card i18n-panel mb-4">
+                <div class="card-header border-0 d-flex justify-content-between align-items-center flex-wrap">
+                  <div>
+                    <h3 class="card-title mb-1">Coverage Audit</h3>
+                    <p class="text-muted mb-0">Check each page for missing keys and values that still match the source text.</p>
+                  </div>
+                  <div class="i18n-badge-row">
+                    <span class="i18n-key-chip">Translated <%= summary.translatedKeywords %></span>
+                    <span class="i18n-key-chip">Untranslated <%= summary.untranslatedKeywords %></span>
+                    <span class="i18n-key-chip">Missing <%= summary.missingKeywords %></span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <% if (!coverageGroups.length) { %>
+                    <div class="i18n-empty">
+                      <i class="fas fa-check-circle fa-2x mb-3"></i>
+                      <h4 class="mb-2">No coverage data available</h4>
+                      <p class="mb-0">Run keyword extraction or add user-facing views to start auditing translation coverage.</p>
+                    </div>
+                  <% } else { %>
+                    <% coverageGroups.forEach(function(group) { %>
+                      <div class="i18n-entry-group">
+                        <div class="i18n-group-header">
+                          <div>
+                            <h4 class="h6 mb-1"><%= group.pageLabel %></h4>
+                            <div class="text-muted"><small><%= group.file %></small></div>
+                          </div>
+                          <div class="i18n-badge-row">
+                            <span class="i18n-key-chip">Total <%= group.total %></span>
+                            <span class="i18n-key-chip">Coverage <%= group.completionRate %>%</span>
+                            <span class="i18n-key-chip">Translated <%= group.translatedCount %></span>
+                            <span class="i18n-key-chip">Untranslated <%= group.untranslatedCount %></span>
+                            <span class="i18n-key-chip">Missing <%= group.missingCount %></span>
+                          </div>
+                        </div>
+                        <% if (group.total === 0) { %>
+                          <div class="p-3 text-muted"><strong>No extractable UI text.</strong> This page currently has no plain text nodes detected by the extractor.</div>
+                        <% } else if (group.missingCount === 0 && group.untranslatedCount === 0) { %>
+                          <div class="p-3 text-success"><strong>Complete.</strong> All extracted keys for this page are present and translated by the current heuristic.</div>
+                        <% } else { %>
+                          <div class="table-responsive">
+                            <table class="table table-hover mb-0 i18n-entry-table">
+                              <thead>
+                                <tr>
+                                  <th style="width: 18%;">Status</th>
+                                  <th style="width: 30%;">Key</th>
+                                  <th>Source Text</th>
+                                  <th>Current Value</th>
+                                  <th style="width: 100px;">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% group.items.filter(function(item) { return item.status !== 'translated'; }).forEach(function(item) { %>
+                                  <tr>
+                                    <td>
+                                      <span class="badge badge-<%= item.status === 'missing' ? 'danger' : 'warning' %>"><%= item.status %></span>
+                                    </td>
+                                    <td><code><%= item.suggestedKey %></code></td>
+                                    <td><%= item.text %></td>
+                                    <td><%= item.currentValue || '-' %></td>
+                                    <td>
+                                      <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        onclick="fillTranslation('<%= encodeURIComponent(item.suggestedKey) %>', '<%= encodeURIComponent(item.currentValue || item.text) %>')"
+                                      >Fix</button>
+                                    </td>
+                                  </tr>
+                                <% }) %>
+                              </tbody>
+                            </table>
+                          </div>
+                        <% } %>
+                      </div>
+                    <% }) %>
+                  <% } %>
+                  <div class="text-muted mt-3"><small>Untranslated is a heuristic: for non-English locales, a key is marked untranslated when its current value matches the extracted source text exactly.</small></div>
+                </div>
+              </div>
+
+              <div class="card i18n-panel mb-4">
+                <div class="card-header border-0 d-flex justify-content-between align-items-center flex-wrap">
+                  <div>
+                    <h3 class="card-title mb-1">Current Key Library</h3>
+                    <p class="text-muted mb-0">Grouped by namespace so each page or domain stays manageable.</p>
+                  </div>
+                  <div class="i18n-badge-row">
+                    <span class="i18n-key-chip">DB <%= summary.databaseEntries %></span>
+                    <span class="i18n-key-chip">Fallback <%= summary.fallbackEntries %></span>
+                    <span class="i18n-key-chip">Namespaces <%= summary.namespaces %></span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <% if (!entryGroups.length) { %>
+                    <div class="i18n-empty">
+                      <i class="fas fa-folder-open fa-2x mb-3"></i>
+                      <h4 class="mb-2">No translation keys found</h4>
+                      <p class="mb-0">Start by saving your first translation or extracting page copy below.</p>
+                    </div>
+                  <% } else { %>
+                    <% entryGroups.forEach(function(group) { %>
+                      <div class="i18n-entry-group">
+                        <div class="i18n-group-header">
+                          <div>
+                            <h4 class="h6 mb-1"><%= group.label %></h4>
+                            <div class="text-muted"><code><%= group.namespace %></code></div>
+                          </div>
+                          <div class="i18n-badge-row">
+                            <span class="i18n-key-chip"><%= group.count %> keys</span>
+                            <span class="i18n-key-chip"><%= group.dbCount %> db</span>
+                            <span class="i18n-key-chip"><%= group.fallbackCount %> fallback</span>
+                          </div>
+                        </div>
+                        <div class="table-responsive">
+                          <table class="table table-hover mb-0 i18n-entry-table">
+                            <thead>
+                              <tr>
+                                <th style="width: 34%;">Key</th>
+                                <th>Value</th>
+                                <th style="width: 110px;">Source</th>
+                                <th style="width: 100px;">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% group.entries.forEach(function(entry) { %>
+                                <tr>
+                                  <td><code><%= entry.key %></code></td>
+                                  <td><%= entry.value %></td>
+                                  <td>
+                                    <span class="badge badge-<%= entry.source === 'db' ? 'success' : 'secondary' %>"><%= entry.source %></span>
+                                  </td>
+                                  <td>
+                                    <div class="d-flex" style="gap:0.3rem;">
+                                      <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        onclick="fillTranslation('<%= encodeURIComponent(entry.key) %>', '<%= encodeURIComponent(entry.value) %>')"
+                                      >Edit</button>
+                                      <% if (entry.source !== 'db' && autoTranslate) { %>
+                                        <button
+                                          type="button"
+                                          class="btn btn-sm btn-outline-warning"
+                                          onclick="translateAndFill('<%= encodeURIComponent(entry.key) %>', '<%= encodeURIComponent(entry.value) %>', this)"
+                                          title="Auto-translate this value and load into composer"
+                                        ><i class="fas fa-language"></i></button>
+                                      <% } %>
+                                    </div>
+                                  </td>
+                                </tr>
+                              <% }) %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    <% }) %>
+                  <% } %>
+                </div>
+              </div>
+
+              <div class="card i18n-panel">
+                <div class="card-header border-0 d-flex justify-content-between align-items-center flex-wrap">
+                  <div>
+                    <h3 class="card-title mb-1">Extracted Page Keywords</h3>
+                    <p class="text-muted mb-0">Each page below groups the raw text found in user-facing templates.</p>
+                  </div>
+                  <div class="d-flex align-items-center flex-wrap" style="gap: 0.5rem;">
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllKeywords()">Select All</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deselectAllKeywords()">Deselect All</button>
+                    <button type="button" class="btn btn-sm btn-success" onclick="submitSelectedKeywords()">Save Selected</button>
+                    <span class="i18n-key-chip"><%= extractedKeywords.length %> extracted</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <% if (!keywordGroups.length) { %>
+                    <div class="i18n-empty">
+                      <i class="fas fa-search fa-2x mb-3"></i>
+                      <h4 class="mb-2">No page keywords found</h4>
+                      <p class="mb-0">The extraction service did not detect any untranslated copy in the current view set.</p>
+                    </div>
+                  <% } else { %>
+                    <% keywordGroups.forEach(function(group) { %>
+                      <div class="i18n-keyword-group">
+                        <div class="i18n-group-header">
+                          <div>
+                            <h4 class="h6 mb-1"><%= group.pageLabel %></h4>
+                            <div class="text-muted"><small><%= group.file %></small></div>
+                          </div>
+                          <div class="i18n-badge-row">
+                            <span class="i18n-key-chip"><%= group.groupLabel %></span>
+                            <span class="i18n-key-chip"><%= group.count %> phrases</span>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectGroup('<%= group.pageId %>')">Select Page</button>
+                            <button type="button" class="btn btn-sm btn-success" onclick="submitSelectedKeywords('<%= group.pageId %>')">Save Page</button>
+                          </div>
+                        </div>
+
+                        <div class="i18n-keyword-grid">
+                          <% group.items.forEach(function(item) { %>
+                            <article class="i18n-keyword-card">
+                              <div class="d-flex justify-content-between align-items-start" style="gap: 0.75rem;">
+                                <span class="badge badge-light text-uppercase"><%= item.groupLabel %></span>
+                                <input
+                                  type="checkbox"
+                                  class="keyword-select"
+                                  data-group="<%= group.pageId %>"
+                                  data-key="<%= item.suggestedKey %>"
+                                  data-value="<%= item.translated || item.text %>"
+                                  data-file="<%= item.file %>"
+                                  data-text="<%= item.text %>"
+                                  aria-label="Select keyword <%= item.suggestedKey %>"
+                                />
+                              </div>
+                              <p class="mt-3 mb-2"><strong><%= item.text %></strong></p>
+                              <div class="mb-2"><code><%= item.suggestedKey %></code></div>
+                              <div class="text-muted mb-3"><%= item.translated || '-' %></div>
+                              <div class="d-flex" style="gap: 0.5rem; flex-wrap: wrap;">
+                                <button
+                                  type="button"
+                                  class="btn btn-sm btn-outline-success"
+                                  onclick="fillTranslation('<%= encodeURIComponent(item.suggestedKey) %>', '<%= encodeURIComponent(item.translated || item.text) %>')"
+                                >Use</button>
+                                <button
+                                  type="button"
+                                  class="btn btn-sm btn-outline-secondary"
+                                  onclick="copyKey('<%= encodeURIComponent(item.suggestedKey) %>')"
+                                >Copy Key</button>
+                              </div>
+                            </article>
+                          <% }) %>
+                        </div>
+                      </div>
+                    <% }) %>
+                  <% } %>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -145,6 +702,12 @@
   </div>
 
   <%- include('../../shared/partials/admin-scripts') %>
+  <script id="inheritedEntriesJson" type="application/json"><%- inheritedEntriesJson %></script>
+  <form id="bulkSaveKeywordsForm" method="post" action="/admin/i18n/bulk-save" style="display:none;">
+    <input type="hidden" name="locale" value="<%= selectedLocale %>">
+    <input type="hidden" name="autoTranslate" value="<%= autoTranslate ? '1' : '0' %>">
+    <textarea name="selectedEntries" id="selectedEntriesField"></textarea>
+  </form>
   <script>
     function selectAllKeywords() {
       document.querySelectorAll('.keyword-select').forEach(function (checkbox) {
@@ -158,10 +721,172 @@
       });
     }
 
+    function selectGroup(groupId) {
+      document.querySelectorAll('.keyword-select[data-group="' + groupId + '"]').forEach(function (checkbox) {
+        checkbox.checked = true;
+      });
+    }
+
+    function getSelectedKeywordEntries(groupId) {
+      return Array.from(document.querySelectorAll('.keyword-select')).filter(function (checkbox) {
+        if (!checkbox.checked) {
+          return false;
+        }
+
+        if (groupId && checkbox.dataset.group !== groupId) {
+          return false;
+        }
+
+        return true;
+      }).map(function (checkbox) {
+        return {
+          key: checkbox.dataset.key,
+          value: checkbox.dataset.value || '',
+          file: checkbox.dataset.file || '',
+          text: checkbox.dataset.text || ''
+        };
+      });
+    }
+
+    function submitSelectedKeywords(groupId) {
+      var entries = getSelectedKeywordEntries(groupId);
+      if (!entries.length) {
+        window.alert(groupId ? 'Select at least one keyword from this page first.' : 'Select at least one keyword first.');
+        return;
+      }
+
+      document.getElementById('selectedEntriesField').value = JSON.stringify(entries);
+      document.getElementById('bulkSaveKeywordsForm').submit();
+    }
+
     function fillTranslation(encodedKey, encodedValue) {
       document.getElementById('keyInput').value = decodeURIComponent(encodedKey);
       document.getElementById('valueInput').value = decodeURIComponent(encodedValue);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function copyKey(encodedKey) {
+      const value = decodeURIComponent(encodedKey);
+      navigator.clipboard.writeText(value);
+    }
+
+    async function populateFromBase(encodedCode, encodedBase, btn) {
+      const code = decodeURIComponent(encodedCode);
+      const base = decodeURIComponent(encodedBase);
+      if (!confirm('Auto-translate all "' + base + '" keys into "' + code + '" using Google Translate?\n\nExisting manual translations will NOT be overwritten.')) {
+        return;
+      }
+
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Translating…';
+
+      try {
+        const res = await fetch('/admin/i18n/actions/locales/' + encodeURIComponent(code) + '/populate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const json = await res.json();
+
+        if (json.success) {
+          alert('Done! ' + json.data.count + ' keys translated from "' + json.data.baseLocale + '". ' + json.data.skipped + ' existing keys skipped.\n\nReload the page to see them.');
+          window.location.reload();
+        } else {
+          alert('Error: ' + (json.error && json.error.message || 'Unknown error'));
+        }
+      } catch (err) {
+        alert('Request failed: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    }
+
+    async function sidebarPopulateFromBase(btn) {
+      const code = decodeURIComponent(btn.dataset.locale);
+      const base = decodeURIComponent(btn.dataset.base);
+      await populateFromBase(encodeURIComponent(code), encodeURIComponent(base), btn);
+    }
+
+    async function translateAndFill(encodedKey, encodedValue, btn) {
+      const key = decodeURIComponent(encodedKey);
+      const value = decodeURIComponent(encodedValue);
+      const locale = document.getElementById('localeInput').value;
+      btn.disabled = true;
+      const orig = btn.innerHTML;
+      btn.innerHTML = '…';
+      try {
+        const res = await fetch('/admin/i18n/actions/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ texts: [value], source: 'auto', target: locale }),
+        });
+        const json = await res.json();
+        const translated = json.success && json.data && json.data[0] ? json.data[0].translated : value;
+        document.getElementById('keyInput').value = key;
+        document.getElementById('valueInput').value = translated;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        alert('Translate failed: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = orig;
+      }
+    }
+
+    async function startBulkTranslate(btn) {
+      var locale = btn.dataset.locale;
+      var inheritedEntriesNode = document.getElementById('inheritedEntriesJson');
+      var entries = inheritedEntriesNode ? JSON.parse(inheritedEntriesNode.textContent || '[]') : [];
+      if (!entries.length) { alert('No inherited entries to translate.'); return; }
+      if (!confirm('Auto-translate ' + entries.length + ' inherited keys into "' + locale.toUpperCase() + '" using Google Translate?\n\nAlready-saved entries will NOT be overwritten.')) return;
+
+      btn.disabled = true;
+      var progressWrap = document.getElementById('bulkTranslateProgressWrap');
+      var bar = document.getElementById('bulkTranslateBar');
+      var status = document.getElementById('bulkTranslateStatus');
+      progressWrap.style.display = 'block';
+
+      var BATCH = 40;
+      var saved = 0;
+      var errors = 0;
+
+      for (var i = 0; i < entries.length; i += BATCH) {
+        var batch = entries.slice(i, i + BATCH);
+        var pct = Math.round((i / entries.length) * 100);
+        bar.style.width = pct + '%';
+        bar.textContent = pct + '%';
+        status.textContent = 'Translating ' + Math.min(i + BATCH, entries.length) + ' / ' + entries.length + '…';
+
+        try {
+          var transRes = await fetch('/admin/i18n/actions/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ texts: batch.map(function(e){ return e.value; }), source: 'auto', target: locale }),
+          });
+          var transJson = await transRes.json();
+          var translatedValues = transJson.success ? transJson.data : batch.map(function(e){ return { translated: e.value }; });
+
+          var saveEntries = batch.map(function(e, idx){
+            return { key: e.key, value: translatedValues[idx] ? translatedValues[idx].translated : e.value };
+          });
+          var saveRes = await fetch('/admin/i18n/actions/bulk-save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ locale: locale, entries: saveEntries }),
+          });
+          var saveJson = await saveRes.json();
+          if (saveJson.success) { saved += saveEntries.length; } else { errors += saveEntries.length; }
+        } catch (e) {
+          errors += batch.length;
+        }
+      }
+
+      bar.style.width = '100%';
+      bar.textContent = '100%';
+      status.textContent = 'Done! ' + saved + ' keys saved, ' + errors + ' errors.';
+      alert('Bulk translate complete!\n' + saved + ' keys saved to ' + locale.toUpperCase() + '.\nPage will now reload.');
+      window.location.reload();
     }
   </script>
 </body>

@@ -5,9 +5,9 @@
         <div class="page-header-shape"></div>
         <div class="container">
             <div class="page-header-info">
-                <h4>Blog Classic!</h4>
-                <h2>Feel your journey <br> with <span>Ridek!</span></h2>
-                <p>Everything your taxi business <br>needs is already here! </p>
+                <h4><%= t('pages.users.blog.classic.blog_classic', 'Blog Classic!') %></h4>
+                <h2><%= t('pages.users.blog.classic.feel_your_journey', 'Feel your journey') %> <br> <%= t('pages.users.blog.classic.with', 'with') %> <span><%= t('pages.users.blog.classic.ridek', 'Ridek!') %></span></h2>
+                <p><%= t('pages.users.blog.classic.everything_your_taxi_business', 'Everything your taxi business') %> <br><%= t('pages.users.blog.classic.needs_is_already_here', 'needs is already here!') %> </p>
             </div>
         </div>
     </section>
@@ -21,24 +21,24 @@
                         <div class="post-card">
                             <div class="post-thumb">
                                 <img src="/assets/img/post-1.jpg" alt="post">
-                                <a href="/blog/details" class="post-category">Business</a>
+                                <a href="/blog/details" class="post-category"><%= t('pages.users.blog.classic.business', 'Business') %></a>
                             </div>
                             <div class="post-content-wrap">
                                 <ul class="post-meta">
-                                    <li><i class="las la-calendar"></i>Jan 01 2022</li>
-                                    <li><i class="las la-user"></i>Elliot Alderson</li>
+                                    <li><i class="las la-calendar"></i><%= t('pages.users.blog.classic.jan_01_2022', 'Jan 01 2022') %></li>
+                                    <li><i class="las la-user"></i><%= t('pages.users.blog.classic.elliot_alderson', 'Elliot Alderson') %></li>
                                 </ul>
                                 <div class="post-content">
-                                    <h3><a href="/blog/details" class="hover">How to Start initiating an startup in few days.</a></h3>
-                                    <p>Financial experts support or help you to to find out which way you can raise your funds more...</p>
-                                    <a href="/blog/details" class="read-more">Read More</a>
+                                    <h3><a href="/blog/details" class="hover"><%= t('pages.users.blog.classic.how_to_start_initiating_an_startup_in_few_days', 'How to Start initiating an startup in few days.') %></a></h3>
+                                    <p><%= t('pages.users.blog.classic.financial_experts_support_or_help_you_to_to_find', 'Financial experts support or help you to to find out which way you can raise your funds more...') %></p>
+                                    <a href="/blog/details" class="read-more"><%= t('pages.users.blog.classic.read_more', 'Read More') %></a>
                                 </div>
                             </div>
                         </div>
                         <div class="post-card">
                             <div class="post-thumb">
                                 <img src="/assets/img/post-2.jpg" alt="post">
-                                <a href="/blog/details" class="post-category">Startup</a>
+                                <a href="/blog/details" class="post-category"><%= t('pages.users.blog.classic.startup', 'Startup') %></a>
                             </div>
                             <div class="post-content-wrap">
                                 <ul class="post-meta">
@@ -46,7 +46,7 @@
                                     <li><i class="las la-user"></i>Elliot Alderson</li>
                                 </ul>
                                 <div class="post-content">
-                                    <h3><a href="/blog/details">Financial experts support help you to find out.</a></h3>
+                                    <h3><a href="/blog/details"><%= t('pages.users.blog.classic.financial_experts_support_help_you_to_find_out', 'Financial experts support help you to find out.') %></a></h3>
                                     <p>Financial experts support or help you to to find out which way you can raise your funds more...</p>
                                     <a href="/blog/details" class="read-more">Read More</a>
                                 </div>
@@ -55,7 +55,7 @@
                         <div class="post-card">
                             <div class="post-thumb">
                                 <img src="/assets/img/post-3.jpg" alt="post">
-                                <a href="/blog/details" class="post-category">Finance</a>
+                                <a href="/blog/details" class="post-category"><%= t('pages.users.blog.classic.finance', 'Finance') %></a>
                             </div>
                             <div class="post-content-wrap">
                                 <ul class="post-meta">
@@ -63,7 +63,7 @@
                                     <li><i class="las la-user"></i>Elliot Alderson</li>
                                 </ul>
                                 <div class="post-content">
-                                    <h3><a href="/blog/details">Innovative business all over the world.</a></h3>
+                                    <h3><a href="/blog/details"><%= t('pages.users.blog.classic.innovative_business_all_over_the_world', 'Innovative business all over the world.') %></a></h3>
                                     <p>Financial experts support or help you to to find out which way you can raise your funds more...</p>
                                     <a href="/blog/details" class="read-more">Read More</a>
                                 </div>
@@ -90,20 +90,20 @@
                     <!--Search Form-->
                     <div class="sidebar-widget">
                         <div class="widget-title">
-                            <h3>Categories</h3>
+                            <h3><%= t('pages.users.blog.classic.categories', 'Categories') %></h3>
                         </div>
                         <ul class="category-list">
-                            <li><a href="/blog">Business Strategy</a><span>23</span></li>
-                            <li><a href="/blog">Project Management</a><span>05</span></li>
-                            <li><a href="/blog">Digital Marketing</a><span>18</span></li>
-                            <li><a href="/blog">Customer Experience</a><span>04</span></li>
-                            <li><a href="/blog">Partnership System</a><span>15</span></li>
+                            <li><a href="/blog"><%= t('pages.users.blog.classic.business_strategy', 'Business Strategy') %></a><span>23</span></li>
+                            <li><a href="/blog"><%= t('pages.users.blog.classic.project_management', 'Project Management') %></a><span>05</span></li>
+                            <li><a href="/blog"><%= t('pages.users.blog.classic.digital_marketing', 'Digital Marketing') %></a><span>18</span></li>
+                            <li><a href="/blog"><%= t('pages.users.blog.classic.customer_experience', 'Customer Experience') %></a><span>04</span></li>
+                            <li><a href="/blog"><%= t('pages.users.blog.classic.partnership_system', 'Partnership System') %></a><span>15</span></li>
                         </ul>
                     </div>
                     <!--Categories-->
                     <div class="sidebar-widget">
                         <div class="widget-title">
-                            <h3>Recent Articles</h3>
+                            <h3><%= t('pages.users.blog.classic.recent_articles', 'Recent Articles') %></h3>
                         </div>
                         <ul class="thumb-post">
                             <li>
@@ -111,7 +111,7 @@
                                     <img src="/assets/img/post-thumb-1.jpg" alt="thumb">
                                 </div>
                                 <div class="thumb-post-info">
-                                    <h3><a href="/blog/details">How To Go About Initiating An Startup In Few Days.</a></h3>
+                                    <h3><a href="/blog/details"><%= t('pages.users.blog.classic.how_to_go_about_initiating_an_startup_in_few_day', 'How To Go About Initiating An Startup In Few Days.') %></a></h3>
                                     <a href="#" class="date">Jan 01 2022</a>
                                 </div>
                             </li>
@@ -129,7 +129,7 @@
                                     <img src="/assets/img/post-thumb-3.jpg" alt="thumb">
                                 </div>
                                 <div class="thumb-post-info">
-                                    <h3><a href="/blog/details">Innovative Helping Business All Over The World.</a></h3>
+                                    <h3><a href="/blog/details"><%= t('pages.users.blog.classic.innovative_helping_business_all_over_the_world', 'Innovative Helping Business All Over The World.') %></a></h3>
                                     <a href="#" class="date">Jan 01 2022</a>
                                 </div>
                             </li>
@@ -138,18 +138,18 @@
                     <!--Recent Thumb Post-->
                     <div class="sidebar-widget">
                         <div class="widget-title">
-                            <h3>Tags</h3>
+                            <h3><%= t('pages.users.blog.classic.tags', 'Tags') %></h3>
                         </div>
                         <ul class="tags">
                             <li><a href="#">business</a></li>
-                            <li><a href="#">marketing</a></li>
+                            <li><a href="#"><%= t('pages.users.blog.classic.marketing', 'marketing') %></a></li>
                             <li><a href="#">startup</a></li>
-                            <li><a href="#">design</a></li>
-                            <li><a href="#">consulting</a></li>
-                            <li><a href="#">strategy</a></li>
-                            <li><a href="#">development</a></li>
-                            <li><a href="#">tips</a></li>
-                            <li><a href="#">Seo</a></li>
+                            <li><a href="#"><%= t('pages.users.blog.classic.design', 'design') %></a></li>
+                            <li><a href="#"><%= t('pages.users.blog.classic.consulting', 'consulting') %></a></li>
+                            <li><a href="#"><%= t('pages.users.blog.classic.strategy', 'strategy') %></a></li>
+                            <li><a href="#"><%= t('pages.users.blog.classic.development', 'development') %></a></li>
+                            <li><a href="#"><%= t('pages.users.blog.classic.tips', 'tips') %></a></li>
+                            <li><a href="#"><%= t('pages.users.blog.classic.seo', 'Seo') %></a></li>
                         </ul>
                     </div>
                     <!--Tags-->

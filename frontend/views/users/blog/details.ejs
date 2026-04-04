@@ -4,13 +4,13 @@
 <section class="page-header blog-details">
         <div class="container">
             <div class="page-header-info text-center">
-                <h4>Blog Details</h4>
-                <h2>Fresh Startup Ideas For <br> Digital Business</h2>
-                <p>Our versatile team is built of designers, developers and <br>digital marketers who all bring unique experience.</p>
+                <h4><%= t('pages.users.blog.details.blog_details', 'Blog Details') %></h4>
+                <h2><%= t('pages.users.blog.details.fresh_startup_ideas_for', 'Fresh Startup Ideas For') %> <br> <%= t('pages.users.blog.details.digital_business', 'Digital Business') %></h2>
+                <p><%= t('pages.users.blog.details.our_versatile_team_is_built_of_designers_develop', 'Our versatile team is built of designers, developers and') %> <br><%= t('pages.users.blog.details.digital_marketers_who_all_bring_unique_experienc', 'digital marketers who all bring unique experience.') %></p>
                 <ul class="post-meta">
-                    <li><i class="las la-user"></i>Elliot Alderson</li>
-                    <li><i class="las la-calendar"></i>Jan 01 2022</li>
-                    <li><i class="las la-comments"></i>Comments 0</li>
+                    <li><i class="las la-user"></i><%= t('pages.users.blog.details.elliot_alderson', 'Elliot Alderson') %></li>
+                    <li><i class="las la-calendar"></i><%= t('pages.users.blog.details.jan_01_2022', 'Jan 01 2022') %></li>
+                    <li><i class="las la-comments"></i><%= t('pages.users.blog.details.comments_0', 'Comments 0') %></li>
                 </ul>
             </div>
         </div>
@@ -23,16 +23,16 @@
                 <div class="col-lg-8 offset-lg-2">
                     <div class="post-details">
                         <div class="post-thumb"><img src="/assets/img/post-1.jpg" alt="img"></div>
-                        <p>Financial experts support or help you to to find out which way you can raise your funds more. Arkit a trusted name for providing assistants. Initially their main objective was to ensure the service they provide these people are loyal to their industry, experienced and professional.</p>
+                        <p><%= t('pages.users.blog.details.financial_experts_support_or_help_you_to_to_find', 'Financial experts support or help you to to find out which way you can raise your funds more. Arkit a trusted name for providing assistants. Initially their main objective was to ensure the service they provide these people are loyal to their industry, experienced and professional.') %></p>
 
-                        <p>Unless you are the one who really cares about this, it is not terribly important. What all matters are how your hybrid mobile application development is going to work in the long run as no one will care about how it was built.</p>
+                        <p><%= t('pages.users.blog.details.unless_you_are_the_one_who_really_cares_about_th', 'Unless you are the one who really cares about this, it is not terribly important. What all matters are how your hybrid mobile application development is going to work in the long run as no one will care about how it was built.') %></p>
 
                         <blockquote>
                             <i class="fas fa-quote-right"></i>
-                            There are no secrets to success. It is the result preparation, hard work and learning from failure.<span>- Winston Churchill.</span>
+                            <%= t('pages.users.blog.details.there_are_no_secrets_to_success_it_is_the_result', 'There are no secrets to success. It is the result preparation, hard work and learning from failure.') %><span><%= t('pages.users.blog.details.winston_churchill', '- Winston Churchill.') %></span>
                         </blockquote>
 
-                        <p>There are some big shifts taking place in the field of construction equipment mathematics. Starting with the integration of mathematics devices in vehicles right from the manufacturers, to the standardization and integration of mathematics data across various business functions, the future of mathematics has never seemed so full of potential for fleet-based businesses.</p>
+                        <p><%= t('pages.users.blog.details.there_are_some_big_shifts_taking_place_in_the_fi', 'There are some big shifts taking place in the field of construction equipment mathematics. Starting with the integration of mathematics devices in vehicles right from the manufacturers, to the standardization and integration of mathematics data across various business functions, the future of mathematics has never seemed so full of potential for fleet-based businesses.') %></p>
 
                         <ul class="post-details-gallery">
                             <li><img src="/assets/img/post-1.jpg" alt="img"></li>
@@ -40,21 +40,21 @@
                         </ul>
                         <!--Gallary-->
 
-                        <h3>Creative approach to every project</h3>
+                        <h3><%= t('pages.users.blog.details.creative_approach_to_every_project', 'Creative approach to every project') %></h3>
                         <p>Financial experts support or help you to to find out which way you can raise your funds more. Arkit a trusted name for providing assistants. Initially their main objective was to ensure the service they provide these people are loyal to their industry, experienced and professional.</p>
-                        <p>Another speaker, John Meuse, senior director of heavy equipment at Waste Management Inc., echoed this, citing a cost-saving of $17,000 for the company when it cut idling time of a single Caterpillar 966 wheel loader.</p>
+                        <p><%= t('pages.users.blog.details.another_speaker_john_meuse_senior_director_of_he', 'Another speaker, John Meuse, senior director of heavy equipment at Waste Management Inc., echoed this, citing a cost-saving of $17,000 for the company when it cut idling time of a single Caterpillar 966 wheel loader.') %></p>
 
                         <ul class="tags">
-                            <li><a href="#">Business</a></li>
-                            <li><a href="#">Marketing</a></li>
-                            <li><a href="#">Startup</a></li>
-                            <li><a href="#">Design</a></li>
+                            <li><a href="#"><%= t('pages.users.blog.details.business', 'Business') %></a></li>
+                            <li><a href="#"><%= t('pages.users.blog.details.marketing', 'Marketing') %></a></li>
+                            <li><a href="#"><%= t('pages.users.blog.details.startup', 'Startup') %></a></li>
+                            <li><a href="#"><%= t('pages.users.blog.details.design', 'Design') %></a></li>
                         </ul>
                         <!--Tags-->
 
                         <ul class="post-navigation">
-                            <li><a href="/blog/details"><span><i class="las la-angle-left"></i>Previous</span>How To Start Initiating An Startup In Few Days.</a></li>
-                            <li><a href="/blog/details"><span>Next<i class="las la-angle-right"></i></span>Fresh Startup Ideas For Digital Business.</a></li>
+                            <li><a href="/blog/details"><span><i class="las la-angle-left"></i><%= t('pages.users.blog.details.previous', 'Previous') %></span><%= t('pages.users.blog.details.how_to_start_initiating_an_startup_in_few_days', 'How To Start Initiating An Startup In Few Days.') %></a></li>
+                            <li><a href="/blog/details"><span><%= t('pages.users.blog.details.next', 'Next') %><i class="las la-angle-right"></i></span><%= t('pages.users.blog.details.fresh_startup_ideas_for_digital_business', 'Fresh Startup Ideas For Digital Business.') %></a></li>
                         </ul>
                         <!--Post Navigations-->
 
@@ -75,18 +75,18 @@
                         </div>
                         <!--Author Box-->
 
-                        <h3 class="comment-title">Post Comments</h3>
+                        <h3 class="comment-title"><%= t('pages.users.blog.details.post_comments', 'Post Comments') %></h3>
                         <ul class="comments-box">
                             <li class="comment">
                                 <div class="comment-inner">
                                     <div class="comment-thumb"><img src="/assets/img/comment-1.png" alt="img"></div>
                                     <div class="comment-wrap">
                                         <div class="comments-meta">
-                                            <h4>Ashton Porter <span>Jan 01, 2022 at 8:00</span></h4>
+                                            <h4><%= t('pages.users.blog.details.ashton_porter', 'Ashton Porter') %> <span><%= t('pages.users.blog.details.jan_01_2022_at_8_00', 'Jan 01, 2022 at 8:00') %></span></h4>
                                         </div>
                                         <div class="comment-area">
-                                            <p>You guys have put so much work, effort, and time while designing this awesome theme I can see that passion when I incorporated it into my website.</p>
-                                            <a href="#" class="reply">Reply</a>
+                                            <p><%= t('pages.users.blog.details.you_guys_have_put_so_much_work_effort_and_time_w', 'You guys have put so much work, effort, and time while designing this awesome theme I can see that passion when I incorporated it into my website.') %></p>
+                                            <a href="#" class="reply"><%= t('pages.users.blog.details.reply', 'Reply') %></a>
                                         </div>
                                     </div>
                                 </div>
@@ -96,10 +96,10 @@
                                             <div class="comment-thumb"><img src="/assets/img/comment-2.png" alt="img"></div>
                                             <div class="comment-wrap">
                                                 <div class="comments-meta">
-                                                    <h4>Melania Trump <span>Jan 01, 2022 at 8:00</span></h4>
+                                                    <h4><%= t('pages.users.blog.details.melania_trump', 'Melania Trump') %> <span>Jan 01, 2022 at 8:00</span></h4>
                                                 </div>
                                                 <div class="comment-area">
-                                                    <p>The only thing I LOVE more than this theme and itâ€™s incredible options is the support team! They are freaking amazable!</p>
+                                                    <p><%= t('pages.users.blog.details.the_only_thing_i_love_more_than_this_theme_and_i', 'The only thing I LOVE more than this theme and itâ€™s incredible options is the support team! They are freaking amazable!') %></p>
                                                     <a href="#" class="reply">Reply</a>
                                                 </div>
                                             </div>
@@ -115,7 +115,7 @@
                                             <h4>Elliot Alderson <span>Jan 01, 2022 at 8:00</span></h4>
                                         </div>
                                         <div class="comment-area">
-                                            <p>Outstanding quality in this theme, brilliant Effects and perfect crafted Code. We absolutely love it and can highly recommend DynamicLayers!</p>
+                                            <p><%= t('pages.users.blog.details.outstanding_quality_in_this_theme_brilliant_effe', 'Outstanding quality in this theme, brilliant Effects and perfect crafted Code. We absolutely love it and can highly recommend DynamicLayers!') %></p>
                                             <a href="#" class="reply">Reply</a>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                         </ul>
                         <!--Comments-->
                         
-                        <h3 class="comment-title">Leave a Comment</h3>
+                        <h3 class="comment-title"><%= t('pages.users.blog.details.leave_a_comment', 'Leave a Comment') %></h3>
                         <form action="#" method="post" class="comment-form form-horizontal">
                             <div class="form-group row">
                                 <div class="col-sm-6 padding-15">
@@ -137,7 +137,7 @@
                                     <textarea id="comment" name="comment" cols="30" rows="5" class="form-control comment" placeholder="Your Comment*" required></textarea>
                                 </div>
                                 <div class="col-md-12 padding-15">
-                                    <button id="submit" class="default-btn" type="submit">Submit Comment<span></span></button>
+                                    <button id="submit" class="default-btn" type="submit"><%= t('pages.users.blog.details.submit_comment', 'Submit Comment') %><span></span></button>
                                     <div id="form-messages" class="alert" role="alert"></div>
                                 </div>
                             </div>

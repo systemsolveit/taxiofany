@@ -4,7 +4,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "i18n:generate-keys": "node scripts/generate-i18n-keys.js",
+    "i18n:generate-keys:nl": "node scripts/generate-i18n-keys.js --locale=nl",
+    "i18n:seed-ui:nl": "node scripts/seed-ui-translations-nl.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
