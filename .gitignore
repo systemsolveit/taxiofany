@@ -1,1 +1,8 @@
-docs
+# Ignore node_modules and dist directories for both backend and frontend
+/backend/node_modules
+/backend/dist       
+/frontend/node_modules
+/frontend/dist  
+ 
+/backend/logs
+/frontend/logs
