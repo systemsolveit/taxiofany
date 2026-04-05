@@ -6,7 +6,7 @@
     <div class="page-header-info">
       <h4><%= t('pages.users.bookings.details.booking_details', 'Booking Details') %></h4>
       <h2><%= booking.bookingCode %></h2>
-      <p>Your ride request has been received and is now visible to the operations dashboard.</p>
+      <p><%= t('pages.users.bookings.details.your_ride_request_has_been_received_and_is_now_v', 'Your ride request has been received and is now visible to the operations dashboard.') %></p>
     </div>
   </div>
 </section>
@@ -18,23 +18,23 @@
         <div class="card shadow-sm">
           <div class="card-body p-4">
             <dl class="row mb-0">
-              <dt class="col-sm-4">Customer</dt>
+              <dt class="col-sm-4"><%= t('pages.users.bookings.details.customer', 'Customer') %></dt>
               <dd class="col-sm-8"><%= booking.customerName %></dd>
               <dt class="col-sm-4">Email</dt>
               <dd class="col-sm-8"><%= booking.customerEmail || '-' %></dd>
-              <dt class="col-sm-4">Pickup</dt>
+              <dt class="col-sm-4"><%= t('pages.users.bookings.details.pickup', 'Pickup') %></dt>
               <dd class="col-sm-8"><%= booking.pickupLocation %></dd>
-              <dt class="col-sm-4">Destination</dt>
+              <dt class="col-sm-4"><%= t('pages.users.bookings.details.destination', 'Destination') %></dt>
               <dd class="col-sm-8"><%= booking.destinationLocation %></dd>
-              <dt class="col-sm-4">Package</dt>
+              <dt class="col-sm-4"><%= t('pages.users.bookings.details.package', 'Package') %></dt>
               <dd class="col-sm-8"><%= booking.packageType || '-' %></dd>
-              <dt class="col-sm-4">Passengers</dt>
+              <dt class="col-sm-4"><%= t('pages.users.bookings.details.passengers', 'Passengers') %></dt>
               <dd class="col-sm-8"><%= booking.passengers || '-' %></dd>
-              <dt class="col-sm-4">Requested Date</dt>
+              <dt class="col-sm-4"><%= t('pages.users.bookings.details.requested_date', 'Requested Date') %></dt>
               <dd class="col-sm-8"><%= booking.requestedDateText || '-' %></dd>
-              <dt class="col-sm-4">Requested Time</dt>
+              <dt class="col-sm-4"><%= t('pages.users.bookings.details.requested_time', 'Requested Time') %></dt>
               <dd class="col-sm-8"><%= booking.rideTime || '-' %></dd>
-              <dt class="col-sm-4">Status</dt>
+              <dt class="col-sm-4"><%= t('pages.users.bookings.details.status', 'Status') %></dt>
               <dd class="col-sm-8"><%= booking.status || 'pending' %></dd>
             </dl>
           </div>

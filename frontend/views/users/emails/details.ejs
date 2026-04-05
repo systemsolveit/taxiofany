@@ -15,7 +15,7 @@
 <section class="about-section padding">
   <div class="container">
     <% if (!template) { %>
-      <div class="alert alert-light border text-center">This email template is not available.</div>
+      <div class="alert alert-light border text-center"><%= t('pages.users.emails.details.this_email_template_is_not_available', 'This email template is not available.') %></div>
     <% } else { %>
       <div class="row">
         <div class="col-lg-8">
@@ -34,12 +34,12 @@
         </div>
         <div class="col-lg-4">
           <div class="service-item p-4">
-            <h3>Template Summary</h3>
+            <h3><%= t('pages.users.emails.details.template_summary', 'Template Summary') %></h3>
             <ul class="list-unstyled mb-0">
-              <li><strong>Audience:</strong> <%= template.audience || '-' %></li>
-              <li><strong>Category:</strong> <%= template.category || '-' %></li>
-              <li><strong>Tone:</strong> <%= template.tone || '-' %></li>
-              <li><strong>Status:</strong> <%= template.isPublished ? 'Published' : 'Draft' %></li>
+              <li><strong><%= t('pages.users.emails.details.audience', 'Audience:') %></strong> <%= template.audience || '-' %></li>
+              <li><strong><%= t('pages.users.emails.details.category', 'Category:') %></strong> <%= template.category || '-' %></li>
+              <li><strong><%= t('pages.users.emails.details.tone', 'Tone:') %></strong> <%= template.tone || '-' %></li>
+              <li><strong><%= t('pages.users.emails.details.status', 'Status:') %></strong> <%= template.isPublished ? 'Published' : 'Draft' %></li>
             </ul>
           </div>
         </div>

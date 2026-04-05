@@ -5,9 +5,9 @@
   <div class="page-header-shape"></div>
   <div class="container">
     <div class="page-header-info">
-      <h4>Email Library</h4>
-      <h2>Published <span>Email Templates</span></h2>
-      <p>Preview the currently published customer and operations email messages managed from the admin panel.</p>
+      <h4><%= t('pages.users.emails.list.email_library', 'Email Library') %></h4>
+      <h2><%= t('pages.users.emails.list.published', 'Published') %> <span><%= t('pages.users.emails.list.email_templates', 'Email Templates') %></span></h2>
+      <p><%= t('pages.users.emails.list.preview_the_currently_published_customer_and_ope', 'Preview the currently published customer and operations email messages managed from the admin panel.') %></p>
     </div>
   </div>
 </section>
@@ -17,7 +17,7 @@
     <div class="row">
       <% if (!templates || !templates.length) { %>
         <div class="col-12">
-          <div class="alert alert-light border text-center">No published email templates are available yet.</div>
+          <div class="alert alert-light border text-center"><%= t('pages.users.emails.list.no_published_email_templates_are_available_yet', 'No published email templates are available yet.') %></div>
         </div>
       <% } else { %>
         <% templates.forEach(function(item) { %>
