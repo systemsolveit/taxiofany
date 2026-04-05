@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <h1 class="mb-0">Contact Submission Details</h1>
+          <a href="/admin/contact" class="btn btn-outline-secondary">Back to Submissions</a>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <% const status = String(submission.status || 'new').toLowerCase(); %>
+          <div class="row">
+            <div class="col-lg-5">
+              <div class="card card-outline card-info">
+                <div class="card-header">
+                  <h3 class="card-title"><%= submission.fullName %></h3>
+                </div>
+                <div class="card-body">
+                  <dl class="row mb-0">
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8"><%= submission.email || '-' %></dd>
+                    <dt class="col-sm-4">Phone</dt>
+                    <dd class="col-sm-8"><%= submission.phone || '-' %></dd>
+                    <dt class="col-sm-4">Subject</dt>
+                    <dd class="col-sm-8"><%= submission.subject || 'Contact Us Inquiry' %></dd>
+                    <dt class="col-sm-4">Source</dt>
+                    <dd class="col-sm-8"><%= submission.sourcePage || '/contact' %></dd>
+                    <dt class="col-sm-4">Submitted</dt>
+                    <dd class="col-sm-8"><%= submission.createdAt ? new Date(submission.createdAt).toLocaleString('en-GB') : '-' %></dd>
+                    <dt class="col-sm-4">Email Sent</dt>
+                    <dd class="col-sm-8"><%= submission.emailSent ? 'Yes' : 'No' %></dd>
+                    <dt class="col-sm-4">Email Error</dt>
+                    <dd class="col-sm-8"><%= submission.emailError || '-' %></dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-7">
+              <div class="card card-outline card-primary mb-3">
+                <div class="card-header">
+                  <h3 class="card-title">Customer Message</h3>
+                </div>
+                <div class="card-body">
+                  <div class="border rounded p-3" style="white-space: pre-wrap;"><%= submission.message || '' %></div>
+                </div>
+              </div>
+
+              <div class="card card-outline card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Workflow Status</h3>
+                </div>
+                <div class="card-body">
+                  <form method="post" action="/admin/contact/<%= submission._id %>/update">
+                    <div class="form-group">
+                      <label>Status</label>
+                      <select class="form-control" name="status">
+                        <% ['new', 'in_progress', 'resolved'].forEach(function(item) { %>
+                          <option value="<%= item %>" <%= status === item ? 'selected' : '' %>><%= item %></option>
+                        <% }) %>
+                      </select>
+                    </div>
+
+                    <div class="alert alert-light border">
+                      Current status:
+                      <span class="badge badge-<%= status === 'resolved' ? 'success' : status === 'in_progress' ? 'info' : 'warning' %>"><%= status %></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update Submission</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

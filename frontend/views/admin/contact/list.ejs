@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <h1>Contact Management</h1>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Contact Submissions</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Subject</th>
+                    <th>Source</th>
+                    <th>Email Delivery</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (!submissions || !submissions.length) { %>
+                    <tr>
+                      <td colspan="7" class="text-center text-muted py-4">No contact submissions yet.</td>
+                    </tr>
+                  <% } else { %>
+                    <% submissions.forEach(function(item) { %>
+                      <% const status = String(item.status || 'new').toLowerCase(); %>
+                      <tr>
+                        <td>
+                          <strong><%= item.fullName %></strong>
+                          <div class="text-muted small"><%= item.email || '-' %></div>
+                        </td>
+                        <td><%= item.subject || 'Contact Us Inquiry' %></td>
+                        <td><%= item.sourcePage || '/contact' %></td>
+                        <td>
+                          <span class="badge badge-<%= item.emailSent ? 'success' : 'secondary' %>">
+                            <%= item.emailSent ? 'Sent' : 'Not sent' %>
+                          </span>
+                        </td>
+                        <td>
+                          <span class="badge badge-<%= status === 'resolved' ? 'success' : status === 'in_progress' ? 'info' : 'warning' %>"><%= status %></span>
+                        </td>
+                        <td><%= item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB') : '-' %></td>
+                        <td class="text-right"><a href="/admin/contact/<%= item._id %>" class="btn btn-sm btn-outline-primary">Open</a></td>
+                      </tr>
+                    <% }) %>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

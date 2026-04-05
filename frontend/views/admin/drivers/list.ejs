@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <h1 class="mb-0">Drivers Management</h1>
+          <a href="/admin/drivers/new" class="btn btn-primary"><i class="fas fa-plus mr-1"></i>New Driver</a>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Driver Records</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Name</th>
+                    <th>Vehicle</th>
+                    <th>Phone</th>
+                    <th>Availability</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (!drivers || !drivers.length) { %>
+                    <tr>
+                      <td colspan="7" class="text-center text-muted py-4">No drivers yet. Create your first driver profile.</td>
+                    </tr>
+                  <% } else { %>
+                    <% drivers.forEach(function(item) { %>
+                      <tr>
+                        <td><%= item.displayOrder || 0 %></td>
+                        <td>
+                          <strong><%= item.fullName %></strong>
+                          <div class="text-muted small"><%= item.roleTitle || 'Professional Driver' %></div>
+                        </td>
+                        <td><%= item.carType || '-' %></td>
+                        <td><%= item.phone || '-' %></td>
+                        <td>
+                          <span class="badge badge-<%= item.availability === 'available' ? 'success' : (item.availability === 'busy' ? 'warning' : 'secondary') %>">
+                            <%= item.availability || 'offline' %>
+                          </span>
+                        </td>
+                        <td>
+                          <span class="badge badge-<%= item.isPublished ? 'success' : 'secondary' %>">
+                            <%= item.isPublished ? 'Published' : 'Draft' %>
+                          </span>
+                        </td>
+                        <td>
+                          <div class="d-flex" style="gap:0.35rem;">
+                            <a href="/admin/drivers/<%= item._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <form action="/admin/drivers/<%= item._id %>/delete" method="post" onsubmit="return confirm('Delete this driver?');">
+                              <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                          </div>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

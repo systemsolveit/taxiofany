@@ -8,9 +8,9 @@ function normalizeBaseUrl(value) {
 function buildApiPath(pathPart = '') {
   const base = normalizeBaseUrl(config.apiBaseUrl);
   if (base.endsWith('/api/v1')) {
-    return `${base}/admin/settings${pathPart}`;
+    return `${base}/admin/drivers${pathPart}`;
   }
-  return `${base}/api/v1/admin/settings${pathPart}`;
+  return `${base}/api/v1/admin/drivers${pathPart}`;
 }
 
 async function request(pathPart, token, options = {}) {
@@ -18,7 +18,6 @@ async function request(pathPart, token, options = {}) {
     url: buildApiPath(pathPart),
     method: options.method || 'get',
     data: options.body,
-    params: options.params,
     headers: {
       Authorization: `Bearer ${token}`,
       ...(options.headers || {}),
@@ -28,7 +27,7 @@ async function request(pathPart, token, options = {}) {
 
   const payload = response.data || {};
   if (response.status >= 400 || payload.success === false) {
-    const error = new Error(payload?.error?.message || 'Settings API request failed.');
+    const error = new Error(payload?.error?.message || 'Drivers API request failed.');
     error.statusCode = response.status;
     throw error;
   }
@@ -36,50 +35,40 @@ async function request(pathPart, token, options = {}) {
   return payload.data;
 }
 
-function getMailSettings(token) {
-  return request('/mail', token);
+function listDrivers(token) {
+  return request('', token);
 }
 
-function updateMailSettings(token, body) {
-  return request('/mail', token, {
-    method: 'patch',
-    body,
-    headers: { 'Content-Type': 'application/json' },
-  });
+function getDriver(token, id) {
+  return request(`/${encodeURIComponent(id)}`, token);
 }
 
-function testMailSettings(token, body) {
-  return request('/mail/test', token, {
+function createDriver(token, body) {
+  return request('', token, {
     method: 'post',
     body,
     headers: { 'Content-Type': 'application/json' },
   });
 }
 
-function getSiteSettings(token) {
-  return request('/site', token);
-}
-
-function updateSiteSettings(token, body) {
-  return request('/site', token, {
+function updateDriver(token, id, body) {
+  return request(`/${encodeURIComponent(id)}`, token, {
     method: 'patch',
     body,
     headers: { 'Content-Type': 'application/json' },
   });
 }
 
-function getLogs(token, params) {
-  return request('/logs', token, {
-    method: 'get',
-    params,
+function deleteDriver(token, id) {
+  return request(`/${encodeURIComponent(id)}`, token, {
+    method: 'delete',
   });
 }
 
 module.exports = {
-  getMailSettings,
-  updateMailSettings,
-  testMailSettings,
-  getSiteSettings,
-  updateSiteSettings,
-  getLogs,
+  listDrivers,
+  getDriver,
+  createDriver,
+  updateDriver,
+  deleteDriver,
 };

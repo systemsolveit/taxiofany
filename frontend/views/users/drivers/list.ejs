@@ -16,94 +16,25 @@
     <section class="team-section padding">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-6 padding-15">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-1.jpg" alt="thumb">
+                    <% if (Array.isArray(drivers) && drivers.length) { %>
+                        <% drivers.forEach(function(driver) { %>
+                            <div class="col-lg-3 col-md-6 padding-15">
+                                <div class="team-item">
+                                    <div class="team-thumb">
+                                        <img src="<%= driver.image || '/assets/img/team-1.jpg' %>" alt="driver">
+                                    </div>
+                                    <div class="team-content">
+                                        <h3><a href="/drivers/details/<%= encodeURIComponent(driver.slug) %>"><%= driver.fullName || '' %></a></h3>
+                                        <h4><%= driver.carType || (driver.roleTitle || 'Professional Driver') %></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="col-12">
+                            <div class="alert alert-light border text-center mb-0">No driver profiles are published yet.</div>
                         </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.drivers.list.f_lix_lengyel', 'FÃ©lix Lengyel') %></a></h3>
-                            <h4><%= t('pages.users.drivers.list.bmw_x5_2008', 'BMW X5 2008') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 padding-15">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-2.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.drivers.list.henry_nathan', 'Henry Nathan') %></a></h3>
-                            <h4><%= t('pages.users.drivers.list.mercedes_benz', 'Mercedesâ€‘Benz') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 padding-15">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-3.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.drivers.list.brandon_larned', 'Brandon Larned') %></a></h3>
-                            <h4><%= t('pages.users.drivers.list.hyundai_2022', 'Hyundai 2022') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 padding-15">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-4.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.drivers.list.sasha_hostyn', 'Sasha Hostyn') %></a></h3>
-                            <h4><%= t('pages.users.drivers.list.toyota_xcorola', 'Toyota XCorola') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 padding-15">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-5.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.drivers.list.fede_sarmiento', 'Fede Sarmiento') %></a></h3>
-                            <h4><%= t('pages.users.company.about-company.toyota_xcorola', 'Toyota XCorola') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 padding-15">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-6.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.drivers.list.mauricio_fern_ndez', 'Mauricio FernÃ¡ndez') %></a></h3>
-                            <h4><%= t('home.pricing.carHyundai', 'Hyundai 2022') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 padding-15">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-7.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.drivers.list.javier_f_ar_balo', 'Javier F. ArÃ©balo') %></a></h3>
-                            <h4><%= t('pages.users.company.about-company.mercedes_benz', 'Mercedesâ€‘Benz') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 padding-15">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-8.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.drivers.list.mart_n_nonalaya', 'MartÃ­n Nonalaya') %></a></h3>
-                            <h4><%= t('home.pricing.carBmw', 'BMW X5 2008') %></h4>
-                        </div>
-                    </div>
-                </div>
+                    <% } %>
             </div>
         </div>
     </section>

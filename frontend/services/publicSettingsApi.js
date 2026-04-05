@@ -44,6 +44,12 @@ async function getPublicSiteSettings(options = {}) {
   return data;
 }
 
+function clearPublicSiteSettingsCache() {
+  cacheValue = null;
+  cacheAt = 0;
+}
+
 module.exports = {
   getPublicSiteSettings,
+  clearPublicSiteSettingsCache,
 };

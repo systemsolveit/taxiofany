@@ -7,6 +7,7 @@ const i18nRouter = require('./i18n/router');
 const blogRouter = require('./blog/router');
 const servicesRouter = require('./services/router');
 const carsRouter = require('./cars/router');
+const driversRouter = require('./drivers/router');
 const settingsRouter = require('./settings/router');
 
 const router = express.Router();
@@ -19,6 +20,7 @@ router.use('/emails', emailsRouter);
 router.use('/blog', blogRouter);
 router.use('/services', servicesRouter);
 router.use('/cars', carsRouter);
+router.use('/drivers', driversRouter);
 router.use('/settings', settingsRouter);
 
 module.exports = router;

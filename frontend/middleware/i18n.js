@@ -18,6 +18,19 @@ function shouldSkipLocalePrefix(pathname) {
   );
 }
 
+function shouldSkipI18n(pathname) {
+  const path = String(pathname || '/').toLowerCase();
+  return (
+    path.startsWith('/assets') ||
+    path.startsWith('/css') ||
+    path.startsWith('/js') ||
+    path.startsWith('/uploads') ||
+    path === '/favicon.ico' ||
+    path === '/robots.txt' ||
+    path === '/sitemap.xml'
+  );
+}
+
 function getNestedValue(obj, key) {
   return key.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
 }
@@ -74,6 +87,10 @@ async function resolveLocale(req, supportedLocales) {
 }
 
 async function attachI18n(req, res, next) {
+  if (shouldSkipI18n(req.path)) {
+    return next();
+  }
+
   const supportedLocales = await getSupportedLocales();
   const supportedLocaleSet = new Set(supportedLocales.map((item) => item.toLowerCase()));
   const locale = await resolveLocale(req, supportedLocales);

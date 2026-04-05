@@ -20,9 +20,8 @@ app.use(morgan('dev'));
 app.use(createSessionMiddleware());
 app.use(attachSessionLocals);
 app.use(handleLocalePrefix);
-app.use(attachI18n);
-
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(attachI18n);
 app.use(attachSiteSettings);
 
 app.get('/set-language/:lang', setLanguage);

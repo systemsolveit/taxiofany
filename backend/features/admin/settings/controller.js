@@ -45,10 +45,24 @@ async function updateSiteSettings(req, res, next) {
   }
 }
 
+async function getLogs(req, res, next) {
+  try {
+    const data = await service.getLogs({
+      limit: req.query.limit,
+      level: req.query.level,
+      search: req.query.search,
+    });
+    return res.json({ success: true, data });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   getMailSettings,
   updateMailSettings,
   testMailSettings,
   getSiteSettings,
   updateSiteSettings,
+  getLogs,
 };

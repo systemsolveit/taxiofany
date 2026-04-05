@@ -34,7 +34,10 @@ function normalizeSettings(raw = {}) {
   };
 }
 
-function pageEnabled(pages = [], requestPath = '/') {
+function pageEnabled(settings = {}, requestPath = '/') {
+  const pages = Array.isArray(settings.pages) ? settings.pages : [];
+  const navbarMenu = Array.isArray(settings.navbarMenu) ? settings.navbarMenu : [];
+
   const matched = pages.find((page) => {
     const path = String((page && page.path) || '').trim();
     if (!path || path === '/') {
@@ -47,7 +50,30 @@ function pageEnabled(pages = [], requestPath = '/') {
     return true;
   }
 
-  return Boolean(matched.enabled);
+  if (matched.enabled) {
+    return true;
+  }
+
+  const matchedMenu = navbarMenu.find((item) => {
+    const url = String((item && item.url) || '').trim();
+    return url && (requestPath === url || requestPath.startsWith(`${url}/`));
+  });
+
+  if (matchedMenu && matchedMenu.enabled) {
+    return true;
+  }
+
+  // Keep root route reachable when an alternate home route is active.
+  if (requestPath === '/') {
+    const alternateHomeActive = pages.some((page) => String((page && page.path) || '').trim() === '/home/modern' && page.enabled)
+      || navbarMenu.some((item) => String((item && item.url) || '').trim() === '/home/modern' && item.enabled);
+
+    if (alternateHomeActive) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 async function attachSiteSettings(req, res, next) {
@@ -59,7 +85,7 @@ async function attachSiteSettings(req, res, next) {
       return next();
     }
 
-    if (!pageEnabled(settings.pages, req.path)) {
+    if (!pageEnabled(settings, req.path)) {
       return res.status(404).render('users/errors/not-found');
     }
 

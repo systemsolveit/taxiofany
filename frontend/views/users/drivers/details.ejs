@@ -19,27 +19,34 @@
                 <div class="col-lg-6">
                     <div class="section-heading mb-40">
                         <h4><span></span><%= t('pages.users.drivers.details.about_the_driver', 'About The Driver!') %></h4>
-                        <h2><%= t('pages.users.drivers.details.mauricio_fern_ndez', 'Mauricio FernÃ¡ndez') %></h2>
-                        <p><%= t('pages.users.drivers.details.we_successfully_cope_with_tasks_of_varying_compl', 'We successfully cope with tasks of varying complexity, provide long-term guarantees and regularly master new technologies. Our portfolio includes dozens of successfully completed projects of houses of different storeys, with highâ€“quality finishes and good repairs. Book your taxi from anywhare today!') %></p>
+                            <h2><%= driver && driver.fullName ? driver.fullName : t('pages.users.drivers.details.mauricio_fern_ndez', 'Featured Driver') %></h2>
+                            <p><%= driver && driver.bio ? driver.bio : t('pages.users.drivers.details.we_successfully_cope_with_tasks_of_varying_compl', 'Meet one of our experienced professional drivers, ready to deliver safe, reliable, and comfortable transportation across every route.') %></p>
                     </div>
                     <ul class="about-info">
                         <li>
                             <img class="owner-thumb" src="/assets/img/comment-1.png" alt="thumb">
                             <div class="owner">
-                                <h4><%= t('pages.users.drivers.details.founder_ceo', 'Founder - CEO') %></h4>
+                                    <h4><%= driver && driver.roleTitle ? driver.roleTitle : t('pages.users.drivers.details.founder_ceo', 'Professional Driver') %></h4>
                                 <img class="signature" src="/assets/img/signature.png" alt="signature">
                             </div>
                         </li>
                         <li>
-                            <h2><span><%= t('pages.users.drivers.details.call_for_taxi', 'Call For Taxi') %></span><a href="tel:5267214392">5267-214-392</a></h2>
+                                <h2><span><%= t('pages.users.drivers.details.call_for_taxi', 'Call For Taxi') %></span><a href="tel:<%= driver && driver.phone ? driver.phone.replace(/[^\d+]/g, '') : '5267214392' %>"><%= driver && driver.phone ? driver.phone : '5267-214-392' %></a></h2>
                         </li>
                     </ul>
+                        <ul class="taxi-features mt-30">
+                            <li><span><i class="las la-taxi"></i>Vehicle:</span> <%= driver && driver.carType ? driver.carType : 'Executive Taxi' %></li>
+                            <li><span><i class="las la-id-card"></i>Plate:</span> <%= driver && driver.plateNumber ? driver.plateNumber : 'Assigned on dispatch' %></li>
+                            <li><span><i class="las la-language"></i>Languages:</span> <%= driver && driver.languages ? driver.languages : 'English' %></li>
+                            <li><span><i class="las la-user-clock"></i>Experience:</span> <%= driver ? Number(driver.experienceYears || 0) : 0 %> years</li>
+                            <li><span><i class="las la-signal"></i>Status:</span> <%= driver && driver.availability ? driver.availability : 'available' %></li>
+                        </ul>
                 </div>
                 <div class="col-lg-6">
                     <div class="driver-details">
-                        <img src="/assets/img/team-details.jpg" alt="img">
+                            <img src="<%= driver && driver.detailImage ? driver.detailImage : '/assets/img/team-details.jpg' %>" alt="driver">
                         <div class="experience-box">
-                            <h3><span>12+</span><%= t('pages.users.drivers.details.years_of', 'Years Of') %> <br> <%= t('pages.users.drivers.details.experiences', 'Experiences!') %></h3>
+                                <h3><span><%= driver ? Number(driver.experienceYears || 0) : 0 %>+</span><%= t('pages.users.drivers.details.years_of', 'Years Of') %> <br> <%= t('pages.users.drivers.details.experiences', 'Experiences!') %></h3>
                         </div>
                     </div>
                 </div>
@@ -47,6 +54,32 @@
         </div>
     </section>
     <!--/.driver-details-->
+
+    <% if (Array.isArray(relatedDrivers) && relatedDrivers.length) { %>
+    <section class="team-section padding">
+        <div class="container">
+            <div class="section-heading text-center mb-40">
+                <h4><span></span>More Drivers</h4>
+                <h2>Meet Other Available Drivers</h2>
+            </div>
+            <div class="row">
+                <% relatedDrivers.forEach(function(item) { %>
+                    <div class="col-lg-4 col-md-6 padding-15">
+                        <div class="team-item">
+                            <div class="team-thumb">
+                                <img src="<%= item.image || '/assets/img/team-1.jpg' %>" alt="driver">
+                            </div>
+                            <div class="team-content">
+                                <h3><a href="/drivers/details/<%= encodeURIComponent(item.slug) %>"><%= item.fullName || '' %></a></h3>
+                                <h4><%= item.carType || (item.roleTitle || 'Professional Driver') %></h4>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+    <% } %>
 
     <section class="testimonial-section-2 bg-grey padding">
         <div class="container">

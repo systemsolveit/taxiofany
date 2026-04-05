@@ -11,5 +11,6 @@ router.patch('/mail', requireAdminAuth, mailSettingsValidation, validateRequest,
 router.post('/mail/test', requireAdminAuth, mailSettingsValidation, validateRequest, controller.testMailSettings);
 router.get('/site', requireAdminAuth, controller.getSiteSettings);
 router.patch('/site', requireAdminAuth, siteSettingsValidation, validateRequest, controller.updateSiteSettings);
+router.get('/logs', requireAdminAuth, controller.getLogs);
 
 module.exports = router;

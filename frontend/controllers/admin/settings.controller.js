@@ -1,4 +1,5 @@
 const settingsApi = require('../../services/adminSettingsApi');
+const { clearPublicSiteSettingsCache } = require('../../services/publicSettingsApi');
 
 function consumeNotice(req) {
   const notice = req.session ? req.session.settingsNotice : null;
@@ -197,6 +198,35 @@ exports.siteSettingsPage = async (req, res, next) => {
   }
 };
 
+exports.logsSettingsPage = async (req, res, next) => {
+  const token = getAdminToken(req);
+  if (!token) {
+    return res.redirect('/admin/login');
+  }
+
+  try {
+    const filters = {
+      level: typeof req.query.level === 'string' ? req.query.level.trim() : '',
+      search: typeof req.query.search === 'string' ? req.query.search.trim() : '',
+      limit: typeof req.query.limit === 'string' ? req.query.limit.trim() : '100',
+    };
+    const data = await settingsApi.getLogs(token, filters);
+    return res.render('admin/settings/logs', {
+      pageTitle: 'Settings - Logs',
+      activeSection: 'settings',
+      tab: 'logs',
+      logSettings: data,
+      filters,
+      notice: consumeNotice(req),
+    });
+  } catch (error) {
+    if (isAuthError(error)) {
+      return redirectToLogin(req, res);
+    }
+    return next(error);
+  }
+};
+
 exports.updateSiteSettings = async (req, res) => {
   const token = getAdminToken(req);
   if (!token) {
@@ -205,6 +235,7 @@ exports.updateSiteSettings = async (req, res) => {
 
   try {
     await settingsApi.updateSiteSettings(token, mapSitePayload(req.body));
+    clearPublicSiteSettingsCache();
     setNotice(req, 'success', 'Site settings saved successfully.');
   } catch (error) {
     if (isAuthError(error)) {

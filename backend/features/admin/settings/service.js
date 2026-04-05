@@ -1,5 +1,6 @@
 const { IntegrationSetting } = require('../../../models');
 const mailer = require('../../../services/mailer');
+const { getRecentLogs } = require('../../../middlewares/logger');
 
 const MAIL_KEY = 'mail';
 const SITE_KEY = 'site';
@@ -216,6 +217,36 @@ function syncNavbarWithPages(navbarMenu = [], pages = []) {
   return [...fromPages, ...customExtras];
 }
 
+function syncPagesWithNavbar(pages = [], navbarMenu = []) {
+  const menuByKey = new Map();
+  const menuByUrl = new Map();
+
+  navbarMenu.forEach((item) => {
+    if (!item) {
+      return;
+    }
+
+    if (item.key) {
+      menuByKey.set(item.key, item);
+    }
+
+    if (item.url) {
+      menuByUrl.set(item.url, item);
+    }
+  });
+
+  return pages.map((page, index) => {
+    const matched = menuByKey.get(page.key) || menuByUrl.get(page.path);
+    return normalizePageItem(
+      {
+        ...page,
+        enabled: matched ? Boolean(page.enabled || matched.enabled) : page.enabled,
+      },
+      index
+    );
+  });
+}
+
 function normalizeSiteSettings(payload = {}) {
   const rawNavbarMenu = Array.isArray(payload.navbarMenu) && payload.navbarMenu.length
     ? payload.navbarMenu.map((item, index) => normalizeMenuItem(item, index))
@@ -261,6 +292,7 @@ function normalizeSiteSettings(payload = {}) {
   const pages = [...mergedCatalog, ...extraProvided];
 
   const navbarMenu = syncNavbarWithPages(rawNavbarMenu, pages);
+  const normalizedPages = syncPagesWithNavbar(pages, navbarMenu);
 
   const topLinks = payload.header && Array.isArray(payload.header.topLinks) && payload.header.topLinks.length
     ? payload.header.topLinks.map((item, index) => normalizeTopLinkItem(item, index))
@@ -273,7 +305,7 @@ function normalizeSiteSettings(payload = {}) {
   return {
     primaryColor: normalizeHexColor(payload.primaryColor, '#f59e0b'),
     navbarMenu,
-    pages,
+    pages: normalizedPages,
     header: {
       topLinks,
       phone: String((payload.header && payload.header.phone) || DEFAULT_HEADER.phone).trim() || DEFAULT_HEADER.phone,
@@ -363,6 +395,10 @@ async function updateMailSettings(payload = {}) {
   return getMailSettings();
 }
 
+async function getLogs(options = {}) {
+  return getRecentLogs(options);
+}
+
 async function testMailSettings(payload = {}) {
   const mapped = normalizeProvidedMailSettings(payload);
   const existing = await getStoredMailSettingsRaw();
@@ -413,6 +449,7 @@ async function updateSiteSettings(payload = {}) {
 module.exports = {
   getMailSettings,
   updateMailSettings,
+  getLogs,
   testMailSettings,
   getStoredMailSettingsRaw,
   getSiteSettings,
