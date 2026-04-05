@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .field-row {
+      border: 1px solid #e2e8f0;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+      background: #fff;
+    }
+    .validation-text {
+      font-size: 0.8rem;
+      color: #b91c1c;
+      display: none;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <h1 class="mb-0"><%= mode === 'edit' ? 'Edit Service' : 'Create Service' %></h1>
+          <a href="/admin/services" class="btn btn-outline-secondary">Back</a>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="card card-primary card-outline">
+            <div class="card-body">
+              <form method="post" action="<%= mode === 'edit' ? ('/admin/services/' + service._id + '/update') : '/admin/services/new' %>">
+                <div class="form-row">
+                  <div class="form-group col-md-8">
+                    <label>Title</label>
+                    <input class="form-control" name="title" value="<%= service.title || '' %>" required>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Slug</label>
+                    <input class="form-control" name="slug" value="<%= service.slug || '' %>" placeholder="auto-from-title">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Category</label>
+                    <input class="form-control" name="category" value="<%= service.category || '' %>">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Icon Class</label>
+                    <input class="form-control" name="iconClass" value="<%= service.iconClass || '' %>" placeholder="las la-taxi">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Display Order</label>
+                    <input type="number" min="0" class="form-control" name="displayOrder" value="<%= Number(service.displayOrder || 0) %>">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Short Description</label>
+                  <textarea class="form-control" name="shortDescription" rows="2"><%= service.shortDescription || '' %></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea class="form-control" name="description" rows="6"><%= service.description || '' %></textarea>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Card Cover Image</label>
+                    <input class="form-control" name="coverImage" value="<%= service.coverImage || '' %>">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Feature Image</label>
+                    <input class="form-control" name="featureImage" value="<%= service.featureImage || '' %>">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Benefits Image</label>
+                    <input class="form-control" name="benefitsImage" value="<%= service.benefitsImage || '' %>">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Features</label>
+                  <div id="features-editor"></div>
+                  <button type="button" class="btn btn-sm btn-outline-primary" id="add-feature-btn">Add Feature</button>
+                  <div class="validation-text" id="features-error">Each feature requires title and description.</div>
+                  <input type="hidden" name="features" id="features-input" value="<%= Array.isArray(service.features) ? JSON.stringify(service.features) : '[]' %>">
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Benefit Points (comma separated)</label>
+                    <input class="form-control" name="benefitPoints" value="<%= Array.isArray(service.benefitPoints) ? service.benefitPoints.join(', ') : '' %>">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Tags (comma separated)</label>
+                    <input class="form-control" name="tags" value="<%= Array.isArray(service.tags) ? service.tags.join(', ') : '' %>">
+                  </div>
+                </div>
+
+                <div class="form-group form-check">
+                  <input class="form-check-input" type="checkbox" name="isPublished" value="true" id="published-check" <%= service.isPublished ? 'checked' : '' %>>
+                  <label class="form-check-label" for="published-check">Published</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary"><%= mode === 'edit' ? 'Update Service' : 'Create Service' %></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+  <script>
+    (function () {
+      const form = document.querySelector('form[action^="/admin/services"]');
+      const featuresEditor = document.getElementById('features-editor');
+      const featuresInput = document.getElementById('features-input');
+      const addFeatureBtn = document.getElementById('add-feature-btn');
+      const featuresError = document.getElementById('features-error');
+
+      function safeParseArray(value) {
+        try {
+          var parsed = JSON.parse(value || '[]');
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function escAttr(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/"/g, '&quot;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      function escText(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      var featuresState = safeParseArray(featuresInput ? featuresInput.value : '[]');
+
+      function renderFeatures() {
+        if (!featuresEditor) return;
+        featuresEditor.innerHTML = '';
+
+        featuresState.forEach(function (item, index) {
+          var row = document.createElement('div');
+          row.className = 'field-row';
+          row.innerHTML = ''
+            + '<div class="form-row">'
+            + '  <div class="form-group col-md-3 mb-2"><input class="form-control feature-icon" placeholder="Icon class (e.g. las la-shipping-fast)" value="' + escAttr(item.iconClass || '') + '"></div>'
+            + '  <div class="form-group col-md-4 mb-2"><input class="form-control feature-title" placeholder="Feature title" value="' + escAttr(item.title || '') + '"></div>'
+            + '  <div class="form-group col-md-4 mb-2"><textarea class="form-control feature-description" rows="2" placeholder="Feature description">' + escText(item.description || '') + '</textarea></div>'
+            + '  <div class="form-group col-md-1 mb-2"><button type="button" class="btn btn-sm btn-outline-danger w-100 feature-remove">X</button></div>'
+            + '</div>';
+
+          row.querySelector('.feature-remove').addEventListener('click', function () {
+            featuresState.splice(index, 1);
+            renderFeatures();
+          });
+
+          featuresEditor.appendChild(row);
+        });
+      }
+
+      function collectFeatures() {
+        if (!featuresEditor) return [];
+        var rows = featuresEditor.querySelectorAll('.field-row');
+        var data = [];
+
+        rows.forEach(function (row) {
+          var iconClass = row.querySelector('.feature-icon').value.trim();
+          var title = row.querySelector('.feature-title').value.trim();
+          var description = row.querySelector('.feature-description').value.trim();
+
+          if (!iconClass && !title && !description) return;
+
+          data.push({
+            iconClass: iconClass || 'las la-check',
+            title: title,
+            description: description,
+          });
+        });
+
+        return data;
+      }
+
+      if (addFeatureBtn) {
+        addFeatureBtn.addEventListener('click', function () {
+          featuresState.push({ iconClass: 'las la-check', title: '', description: '' });
+          renderFeatures();
+        });
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (event) {
+          if (featuresError) {
+            featuresError.style.display = 'none';
+          }
+
+          var features = collectFeatures();
+          var hasInvalidFeature = features.some(function (item) {
+            return !item.title || !item.description;
+          });
+
+          if (hasInvalidFeature) {
+            if (featuresError) {
+              featuresError.style.display = 'block';
+            }
+            event.preventDefault();
+            return;
+          }
+
+          if (featuresInput) {
+            featuresInput.value = JSON.stringify(features);
+          }
+        });
+      }
+
+      renderFeatures();
+    })();
+  </script>
+</body>
+</html>

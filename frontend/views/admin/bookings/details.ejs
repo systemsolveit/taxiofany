@@ -10,35 +10,81 @@
 
     <div class="content-wrapper">
       <section class="content-header">
-        <div class="container-fluid">
-          <h1>Booking Details</h1>
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <h1 class="mb-0">Ride Request Details</h1>
+          <a href="/admin/bookings" class="btn btn-outline-secondary">Back to Requests</a>
         </div>
       </section>
 
       <section class="content">
         <div class="container-fluid">
-          <div class="card card-outline card-info">
-            <div class="card-header">
-              <h3 class="card-title">Trip <%= booking.id %></h3>
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <% const status = String(booking.status || 'pending').toLowerCase(); %>
+          <div class="row">
+            <div class="col-lg-5">
+              <div class="card card-outline card-info">
+                <div class="card-header">
+                  <h3 class="card-title"><%= booking.bookingCode %></h3>
+                </div>
+                <div class="card-body">
+                  <dl class="row mb-0">
+                    <dt class="col-sm-4">Customer</dt>
+                    <dd class="col-sm-8"><%= booking.customerName %></dd>
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8"><%= booking.customerEmail || '-' %></dd>
+                    <dt class="col-sm-4">Package</dt>
+                    <dd class="col-sm-8"><%= booking.packageType || '-' %></dd>
+                    <dt class="col-sm-4">Passengers</dt>
+                    <dd class="col-sm-8"><%= booking.passengers || '-' %></dd>
+                    <dt class="col-sm-4">Pickup</dt>
+                    <dd class="col-sm-8"><%= booking.pickupLocation %></dd>
+                    <dt class="col-sm-4">Destination</dt>
+                    <dd class="col-sm-8"><%= booking.destinationLocation %></dd>
+                    <dt class="col-sm-4">Requested Date</dt>
+                    <dd class="col-sm-8"><%= booking.requestedDateText || '-' %></dd>
+                    <dt class="col-sm-4">Requested Time</dt>
+                    <dd class="col-sm-8"><%= booking.rideTime || '-' %></dd>
+                    <dt class="col-sm-4">Submitted</dt>
+                    <dd class="col-sm-8"><%= booking.createdAt ? new Date(booking.createdAt).toLocaleString('en-GB') : '-' %></dd>
+                  </dl>
+                </div>
+              </div>
             </div>
-            <div class="card-body">
-              <dl class="row mb-0">
-                <dt class="col-sm-3">Customer</dt>
-                <dd class="col-sm-9"><%= booking.customer %></dd>
-                <dt class="col-sm-3">Pickup</dt>
-                <dd class="col-sm-9"><%= booking.pickup %></dd>
-                <dt class="col-sm-3">Destination</dt>
-                <dd class="col-sm-9"><%= booking.destination %></dd>
-                <dt class="col-sm-3">Fare</dt>
-                <dd class="col-sm-9"><%= booking.fare %></dd>
-                <dt class="col-sm-3">Payment</dt>
-                <dd class="col-sm-9"><%= booking.paymentStatus %></dd>
-                <dt class="col-sm-3">Trip Status</dt>
-                <dd class="col-sm-9"><span class="badge badge-info"><%= booking.tripStatus %></span></dd>
-              </dl>
-            </div>
-            <div class="card-footer">
-              <a href="/admin/bookings" class="btn btn-primary">Back to Bookings</a>
+
+            <div class="col-lg-7">
+              <div class="card card-outline card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Dispatch Management</h3>
+                </div>
+                <div class="card-body">
+                  <form method="post" action="/admin/bookings/<%= booking._id %>/update">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label>Status</label>
+                        <select class="form-control" name="status">
+                          <% ['pending', 'confirmed', 'completed', 'cancelled'].forEach(function(item) { %>
+                            <option value="<%= item %>" <%= status === item ? 'selected' : '' %>><%= item %></option>
+                          <% }) %>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label>Fare Amount</label>
+                        <input type="number" min="0" step="0.01" class="form-control" name="fareAmount" value="<%= Number(booking.fareAmount || 0) %>">
+                      </div>
+                    </div>
+
+                    <div class="alert alert-light border">
+                      Current status:
+                      <span class="badge badge-<%= status === 'completed' ? 'success' : status === 'pending' ? 'warning' : status === 'cancelled' ? 'danger' : 'info' %>"><%= status %></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update Ride Request</button>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </div>

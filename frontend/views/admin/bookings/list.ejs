@@ -2,6 +2,16 @@
 <html lang="en">
 <head>
   <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .booking-route {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .booking-route small {
+      color: #6b7280;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
@@ -17,31 +27,52 @@
 
       <section class="content">
         <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Latest Bookings</h3>
+              <h3 class="card-title">Ride Requests</h3>
             </div>
             <div class="card-body table-responsive p-0">
               <table class="table table-hover text-nowrap">
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>Code</th>
                     <th>Customer</th>
-                    <th>Pickup</th>
-                    <th>Destination</th>
+                    <th>Route</th>
+                    <th>Schedule</th>
                     <th>Status</th>
+                    <th class="text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% bookings.forEach(function(booking) { %>
+                  <% if (!bookings || !bookings.length) { %>
                     <tr>
-                      <td><a href="/admin/bookings/<%= booking.id %>"><%= booking.id %></a></td>
-                      <td><%= booking.customer %></td>
-                      <td><%= booking.pickup %></td>
-                      <td><%= booking.destination %></td>
-                      <td><span class="badge badge-<%= booking.status === 'Completed' ? 'success' : booking.status === 'Pending' ? 'warning' : 'info' %>"><%= booking.status %></span></td>
+                      <td colspan="6" class="text-center text-muted py-4">No ride requests submitted yet.</td>
                     </tr>
-                  <% }) %>
+                  <% } else { %>
+                    <% bookings.forEach(function(booking) { %>
+                      <% const status = String(booking.status || 'pending').toLowerCase(); %>
+                      <tr>
+                        <td><a href="/admin/bookings/<%= booking._id %>"><%= booking.bookingCode %></a></td>
+                        <td>
+                          <strong><%= booking.customerName %></strong>
+                          <div class="text-muted small"><%= booking.customerEmail || '-' %></div>
+                        </td>
+                        <td>
+                          <div class="booking-route">
+                            <span><%= booking.pickupLocation %></span>
+                            <small>to <%= booking.destinationLocation %></small>
+                          </div>
+                        </td>
+                        <td><%= booking.requestedDateText || '-' %><%= booking.rideTime ? (' / ' + booking.rideTime) : '' %></td>
+                        <td><span class="badge badge-<%= status === 'completed' ? 'success' : status === 'pending' ? 'warning' : status === 'cancelled' ? 'danger' : 'info' %>"><%= status %></span></td>
+                        <td class="text-right"><a href="/admin/bookings/<%= booking._id %>" class="btn btn-sm btn-outline-primary">Open</a></td>
+                      </tr>
+                    <% }) %>
+                  <% } %>
                 </tbody>
               </table>
             </div>

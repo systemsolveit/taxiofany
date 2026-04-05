@@ -146,8 +146,11 @@ async function listMedia(filters = {}) {
   const allItems = await syncRecords();
   const query = String(filters.q || '').trim().toLowerCase();
   const type = String(filters.type || 'all').toLowerCase();
+  const hasPaging = filters.page !== undefined || filters.pageSize !== undefined;
+  const page = Math.max(1, Number(filters.page) || 1);
+  const pageSize = Math.min(100, Math.max(1, Number(filters.pageSize) || 24));
 
-  const items = allItems.filter((item) => {
+  const filtered = allItems.filter((item) => {
     const matchesType = type === 'all' || item.kind === type;
     const haystack = [item.title, item.altText, item.description, item.originalname, item.filename, ...(item.tags || [])]
       .join(' ')
@@ -156,13 +159,25 @@ async function listMedia(filters = {}) {
     return matchesType && matchesQuery;
   });
 
+  const items = hasPaging ? filtered.slice((page - 1) * pageSize, page * pageSize) : filtered;
+  const totalPages = hasPaging ? Math.max(1, Math.ceil(filtered.length / pageSize)) : 1;
+  const hasMore = hasPaging ? page < totalPages : false;
+
   return {
     items,
     summary: buildSummary(allItems),
-    filteredCount: items.length,
+    filteredCount: filtered.length,
     filters: {
       q: filters.q || '',
       type: type || 'all',
+    },
+    pagination: {
+      page,
+      pageSize,
+      totalPages,
+      totalItems: filtered.length,
+      hasMore,
+      isPaginated: hasPaging,
     },
   };
 }

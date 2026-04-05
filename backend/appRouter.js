@@ -1,9 +1,12 @@
 const express = require('express');
 const { connection } = require('./config/database');
+const config = require('./config');
+const { createApiRateLimiter } = require('./middlewares/rateLimit');
 const adminFeaturesRouter = require('./features/admin');
 const userFeaturesRouter = require('./features/user');
 
 const router = express.Router();
+const apiRateLimiter = createApiRateLimiter(config);
 
 /**
  * @openapi
@@ -26,6 +29,7 @@ router.get('/api/v1/status', (req, res) => {
   });
 });
 
+router.use('/api/v1', apiRateLimiter);
 router.use('/api/v1/admin', adminFeaturesRouter);
 router.use('/api/v1/user', userFeaturesRouter);
 

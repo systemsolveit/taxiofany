@@ -6,10 +6,19 @@
                     <p><%= t('header.topTagline') %></p>
                 </div>
                 <div class="top-right">
+                    <% const headerConfig = (siteSettings && siteSettings.header) ? siteSettings.header : {}; %>
+                    <% const headerTopLinks = Array.isArray(headerConfig.topLinks) ? headerConfig.topLinks.filter(function(item){ return item && item.enabled; }) : []; %>
+                    <% const headerSocialLinks = Array.isArray(headerConfig.socialLinks) ? headerConfig.socialLinks.filter(function(item){ return item && item.enabled; }) : []; %>
                     <ul class="top-header-nav">
-                        <li><a href="/faqs"><%= t('header.help') %></a></li>
-                        <li><a href="/contact"><%= t('header.support') %></a></li>
-                        <li><a href="/faqs"><%= t('header.faq') %></a></li>
+                        <% if (headerTopLinks.length) { %>
+                            <% headerTopLinks.forEach(function(item) { %>
+                                <li><a href="<%= item.url %>"><%= item.label %></a></li>
+                            <% }) %>
+                        <% } else { %>
+                            <li><a href="/faqs"><%= t('header.help') %></a></li>
+                            <li><a href="/contact"><%= t('header.support') %></a></li>
+                            <li><a href="/faqs"><%= t('header.faq') %></a></li>
+                        <% } %>
                     </ul>
                     <% var currentLocaleItem = (availableLocales || []).find(function(localeItem) { return localeItem.code === locale; }) || { code: locale || 'en', label: (locale || 'en').toUpperCase() }; %>
                     <div class="lang-switch" aria-label="Language switcher">
@@ -40,10 +49,16 @@
                         </details>
                     </div>
                     <ul class="header-social-share">
-                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                        <% if (headerSocialLinks.length) { %>
+                            <% headerSocialLinks.forEach(function(item){ %>
+                                <li><a href="<%= item.url %>"><i class="<%= item.iconClass %>"></i></a></li>
+                            <% }) %>
+                        <% } else { %>
+                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                        <% } %>
                     </ul>
                 </div>
             </div>
@@ -61,7 +76,7 @@
                             <i class="las la-phone-volume"></i>
                         </div>
                         <div class="header-info-text">
-                            <h3><span><%= t('header.callNow') %></span><a href="tel:5267214392">5267-214-392</a></h3>
+                            <h3><span><%= t('header.callNow') %></span><a href="tel:<%= String((headerConfig.phone || '5267-214-392')).replace(/\D/g, '') %>"><%= headerConfig.phone || '5267-214-392' %></a></h3>
                         </div>
                     </li>
                     <li>
@@ -69,7 +84,7 @@
                             <i class="las la-envelope-open"></i>
                         </div>
                         <div class="header-info-text">
-                            <h3><span><%= t('header.emailNow') %></span>Info.ridek@mail.com</h3>
+                            <h3><span><%= t('header.emailNow') %></span><%= headerConfig.email || 'Info.ridek@mail.com' %></h3>
                         </div>
                     </li>
                     <li>
@@ -77,7 +92,7 @@
                             <i class="las la-map-marked-alt"></i>
                         </div>
                         <div class="header-info-text">
-                            <h3><span><%= t('header.locationLabel') %></span>New York, USA - 2386</h3>
+                            <h3><span><%= t('header.locationLabel') %></span><%= headerConfig.location || 'New York, USA - 2386' %></h3>
                         </div>
                     </li>
                 </ul>
@@ -91,50 +106,57 @@
                     <a href="/"><img src="/assets/img/logo-dark.png" alt="Logo"></a>
                 </div><!--/.site-logo-->
                 <div class="header-menu-wrap">
+                    <% const configuredMenu = (siteSettings && Array.isArray(siteSettings.navbarMenu)) ? siteSettings.navbarMenu.filter(function(item){ return item && item.enabled; }) : []; %>
                     <ul class="nav-menu">
-                        <li class="dropdown_menu">
-                            <a href="/"><%= t('header.nav.home') %></a>
-                            <ul>
-                                <li><a href="/"><%= t('header.nav.homeDefault') %></a></li>
-                                <li><a href="/home/modern"><%= t('header.nav.homeModern') %></a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown_menu">
-                            <a href="/about"><%= t('header.nav.company') %></a>
-                            <ul>
-                                <li><a href="/about"><%= t('header.nav.aboutUs') %></a></li>
-                                <li><a href="/about/company"><%= t('header.nav.aboutCompany') %></a></li>
-                                <li><a href="/services"><%= t('header.nav.services') %></a></li>
-                                <li><a href="/services/details"><%= t('header.nav.serviceDetails') %></a></li>
-                                <li><a href="/book-taxi"><%= t('header.nav.bookRide') %></a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown_menu">
-                            <a href="/taxi"><%= t('header.nav.taxi') %></a>
-                            <ul>
-                                <li><a href="/taxi"><%= t('header.nav.taxiList') %></a></li>
-                                <li><a href="/taxi/details"><%= t('header.nav.taxiDetails') %></a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown_menu">
-                            <a href="#"><%= t('header.nav.pages') %></a>
-                            <ul>
-                                <li><a href="/drivers"><%= t('header.nav.drivers') %></a></li>
-                                <li><a href="/drivers/details"><%= t('header.nav.driverDetails') %></a></li>
-                                <li><a href="/testimonials"><%= t('header.nav.reviews') %></a></li>
-                                <li><a href="/faqs"><%= t('header.nav.helpFaq') %></a></li>
-                                <li><a href="/404"><%= t('header.nav.error404') %></a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown_menu">
-                            <a href="/blog"><%= t('header.nav.blog') %></a>
-                            <ul>
-                                <li><a href="/blog"><%= t('header.nav.blogGrid') %></a></li>
-                                <li><a href="/blog/classic"><%= t('header.nav.blogClassic') %></a></li>
-                                <li><a href="/blog/details"><%= t('header.nav.blogDetails') %></a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/contact"><%= t('header.nav.contact') %></a></li>
+                        <% if (configuredMenu.length) { %>
+                            <% configuredMenu.forEach(function(item) { %>
+                                <li><a href="<%= item.url %>"><%= item.label %></a></li>
+                            <% }) %>
+                        <% } else { %>
+                            <li class="dropdown_menu">
+                                <a href="/"><%= t('header.nav.home') %></a>
+                                <ul>
+                                    <li><a href="/"><%= t('header.nav.homeDefault') %></a></li>
+                                    <li><a href="/home/modern"><%= t('header.nav.homeModern') %></a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown_menu">
+                                <a href="/about"><%= t('header.nav.company') %></a>
+                                <ul>
+                                    <li><a href="/about"><%= t('header.nav.aboutUs') %></a></li>
+                                    <li><a href="/about/company"><%= t('header.nav.aboutCompany') %></a></li>
+                                    <li><a href="/services"><%= t('header.nav.services') %></a></li>
+                                    <li><a href="/services/details"><%= t('header.nav.serviceDetails') %></a></li>
+                                    <li><a href="/book-taxi"><%= t('header.nav.bookRide') %></a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown_menu">
+                                <a href="/taxi"><%= t('header.nav.taxi') %></a>
+                                <ul>
+                                    <li><a href="/taxi"><%= t('header.nav.taxiList') %></a></li>
+                                    <li><a href="/taxi/details"><%= t('header.nav.taxiDetails') %></a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown_menu">
+                                <a href="#"><%= t('header.nav.pages') %></a>
+                                <ul>
+                                    <li><a href="/drivers"><%= t('header.nav.drivers') %></a></li>
+                                    <li><a href="/drivers/details"><%= t('header.nav.driverDetails') %></a></li>
+                                    <li><a href="/testimonials"><%= t('header.nav.reviews') %></a></li>
+                                    <li><a href="/faqs"><%= t('header.nav.helpFaq') %></a></li>
+                                    <li><a href="/404"><%= t('header.nav.error404') %></a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown_menu">
+                                <a href="/blog"><%= t('header.nav.blog') %></a>
+                                <ul>
+                                    <li><a href="/blog"><%= t('header.nav.blogGrid') %></a></li>
+                                    <li><a href="/blog/classic"><%= t('header.nav.blogClassic') %></a></li>
+                                    <li><a href="/blog/details"><%= t('header.nav.blogDetails') %></a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/contact"><%= t('header.nav.contact') %></a></li>
+                        <% } %>
                     </ul>
                 </div>
                 <div class="menu-right-item">
@@ -144,7 +166,7 @@
                     <div class="sidebox-icon dl-sidebox-icon">
                         <i class="las la-bars"></i>
                     </div>
-                    <a href="/book-taxi" class="menu-btn"><%= t('header.nav.bookTaxi') %></a>
+                    <a href="<%= headerConfig.navButtonUrl || '/book-taxi' %>" class="menu-btn"><%= headerConfig.navButtonLabel || t('header.nav.bookTaxi') %></a>
                 </div>
                 <div class="mobile-menu-icon">
                     <div class="burger-menu">

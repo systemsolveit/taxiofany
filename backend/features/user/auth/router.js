@@ -1,10 +1,13 @@
 const express = require('express');
 const controller = require('./controller');
 const { requireClientAuth } = require('./middleware');
+const config = require('../../../config');
+const { createAuthRateLimiter } = require('../../../middlewares/rateLimit');
 const validateRequest = require('../../../middlewares/validateRequest');
 const { registerValidation, loginValidation } = require('./validation');
 
 const router = express.Router();
+const authRateLimiter = createAuthRateLimiter(config);
 
 /**
  * @openapi
@@ -16,7 +19,7 @@ const router = express.Router();
  *       201:
  *         description: User registered
  */
-router.post('/register', registerValidation, validateRequest, controller.register);
+router.post('/register', authRateLimiter, registerValidation, validateRequest, controller.register);
 
 /**
  * @openapi
@@ -28,7 +31,7 @@ router.post('/register', registerValidation, validateRequest, controller.registe
  *       200:
  *         description: User logged in
  */
-router.post('/login', loginValidation, validateRequest, controller.login);
+router.post('/login', authRateLimiter, loginValidation, validateRequest, controller.login);
 
 /**
  * @openapi

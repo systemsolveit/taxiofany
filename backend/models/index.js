@@ -4,4 +4,11 @@ module.exports = {
   Driver: require('./Driver'),
   Locale: require('./Locale'),
   Translation: require('./Translation'),
+  BlogPost: require('./BlogPost'),
+  Service: require('./Service'),
+  Car: require('./Car'),
+  EmailTemplate: require('./EmailTemplate'),
+  ContactSubmission: require('./ContactSubmission'),
+  IntegrationSetting: require('./IntegrationSetting'),
+  ...require('./RolePermission'),
 };

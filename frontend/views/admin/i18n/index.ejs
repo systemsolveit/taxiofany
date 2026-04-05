@@ -462,7 +462,20 @@
                     <h3 class="card-title mb-1">Coverage Audit</h3>
                     <p class="text-muted mb-0">Check each page for missing keys and values that still match the source text.</p>
                   </div>
-                  <div class="i18n-badge-row">
+                  <div class="i18n-badge-row align-items-center">
+                    <% var coverageBulkCount = summary.untranslatedKeywords + summary.missingKeywords; %>
+                    <% if (coverageBulkCount > 0) { %>
+                      <button
+                        type="button"
+                        id="coverageBulkTranslateBtn"
+                        class="btn btn-sm btn-warning"
+                        onclick="startCoverageBulkTranslate(this)"
+                        data-locale="<%= selectedLocale %>"
+                        title="Translate all untranslated/missing coverage keys and save them"
+                      >
+                        <i class="fas fa-language mr-1"></i>Translate Coverage (<%= coverageBulkCount %>)
+                      </button>
+                    <% } %>
                     <span class="i18n-key-chip">Translated <%= summary.translatedKeywords %></span>
                     <span class="i18n-key-chip">Untranslated <%= summary.untranslatedKeywords %></span>
                     <span class="i18n-key-chip">Missing <%= summary.missingKeywords %></span>
@@ -703,6 +716,7 @@
 
   <%- include('../../shared/partials/admin-scripts') %>
   <script id="inheritedEntriesJson" type="application/json"><%- inheritedEntriesJson %></script>
+  <script id="coverageAuditEntriesJson" type="application/json"><%- coverageAuditEntriesJson %></script>
   <form id="bulkSaveKeywordsForm" method="post" action="/admin/i18n/bulk-save" style="display:none;">
     <input type="hidden" name="locale" value="<%= selectedLocale %>">
     <input type="hidden" name="autoTranslate" value="<%= autoTranslate ? '1' : '0' %>">
@@ -886,6 +900,62 @@
       bar.textContent = '100%';
       status.textContent = 'Done! ' + saved + ' keys saved, ' + errors + ' errors.';
       alert('Bulk translate complete!\n' + saved + ' keys saved to ' + locale.toUpperCase() + '.\nPage will now reload.');
+      window.location.reload();
+    }
+
+    async function startCoverageBulkTranslate(btn) {
+      var locale = btn.dataset.locale;
+      var coverageNode = document.getElementById('coverageAuditEntriesJson');
+      var entries = coverageNode ? JSON.parse(coverageNode.textContent || '[]') : [];
+      if (!entries.length) {
+        alert('No untranslated coverage keys found.');
+        return;
+      }
+
+      if (!confirm('Translate and save ' + entries.length + ' coverage keys into "' + locale.toUpperCase() + '"?\n\nThis will update untranslated and missing keys found by Coverage Audit.')) {
+        return;
+      }
+
+      btn.disabled = true;
+      var originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Translating...';
+
+      var BATCH = 40;
+      var saved = 0;
+      var errors = 0;
+
+      for (var i = 0; i < entries.length; i += BATCH) {
+        var batch = entries.slice(i, i + BATCH);
+        try {
+          var transRes = await fetch('/admin/i18n/actions/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ texts: batch.map(function(e){ return e.value; }), source: 'auto', target: locale }),
+          });
+          var transJson = await transRes.json();
+          var translatedValues = transJson.success ? transJson.data : batch.map(function(e){ return { translated: e.value }; });
+
+          var saveEntries = batch.map(function(e, idx){
+            return { key: e.key, value: translatedValues[idx] ? translatedValues[idx].translated : e.value };
+          });
+
+          var saveRes = await fetch('/admin/i18n/actions/bulk-save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ locale: locale, entries: saveEntries }),
+          });
+          var saveJson = await saveRes.json();
+          if (saveJson.success) {
+            saved += saveEntries.length;
+          } else {
+            errors += saveEntries.length;
+          }
+        } catch (e) {
+          errors += batch.length;
+        }
+      }
+
+      alert('Coverage bulk translate complete!\n' + saved + ' keys saved, ' + errors + ' errors.');
       window.location.reload();
     }
   </script>

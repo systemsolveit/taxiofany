@@ -1,17 +1,31 @@
 const express = require('express');
 const aclRouter = require('./acl/router');
 const authRouter = require('./auth/router');
+const bookingsRouter = require('./bookings/router');
+const contactRouter = require('./contact/router');
+const emailsRouter = require('./emails/router');
 const i18nRouter = require('./i18n/router');
 const usersRouter = require('./users/router');
 const mediaHubRouter = require('./mediahub/router');
+const blogRouter = require('./blog/router');
+const servicesRouter = require('./services/router');
+const carsRouter = require('./cars/router');
+const settingsRouter = require('./settings/router');
 
 const router = express.Router();
 
 router.use('/auth', authRouter);
 router.use('/acl', aclRouter);
+router.use('/bookings', bookingsRouter);
+router.use('/contact', contactRouter);
+router.use('/emails', emailsRouter);
 router.use('/i18n', i18nRouter);
 router.use('/users', usersRouter);
 
 router.use('/mediahub', mediaHubRouter);
+router.use('/blog', blogRouter);
+router.use('/services', servicesRouter);
+router.use('/cars', carsRouter);
+router.use('/settings', settingsRouter);
 
 module.exports = router;

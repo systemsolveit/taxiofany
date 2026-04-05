@@ -16,69 +16,35 @@
     <section class="our-taxi padding">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-6 sm-padding">
-                    <div class="pricing-item">
-                        <div class="pricing-head-wrap">
-                            <div class="pricing-car">
-                                <img src="/assets/img/pricing-car.png" alt="car">
-                                <div class="price"><%= t('pages.users.taxi.list.2_50_km', '$2.50/km') %></div>
+                <% if (Array.isArray(cars) && cars.length) { %>
+                    <% cars.forEach(function(car) { %>
+                        <div class="col-lg-4 col-md-6 sm-padding">
+                            <div class="pricing-item">
+                                <div class="pricing-head-wrap">
+                                    <div class="pricing-car">
+                                        <img src="<%= car.image || '/assets/img/pricing-car.png' %>" alt="car">
+                                        <div class="price">$<%= Number(car.pricePerKm || 0).toFixed(2) %>/km</div>
+                                    </div>
+                                </div>
+                                <div class="pricing-head">
+                                    <h3><a href="/taxi/details/<%= encodeURIComponent(car.slug) %>"><%= car.title || '' %></a></h3>
+                                    <span class="location"><%= car.city || '-' %></span>
+                                </div>
+                                <ul class="pricing-list">
+                                    <li><%= t('pages.users.taxi.list.initial_charge', 'Initial Charge:') %> <span>$<%= Number(car.initialCharge || 0).toFixed(2) %></span></li>
+                                    <li><%= t('pages.users.taxi.list.per_mile_km', 'Per Mile/KM:') %> <span>$<%= Number(car.perMileKm || 0).toFixed(2) %></span></li>
+                                    <li><%= t('pages.users.taxi.list.per_stopped_trafic', 'Per Stopped Trafic:') %> <span>$<%= Number(car.perStoppedTraffic || 0).toFixed(2) %></span></li>
+                                    <li><%= t('pages.users.taxi.list.passengers', 'Passengers:') %> <span><%= Number(car.passengers || 0) %> <%= t('pages.users.taxi.list.4_person', 'Person') %></span></li>
+                                    <li><a href="/book-taxi" class="default-btn"><%= t('pages.users.taxi.list.book_taxi_now', 'Book Taxi Now') %></a></li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="pricing-head">
-                            <h3><a href="/taxi/details"><%= t('pages.users.taxi.list.bmw_x5_2008', 'BMW X5 2008') %></a></h3>
-                            <span class="location"><%= t('pages.users.taxi.list.chicago', 'Chicago') %></span>
-                        </div>
-                        <ul class="pricing-list">
-                            <li><%= t('pages.users.taxi.list.initial_charge', 'Initial Charge:') %> <span>$2.50</span></li>
-                            <li><%= t('pages.users.taxi.list.per_mile_km', 'Per Mile/KM:') %> <span>$4.20</span></li>
-                            <li><%= t('pages.users.taxi.list.per_stopped_trafic', 'Per Stopped Trafic:') %> <span>$1.50</span></li>
-                            <li><%= t('pages.users.taxi.list.passengers', 'Passengers:') %> <span><%= t('pages.users.taxi.list.4_person', '4 Person') %></span></li>
-                            <li><a href="/book-taxi" class="default-btn"><%= t('pages.users.taxi.list.book_taxi_now', 'Book Taxi Now') %></a></li>
-                        </ul>
+                    <% }) %>
+                <% } else { %>
+                    <div class="col-12 text-center text-muted">
+                        <p><%= t('pages.users.taxi.list.noCars', 'No cars available right now.') %></p>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 sm-padding">
-                    <div class="pricing-item">
-                        <div class="pricing-head-wrap">
-                            <div class="pricing-car">
-                                <img src="/assets/img/pricing-car.png" alt="car">
-                                <div class="price"><%= t('pages.users.taxi.list.3_50_km', '$3.50/km') %></div>
-                            </div>
-                        </div>
-                        <div class="pricing-head">
-                            <h3><a href="/taxi/details"><%= t('pages.users.taxi.list.mercedes_benz', 'Mercedesâ€‘Benz') %></a></h3>
-                            <span class="location"><%= t('pages.users.taxi.list.florida', 'Florida') %></span>
-                        </div>
-                        <ul class="pricing-list">
-                            <li>Initial Charge: <span>$2.50</span></li>
-                            <li>Per Mile/KM: <span>$4.20</span></li>
-                            <li>Per Stopped Trafic: <span>$1.50</span></li>
-                            <li>Passengers: <span>4 Person</span></li>
-                            <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 sm-padding">
-                    <div class="pricing-item">
-                        <div class="pricing-head-wrap">
-                            <div class="pricing-car">
-                                <img src="/assets/img/pricing-car.png" alt="car">
-                                <div class="price"><%= t('pages.users.taxi.list.4_50_km', '$4.50/km') %></div>
-                            </div>
-                        </div>
-                        <div class="pricing-head">
-                            <h3><a href="/taxi/details"><%= t('pages.users.taxi.list.hyundai_2022', 'Hyundai 2022') %></a></h3>
-                            <span class="location"><%= t('pages.users.taxi.list.new_york', 'New York') %></span>
-                        </div>
-                        <ul class="pricing-list">
-                            <li>Initial Charge: <span>$2.50</span></li>
-                            <li>Per Mile/KM: <span>$4.20</span></li>
-                            <li>Per Stopped Trafic: <span>$1.50</span></li>
-                            <li>Passengers: <span>4 Person</span></li>
-                            <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                        </ul>
-                    </div>
-                </div>
+                <% } %>
             </div>
         </div>
     </section><!--/.our-taxi-->

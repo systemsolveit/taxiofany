@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <h1 class="mb-0">Blog Management</h1>
+          <a href="/admin/blog/new" class="btn btn-primary"><i class="fas fa-plus mr-1"></i>New Post</a>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="row mb-3">
+            <div class="col-md-3">
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3><%= moderationTotals && moderationTotals.pending ? moderationTotals.pending : 0 %></h3>
+                  <p>Pending Comments/Replies</p>
+                </div>
+                <div class="icon"><i class="fas fa-hourglass-half"></i></div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3><%= moderationTotals && moderationTotals.approved ? moderationTotals.approved : 0 %></h3>
+                  <p>Approved Comments/Replies</p>
+                </div>
+                <div class="icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+            </div>
+            <div class="col-md-6 d-flex align-items-center justify-content-md-end" style="gap:0.5rem;">
+              <a href="/admin/blog?commentState=all" class="btn <%= (commentState || 'all') === 'all' ? 'btn-primary' : 'btn-outline-primary' %>">All Posts</a>
+              <a href="/admin/blog?commentState=pending" class="btn <%= (commentState || 'all') === 'pending' ? 'btn-warning' : 'btn-outline-warning' %>">Pending Review</a>
+              <a href="/admin/blog?commentState=approved" class="btn <%= (commentState || 'all') === 'approved' ? 'btn-success' : 'btn-outline-success' %>">Fully Approved</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Posts</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Slug</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Published</th>
+                    <th>Moderation</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (!posts || !posts.length) { %>
+                    <tr>
+                      <td colspan="7" class="text-center text-muted py-4">No posts found for selected filter.</td>
+                    </tr>
+                  <% } else { %>
+                    <% posts.forEach(function(post) { %>
+                      <tr>
+                        <td><%= post.title %></td>
+                        <td><code><%= post.slug %></code></td>
+                        <td><%= post.category || '-' %></td>
+                        <td>
+                          <span class="badge badge-<%= post.isPublished ? 'success' : 'secondary' %>">
+                            <%= post.isPublished ? 'Published' : 'Draft' %>
+                          </span>
+                        </td>
+                        <td><%= post.publishedAt ? new Date(post.publishedAt).toLocaleString('en-GB') : '-' %></td>
+                        <td>
+                          <div class="d-flex flex-column" style="gap:0.3rem;">
+                            <span class="badge badge-warning">Pending: <%= post.moderation ? post.moderation.pendingTotal : 0 %></span>
+                            <span class="badge badge-success">Approved: <%= post.moderation ? post.moderation.approvedTotal : 0 %></span>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-flex flex-wrap" style="gap:0.35rem;">
+                            <a href="/admin/blog/<%= post._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <% if (post.moderation && post.moderation.pendingTotal > 0) { %>
+                              <form action="/admin/blog/<%= post._id %>/comments/approve-pending" method="post" onsubmit="return confirm('Approve all pending comments/replies for this post?');">
+                                <button type="submit" class="btn btn-sm btn-outline-success">Approve Pending</button>
+                              </form>
+                              <form action="/admin/blog/<%= post._id %>/comments/clear-pending" method="post" onsubmit="return confirm('Clear all pending comments/replies for this post?');">
+                                <button type="submit" class="btn btn-sm btn-outline-warning">Clear Pending</button>
+                              </form>
+                            <% } %>
+                            <form action="/admin/blog/<%= post._id %>/delete" method="post" onsubmit="return confirm('Delete this post?');">
+                              <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                          </div>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

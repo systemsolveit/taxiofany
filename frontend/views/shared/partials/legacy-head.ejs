@@ -31,6 +31,31 @@
     <link rel="stylesheet" href="/assets/css/blog.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
+    <% const sitePrimaryColor = (siteSettings && siteSettings.primaryColor) ? siteSettings.primaryColor : '#f59e0b'; %>
+    <style>
+        :root {
+            --site-primary-color: <%= sitePrimaryColor %>;
+        }
+
+        .default-btn,
+        .menu-btn,
+        .lang-picker-icon {
+            background: var(--site-primary-color) !important;
+        }
+
+        .default-btn,
+        .menu-btn {
+            border-color: var(--site-primary-color) !important;
+        }
+
+        .default-btn:hover,
+        .menu-btn:hover,
+        .header-social-share li a:hover,
+        .top-header-nav li a:hover,
+        .nav-menu li a:hover {
+            color: var(--site-primary-color) !important;
+        }
+    </style>
 </head>
 
 <body>

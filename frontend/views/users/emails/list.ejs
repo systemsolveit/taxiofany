@@ -1,0 +1,40 @@
+<%- include('../../shared/partials/legacy-head') %>
+<%- include('../../shared/partials/legacy-header-nav') %>
+
+<section class="page-header">
+  <div class="page-header-shape"></div>
+  <div class="container">
+    <div class="page-header-info">
+      <h4>Email Library</h4>
+      <h2>Published <span>Email Templates</span></h2>
+      <p>Preview the currently published customer and operations email messages managed from the admin panel.</p>
+    </div>
+  </div>
+</section>
+
+<section class="service-section bg-grey padding">
+  <div class="container">
+    <div class="row">
+      <% if (!templates || !templates.length) { %>
+        <div class="col-12">
+          <div class="alert alert-light border text-center">No published email templates are available yet.</div>
+        </div>
+      <% } else { %>
+        <% templates.forEach(function(item) { %>
+          <div class="col-lg-4 col-md-6 sm-padding">
+            <div class="service-item wow fade-in-bottom" data-wow-delay="200ms">
+              <div class="service-content p-4">
+                <span class="badge badge-info mb-2"><%= item.category || 'General' %></span>
+                <h3><a href="/emails/<%= item.slug %>"><%= item.title %></a></h3>
+                <p><%= item.previewText || item.summary || '' %></p>
+                <a class="read-more" href="/emails/<%= item.slug %>">Preview Template</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('../../shared/partials/legacy-footer') %>

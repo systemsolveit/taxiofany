@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .assistant-panel {
+      border-left: 4px solid #17a2b8;
+      background: linear-gradient(180deg, #f5fcff 0%, #ffffff 100%);
+    }
+
+    .assistant-chip {
+      border: 1px solid #17a2b8;
+      border-radius: 999px;
+      background: #e9f8ff;
+      color: #0b6071;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      cursor: pointer;
+    }
+
+    .assistant-chip:hover {
+      background: #d7f1ff;
+    }
+
+    .media-tile {
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .media-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    }
+
+    .validation-text {
+      font-size: 0.8rem;
+      color: #b91c1c;
+      display: none;
+    }
+
+    .gallery-chip {
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.78rem;
+      background: #f8fafc;
+      cursor: pointer;
+    }
+
+    .gallery-chip.active {
+      border-color: #0284c7;
+      background: #e0f2fe;
+      color: #0c4a6e;
+    }
+
+    .field-row {
+      border: 1px solid #e2e8f0;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+      background: #fff;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <h1 class="mb-0"><%= mode === 'edit' ? 'Edit Blog Post' : 'Create Blog Post' %></h1>
+          <a href="/admin/blog" class="btn btn-outline-secondary">Back</a>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="card card-info card-outline assistant-panel">
+            <div class="card-header">
+              <h3 class="card-title">Localized Draft Assistant</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-row align-items-end">
+                <div class="form-group col-md-2">
+                  <label for="assistant-locale">Locale</label>
+                  <select id="assistant-locale" class="form-control">
+                    <% (localeOptions || []).forEach(function(item) { %>
+                      <option value="<%= item.code %>" <%= item.code === selectedLocale ? 'selected' : '' %>><%= item.label %> (<%= item.code %>)</option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="assistant-tone">Tone</label>
+                  <select id="assistant-tone" class="form-control">
+                    <option value="helpful" <%= selectedTone === 'helpful' ? 'selected' : '' %>>Helpful</option>
+                    <option value="formal" <%= selectedTone === 'formal' ? 'selected' : '' %>>Formal</option>
+                    <option value="marketing" <%= selectedTone === 'marketing' ? 'selected' : '' %>>Marketing</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-5">
+                  <label for="assistant-keywords">Keywords (comma separated)</label>
+                  <input id="assistant-keywords" class="form-control" placeholder="airport transfer, safety, city rides">
+                  <div class="d-flex flex-wrap mt-2" id="keyword-suggestions" style="gap:0.4rem;"></div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="assistant-media-query">Media search</label>
+                  <input id="assistant-media-query" class="form-control" value="<%= initialMediaQuery || '' %>" placeholder="taxi, airport, city">
+                </div>
+              </div>
+              <div class="d-flex flex-wrap mb-3" id="selected-keyword-chips" style="gap:0.4rem;"></div>
+              <div class="d-flex" style="gap:0.5rem;flex-wrap:wrap;">
+                <button type="button" id="generate-draft-btn" class="btn btn-info">Generate Draft</button>
+                <button type="button" id="search-media-btn" class="btn btn-outline-info">Search Media Hub</button>
+                <small id="assistant-status" class="text-muted align-self-center"></small>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-primary card-outline">
+            <div class="card-body">
+              <form method="post" action="<%= mode === 'edit' ? ('/admin/blog/' + post._id + '/update') : '/admin/blog/new' %>">
+                <div class="form-row">
+                  <div class="form-group col-md-8">
+                    <label>Title</label>
+                    <input class="form-control" name="title" value="<%= post.title || '' %>" required>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Slug</label>
+                    <input class="form-control" name="slug" value="<%= post.slug || '' %>" placeholder="auto-from-title">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Excerpt</label>
+                  <textarea class="form-control" name="excerpt" rows="3"><%= post.excerpt || '' %></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label>Content</label>
+                  <textarea class="form-control" name="content" rows="10"><%= post.content || '' %></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label>Secondary Paragraph</label>
+                  <textarea class="form-control" name="contentSecondary" rows="4"><%= post.contentSecondary || '' %></textarea>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-8">
+                    <label>Quote Text</label>
+                    <textarea class="form-control" name="quoteText" rows="3"><%= post.quoteText || '' %></textarea>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Quote Author</label>
+                    <input class="form-control" name="quoteAuthor" value="<%= post.quoteAuthor || '' %>" placeholder="- Winston Churchill.">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Tertiary Paragraph</label>
+                  <textarea class="form-control" name="contentTertiary" rows="4"><%= post.contentTertiary || '' %></textarea>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Section Heading</label>
+                    <input class="form-control" name="sectionHeading" value="<%= post.sectionHeading || '' %>" placeholder="Creative approach to every project">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Section Paragraph One</label>
+                    <textarea class="form-control" name="sectionParagraphOne" rows="3"><%= post.sectionParagraphOne || '' %></textarea>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Section Paragraph Two</label>
+                    <textarea class="form-control" name="sectionParagraphTwo" rows="3"><%= post.sectionParagraphTwo || '' %></textarea>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Category</label>
+                    <input class="form-control" name="category" value="<%= post.category || '' %>">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Author</label>
+                    <input class="form-control" name="authorName" value="<%= post.authorName || '' %>">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Published At</label>
+                    <input type="datetime-local" class="form-control" name="publishedAt" value="<%= publishedAtValue || '' %>">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-8">
+                    <label>Cover Image URL</label>
+                    <input class="form-control" name="coverImage" id="cover-image-input" value="<%= post.coverImage || '' %>">
+                    <small class="form-text text-muted">Use Search Media Hub or pick from library below.</small>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Tags (comma separated)</label>
+                    <input class="form-control" name="tags" id="tags-input" value="<%= Array.isArray(post.tags) ? post.tags.join(', ') : '' %>">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-8">
+                    <label>Gallery Images</label>
+                    <input class="form-control" id="gallery-images-visible" value="<%= Array.isArray(post.galleryImages) ? post.galleryImages.join(', ') : '' %>" readonly>
+                    <input type="hidden" name="galleryImages" id="gallery-images-input" value="<%= Array.isArray(post.galleryImages) ? post.galleryImages.join(', ') : '' %>">
+                    <small class="form-text text-muted">Use media buttons below to add or remove gallery images.</small>
+                    <div class="d-flex flex-wrap mt-2" id="gallery-chips" style="gap:0.4rem;"></div>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Author Avatar</label>
+                    <input class="form-control" name="authorAvatar" value="<%= post.authorAvatar || '/assets/img/auhtor.png' %>">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Author Bio</label>
+                  <textarea class="form-control" name="authorBio" rows="3"><%= post.authorBio || '' %></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label>Author Social Links</label>
+                  <div id="social-links-editor"></div>
+                  <button type="button" class="btn btn-sm btn-outline-primary" id="add-social-link-btn">Add Social Link</button>
+                  <div class="validation-text" id="social-links-error">Please provide valid social link rows (icon + URL).</div>
+                  <input type="hidden" name="authorSocialLinks" id="author-social-links-input" value="<%= Array.isArray(post.authorSocialLinks) ? JSON.stringify(post.authorSocialLinks) : '[]' %>">
+                </div>
+
+                <div class="form-group">
+                  <label>Comments Moderation</label>
+                  <small class="form-text text-muted mb-2">Review, edit, approve/unapprove comments and replies before they appear on the public blog.</small>
+                  <div id="comments-editor"></div>
+                  <button type="button" class="btn btn-sm btn-outline-primary" id="add-comment-btn">Add Comment</button>
+                  <div class="validation-text" id="comments-error">Each comment requires at least name and message.</div>
+                  <input type="hidden" name="comments" id="comments-input" value="<%= Array.isArray(post.comments) ? JSON.stringify(post.comments) : '[]' %>">
+                </div>
+
+                <div class="mb-3" id="cover-preview-wrap">
+                  <label>Cover Preview</label>
+                  <div>
+                    <img id="cover-preview-image" src="<%= post.coverImage || '/assets/img/post-1.jpg' %>" alt="cover" style="max-width:280px;border-radius:8px;border:1px solid #dee2e6;">
+                  </div>
+                </div>
+
+                <div class="card card-light">
+                  <div class="card-header">
+                    <h3 class="card-title">Media Hub Library</h3>
+                    <div class="card-tools">
+                      <span id="media-count-label" class="badge badge-info"><%= (mediaPagination && mediaPagination.totalItems) || (mediaLibrary && mediaLibrary.length) || 0 %> items</span>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="row" id="media-picker-grid">
+                      <% (mediaLibrary || []).forEach(function(item) { %>
+                        <div class="col-md-3 mb-3">
+                          <div class="border rounded p-2 h-100 d-flex flex-column media-tile">
+                            <img src="<%= item.previewUrl %>" alt="<%= item.title %>" style="height:120px;object-fit:cover;width:100%;border-radius:6px;">
+                            <strong class="mt-2" style="font-size:0.9rem;"><%= item.title %></strong>
+                            <small class="text-muted"><%= item.filename %></small>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary mt-2 media-select-btn"
+                              data-url="<%= item.previewUrl %>"
+                            >Use this image</button>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-secondary mt-2 media-insert-btn"
+                              data-url="<%= item.previewUrl %>"
+                            >Insert to content</button>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-info mt-2 media-gallery-btn"
+                              data-url="<%= item.previewUrl %>"
+                            >Toggle gallery</button>
+                          </div>
+                        </div>
+                      <% }) %>
+                    </div>
+                  </div>
+                  <div class="card-footer d-flex justify-content-between align-items-center">
+                    <small id="media-pagination-label" class="text-muted">Page <%= (mediaPagination && mediaPagination.page) || 1 %></small>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="media-load-more-btn">Load more</button>
+                  </div>
+                </div>
+
+                <div class="form-group form-check">
+                  <input class="form-check-input" type="checkbox" name="isPublished" value="true" id="published-check" <%= post.isPublished ? 'checked' : '' %>>
+                  <label class="form-check-label" for="published-check">Published</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary"><%= mode === 'edit' ? 'Update Post' : 'Create Post' %></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+  <script>
+    (function () {
+      const generateButton = document.getElementById('generate-draft-btn');
+      const searchMediaButton = document.getElementById('search-media-btn');
+      const statusNode = document.getElementById('assistant-status');
+      const localeNode = document.getElementById('assistant-locale');
+      const toneNode = document.getElementById('assistant-tone');
+      const keywordsNode = document.getElementById('assistant-keywords');
+      const keywordSuggestionsNode = document.getElementById('keyword-suggestions');
+      const selectedKeywordChipsNode = document.getElementById('selected-keyword-chips');
+      const mediaQueryNode = document.getElementById('assistant-media-query');
+      const mediaGridNode = document.getElementById('media-picker-grid');
+      const mediaLoadMoreButton = document.getElementById('media-load-more-btn');
+      const mediaPaginationLabel = document.getElementById('media-pagination-label');
+      const mediaCountLabel = document.getElementById('media-count-label');
+      const coverImageInput = document.getElementById('cover-image-input');
+      const coverPreviewImage = document.getElementById('cover-preview-image');
+      const galleryVisibleInput = document.getElementById('gallery-images-visible');
+      const galleryHiddenInput = document.getElementById('gallery-images-input');
+      const galleryChipsNode = document.getElementById('gallery-chips');
+      const addSocialLinkButton = document.getElementById('add-social-link-btn');
+      const socialLinksEditor = document.getElementById('social-links-editor');
+      const socialLinksInput = document.getElementById('author-social-links-input');
+      const socialLinksError = document.getElementById('social-links-error');
+      const addCommentButton = document.getElementById('add-comment-btn');
+      const commentsEditor = document.getElementById('comments-editor');
+      const commentsInput = document.getElementById('comments-input');
+      const commentsError = document.getElementById('comments-error');
+      const blogForm = document.querySelector('form[action^="/admin/blog"]');
+      const tagsInput = document.getElementById('tags-input');
+      const titleInput = document.querySelector('input[name="title"]');
+      const slugInput = document.querySelector('input[name="slug"]');
+      const excerptInput = document.querySelector('textarea[name="excerpt"]');
+      const contentInput = document.querySelector('textarea[name="content"]');
+      const categoryInput = document.querySelector('input[name="category"]');
+
+      var selectedGallery = String(galleryHiddenInput && galleryHiddenInput.value ? galleryHiddenInput.value : '')
+        .split(',')
+        .map(function (item) { return item.trim(); })
+        .filter(Boolean);
+
+      function safeParseArray(value) {
+        try {
+          var parsed = JSON.parse(value || '[]');
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function escAttr(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/"/g, '&quot;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      function escText(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      var socialLinksState = safeParseArray(socialLinksInput ? socialLinksInput.value : '[]');
+      var commentsState = safeParseArray(commentsInput ? commentsInput.value : '[]');
+
+      const mediaState = {
+        page: Number('<%= (mediaPagination && mediaPagination.page) || 1 %>'),
+        pageSize: Number('<%= (mediaPagination && mediaPagination.pageSize) || 24 %>'),
+        hasMore: "<%= (mediaPagination && mediaPagination.hasMore) ? 'true' : 'false' %>" === 'true',
+        totalItems: Number('<%= (mediaPagination && mediaPagination.totalItems) || ((mediaLibrary && mediaLibrary.length) || 0) %>'),
+        query: (mediaQueryNode && mediaQueryNode.value ? mediaQueryNode.value : '').trim(),
+      };
+
+      let keywordSuggestTimer = null;
+
+      function setStatus(text, isError) {
+        if (!statusNode) {
+          return;
+        }
+        statusNode.textContent = text || '';
+        statusNode.classList.toggle('text-danger', !!isError);
+        statusNode.classList.toggle('text-muted', !isError);
+      }
+
+      function useCoverImage(url) {
+        if (!url) {
+          return;
+        }
+        if (coverImageInput) {
+          coverImageInput.value = url;
+        }
+        if (coverPreviewImage) {
+          coverPreviewImage.src = url;
+        }
+      }
+
+      function toggleGalleryImage(url) {
+        var index = selectedGallery.indexOf(url);
+        if (index >= 0) {
+          selectedGallery.splice(index, 1);
+        } else {
+          selectedGallery.push(url);
+        }
+        syncGalleryInputs();
+      }
+
+      function syncGalleryInputs() {
+        var value = selectedGallery.join(', ');
+        if (galleryHiddenInput) galleryHiddenInput.value = value;
+        if (galleryVisibleInput) galleryVisibleInput.value = value;
+
+        if (!galleryChipsNode) return;
+        galleryChipsNode.innerHTML = '';
+        selectedGallery.forEach(function (url) {
+          var chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'gallery-chip active';
+          chip.textContent = 'Gallery: ' + url + ' ×';
+          chip.addEventListener('click', function () {
+            toggleGalleryImage(url);
+          });
+          galleryChipsNode.appendChild(chip);
+        });
+      }
+
+      function insertImageToContent(url) {
+        if (!contentInput || !url) {
+          return;
+        }
+        var block = '\n\n<img src="' + url + '" alt="blog image">\n\n';
+        contentInput.value = (contentInput.value || '') + block;
+      }
+
+      function renderSocialLinks() {
+        if (!socialLinksEditor) return;
+        socialLinksEditor.innerHTML = '';
+
+        socialLinksState.forEach(function (item, index) {
+          var row = document.createElement('div');
+          row.className = 'field-row';
+          row.innerHTML = ''
+            + '<div class="form-row">'
+            + '  <div class="form-group col-md-5 mb-2"><input class="form-control social-icon" placeholder="Icon class e.g. lab la-facebook-f" value="' + escAttr(item.icon || '') + '"></div>'
+            + '  <div class="form-group col-md-5 mb-2"><input class="form-control social-url" placeholder="https://..." value="' + escAttr(item.url || '') + '"></div>'
+            + '  <div class="form-group col-md-2 mb-2"><button type="button" class="btn btn-sm btn-outline-danger w-100 social-remove">Remove</button></div>'
+            + '</div>';
+
+          var removeBtn = row.querySelector('.social-remove');
+          removeBtn.addEventListener('click', function () {
+            socialLinksState.splice(index, 1);
+            renderSocialLinks();
+          });
+
+          socialLinksEditor.appendChild(row);
+        });
+      }
+
+      function collectSocialLinks() {
+        if (!socialLinksEditor) return [];
+        var rows = socialLinksEditor.querySelectorAll('.field-row');
+        var data = [];
+        rows.forEach(function (row) {
+          var icon = row.querySelector('.social-icon').value.trim();
+          var url = row.querySelector('.social-url').value.trim();
+          if (!icon && !url) return;
+          data.push({ icon: icon || 'lab la-link', url: url || '#' });
+        });
+        return data;
+      }
+
+      function renderComments() {
+        if (!commentsEditor) return;
+        commentsEditor.innerHTML = '';
+
+        commentsState.forEach(function (comment, index) {
+          var safeReplies = Array.isArray(comment.replies) ? comment.replies : [];
+          var row = document.createElement('div');
+          row.className = 'field-row';
+          row.innerHTML = ''
+            + '<div class="form-row">'
+            + '  <div class="form-group col-md-2 mb-2"><input class="form-control comment-name" placeholder="Name" value="' + escAttr(comment.name || '') + '"></div>'
+            + '  <div class="form-group col-md-2 mb-2"><input class="form-control comment-email" placeholder="Email" value="' + escAttr(comment.email || '') + '"></div>'
+            + '  <div class="form-group col-md-2 mb-2"><input class="form-control comment-date" placeholder="Date label" value="' + escAttr(comment.dateLabel || '') + '"></div>'
+            + '  <div class="form-group col-md-2 mb-2"><input class="form-control comment-avatar" placeholder="Avatar URL" value="' + escAttr(comment.avatar || '') + '"></div>'
+            + '  <div class="form-group col-md-1 mb-2 d-flex align-items-center"><div class="form-check mt-2"><input class="form-check-input comment-approved" type="checkbox" ' + (comment.approved !== false ? 'checked' : '') + '><label class="form-check-label">Approve</label></div></div>'
+            + '  <div class="form-group col-md-3 mb-2"><button type="button" class="btn btn-sm btn-outline-danger w-100 comment-remove">Remove</button></div>'
+            + '</div>'
+            + '<div class="mb-2 text-muted" style="font-size:0.78rem;">Approved by: ' + escText(comment.approvedBy || '-') + ' | Approved at: ' + escText(comment.approvedAt || '-') + '</div>'
+            + '<div class="form-group mb-2"><textarea class="form-control comment-message" rows="2" placeholder="Comment message">' + escText(comment.message || '') + '</textarea></div>'
+            + '<div class="border rounded p-2 bg-light">'
+            + '  <div class="d-flex justify-content-between align-items-center mb-2"><strong style="font-size:0.85rem;">Replies</strong><button type="button" class="btn btn-xs btn-outline-primary comment-add-reply">Add Reply</button></div>'
+            + '  <div class="comment-replies-list"></div>'
+            + '</div>';
+
+          var removeBtn = row.querySelector('.comment-remove');
+          removeBtn.addEventListener('click', function () {
+            commentsState.splice(index, 1);
+            renderComments();
+          });
+
+          var addReplyBtn = row.querySelector('.comment-add-reply');
+          var repliesList = row.querySelector('.comment-replies-list');
+
+          function renderReplies(replies) {
+            repliesList.innerHTML = '';
+            replies.forEach(function (reply, replyIndex) {
+              var replyNode = document.createElement('div');
+              replyNode.className = 'field-row mb-2';
+              replyNode.innerHTML = ''
+                + '<div class="form-row">'
+                + '  <div class="form-group col-md-2 mb-2"><input class="form-control reply-name" placeholder="Reply name" value="' + escAttr(reply.name || '') + '"></div>'
+                + '  <div class="form-group col-md-2 mb-2"><input class="form-control reply-email" placeholder="Reply email" value="' + escAttr(reply.email || '') + '"></div>'
+                + '  <div class="form-group col-md-2 mb-2"><input class="form-control reply-date" placeholder="Reply date" value="' + escAttr(reply.dateLabel || '') + '"></div>'
+                + '  <div class="form-group col-md-2 mb-2"><input class="form-control reply-avatar" placeholder="Reply avatar" value="' + escAttr(reply.avatar || '') + '"></div>'
+                + '  <div class="form-group col-md-1 mb-2 d-flex align-items-center"><div class="form-check mt-2"><input class="form-check-input reply-approved" type="checkbox" ' + (reply.approved !== false ? 'checked' : '') + '><label class="form-check-label">Approve</label></div></div>'
+                + '  <div class="form-group col-md-3 mb-2"><button type="button" class="btn btn-sm btn-outline-danger w-100 reply-remove">Remove</button></div>'
+                + '</div>'
+                + '<div class="mb-2 text-muted" style="font-size:0.78rem;">Approved by: ' + escText(reply.approvedBy || '-') + ' | Approved at: ' + escText(reply.approvedAt || '-') + '</div>'
+                + '<div class="form-group mb-0"><textarea class="form-control reply-message" rows="2" placeholder="Reply message">' + escText(reply.message || '') + '</textarea></div>';
+
+              replyNode.querySelector('.reply-remove').addEventListener('click', function () {
+                safeReplies.splice(replyIndex, 1);
+                renderReplies(safeReplies);
+              });
+
+              repliesList.appendChild(replyNode);
+            });
+          }
+
+          addReplyBtn.addEventListener('click', function () {
+            safeReplies.push({ name: '', email: '', dateLabel: '', avatar: '', message: '', approved: true });
+            renderReplies(safeReplies);
+          });
+
+          renderReplies(safeReplies);
+
+          commentsEditor.appendChild(row);
+        });
+      }
+
+      function collectComments() {
+        if (!commentsEditor) return [];
+        var rows = commentsEditor.querySelectorAll('.field-row');
+        var data = [];
+        rows.forEach(function (row) {
+          var name = row.querySelector('.comment-name').value.trim();
+          var email = row.querySelector('.comment-email').value.trim();
+          var dateLabel = row.querySelector('.comment-date').value.trim();
+          var avatar = row.querySelector('.comment-avatar').value.trim();
+          var message = row.querySelector('.comment-message').value.trim();
+          var approved = !!row.querySelector('.comment-approved').checked;
+          if (!name && !message) return;
+
+          var replies = [];
+          row.querySelectorAll('.comment-replies-list .field-row').forEach(function (replyRow) {
+            var replyName = replyRow.querySelector('.reply-name').value.trim();
+            var replyEmail = replyRow.querySelector('.reply-email').value.trim();
+            var replyDate = replyRow.querySelector('.reply-date').value.trim();
+            var replyAvatar = replyRow.querySelector('.reply-avatar').value.trim();
+            var replyMessage = replyRow.querySelector('.reply-message').value.trim();
+            var replyApproved = !!replyRow.querySelector('.reply-approved').checked;
+            if (!replyName && !replyMessage) return;
+            replies.push({
+              name: replyName,
+              email: replyEmail,
+              dateLabel: replyDate,
+              avatar: replyAvatar,
+              message: replyMessage,
+              approved: replyApproved,
+            });
+          });
+
+          data.push({ name: name, email: email, dateLabel: dateLabel, avatar: avatar, message: message, approved: approved, replies: replies });
+        });
+        return data;
+      }
+
+      function parseKeywords() {
+        return String(keywordsNode && keywordsNode.value ? keywordsNode.value : '')
+          .split(',')
+          .map(function (item) { return item.trim(); })
+          .filter(Boolean);
+      }
+
+      function renderKeywordChips() {
+        if (!selectedKeywordChipsNode) {
+          return;
+        }
+        const keywords = parseKeywords();
+        if (!keywords.length) {
+          selectedKeywordChipsNode.innerHTML = '';
+          return;
+        }
+
+        selectedKeywordChipsNode.innerHTML = keywords
+          .map(function (keyword) {
+            return '<span class="assistant-chip keyword-chip" data-value="' + keyword.replace(/"/g, '&quot;') + '">' + keyword + ' ×</span>';
+          })
+          .join('');
+
+        selectedKeywordChipsNode.querySelectorAll('.keyword-chip').forEach(function (chip) {
+          chip.addEventListener('click', function () {
+            const value = chip.getAttribute('data-value');
+            const remaining = parseKeywords().filter(function (item) { return item !== value; });
+            if (keywordsNode) {
+              keywordsNode.value = remaining.join(', ');
+            }
+            renderKeywordChips();
+          });
+        });
+      }
+
+      function appendKeyword(keyword) {
+        const current = parseKeywords();
+        if (current.map(function (k) { return k.toLowerCase(); }).indexOf(String(keyword).toLowerCase()) === -1) {
+          current.push(keyword);
+        }
+        if (keywordsNode) {
+          keywordsNode.value = current.join(', ');
+        }
+        renderKeywordChips();
+      }
+
+      function renderKeywordSuggestions(items) {
+        if (!keywordSuggestionsNode) {
+          return;
+        }
+        if (!Array.isArray(items) || !items.length) {
+          keywordSuggestionsNode.innerHTML = '';
+          return;
+        }
+
+        keywordSuggestionsNode.innerHTML = items
+          .map(function (item) {
+            return '<button type="button" class="assistant-chip suggestion-chip" data-value="' + String(item).replace(/"/g, '&quot;') + '">' + item + '</button>';
+          })
+          .join('');
+
+        keywordSuggestionsNode.querySelectorAll('.suggestion-chip').forEach(function (button) {
+          button.addEventListener('click', function () {
+            appendKeyword(button.getAttribute('data-value'));
+          });
+        });
+      }
+
+      function bindMediaButtons() {
+        const buttons = document.querySelectorAll('.media-select-btn');
+        buttons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            useCoverImage(button.getAttribute('data-url'));
+          });
+        });
+
+        const insertButtons = document.querySelectorAll('.media-insert-btn');
+        insertButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            insertImageToContent(button.getAttribute('data-url'));
+          });
+        });
+
+        const galleryButtons = document.querySelectorAll('.media-gallery-btn');
+        galleryButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            toggleGalleryImage(button.getAttribute('data-url'));
+          });
+        });
+      }
+
+      function updateMediaMeta() {
+        if (mediaPaginationLabel) {
+          mediaPaginationLabel.textContent = 'Page ' + mediaState.page + (mediaState.hasMore ? ' (more available)' : '');
+        }
+        if (mediaCountLabel) {
+          mediaCountLabel.textContent = String(mediaState.totalItems || 0) + ' items';
+        }
+        if (mediaLoadMoreButton) {
+          mediaLoadMoreButton.disabled = !mediaState.hasMore;
+          mediaLoadMoreButton.textContent = mediaState.hasMore ? 'Load more' : 'No more items';
+        }
+      }
+
+      function renderMediaGrid(items, append) {
+        if (!mediaGridNode) {
+          return;
+        }
+
+        function escapeHtml(value) {
+          return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+        }
+
+        if (!Array.isArray(items) || !items.length) {
+          if (!append) {
+            mediaGridNode.innerHTML = '<div class="col-12 text-muted">No images found for this keyword.</div>';
+          }
+          updateMediaMeta();
+          return;
+        }
+
+        var html = items
+          .map(function (item) {
+            var title = escapeHtml(item.title || 'Untitled');
+            var filename = escapeHtml(item.filename || '');
+            var previewUrl = escapeHtml(item.previewUrl || '');
+            return '<div class="col-md-3 mb-3">'
+              + '<div class="border rounded p-2 h-100 d-flex flex-column">'
+              + '<img src="' + previewUrl + '" alt="' + title + '" style="height:120px;object-fit:cover;width:100%;border-radius:6px;">'
+              + '<strong class="mt-2" style="font-size:0.9rem;">' + title + '</strong>'
+              + '<small class="text-muted">' + filename + '</small>'
+              + '<button type="button" class="btn btn-sm btn-outline-primary mt-2 media-select-btn" data-url="' + previewUrl + '">Use this image</button>'
+              + '<button type="button" class="btn btn-sm btn-outline-secondary mt-2 media-insert-btn" data-url="' + previewUrl + '">Insert to content</button>'
+              + '<button type="button" class="btn btn-sm btn-outline-info mt-2 media-gallery-btn" data-url="' + previewUrl + '">Toggle gallery</button>'
+              + '</div>'
+              + '</div>';
+          })
+          .join('');
+
+        mediaGridNode.innerHTML = append ? (mediaGridNode.innerHTML + html) : html;
+
+        bindMediaButtons();
+        updateMediaMeta();
+      }
+
+      async function fetchKeywordSuggestions() {
+        const locale = localeNode ? localeNode.value : 'nl';
+        const q = parseKeywords().slice(-1)[0] || (keywordsNode && keywordsNode.value ? keywordsNode.value.trim() : '');
+        const response = await fetch('/admin/blog/actions/keyword-suggestions?locale=' + encodeURIComponent(locale) + '&q=' + encodeURIComponent(q) + '&limit=10');
+        const payload = await response.json().catch(function () { return {}; });
+        if (!response.ok || payload.success === false) {
+          return;
+        }
+        renderKeywordSuggestions(payload.data || []);
+      }
+
+      async function fetchMedia(append) {
+        const q = (mediaQueryNode && mediaQueryNode.value ? mediaQueryNode.value : '').trim();
+        mediaState.query = q;
+        if (!append) {
+          mediaState.page = 1;
+        }
+        setStatus('Searching Media Hub...');
+
+        const response = await fetch(
+          '/admin/blog/actions/media-search?q=' + encodeURIComponent(q)
+          + '&page=' + encodeURIComponent(mediaState.page)
+          + '&pageSize=' + encodeURIComponent(mediaState.pageSize)
+        );
+        const payload = await response.json().catch(function () { return {}; });
+
+        if (!response.ok || payload.success === false) {
+          throw new Error((payload.error && payload.error.message) || 'Media search failed.');
+        }
+
+        const data = payload.data || {};
+        const items = Array.isArray(data.items) ? data.items : [];
+        const pagination = data.pagination || {};
+        mediaState.page = Number(pagination.page) || mediaState.page;
+        mediaState.hasMore = !!pagination.hasMore;
+        mediaState.totalItems = Number(pagination.totalItems || items.length);
+
+        renderMediaGrid(items, append);
+        setStatus('Media results updated.');
+      }
+
+      async function generateDraft() {
+        const payload = {
+          locale: localeNode ? localeNode.value : 'nl',
+          tone: toneNode ? toneNode.value : 'helpful',
+          keywords: keywordsNode ? keywordsNode.value : '',
+          mediaQuery: mediaQueryNode ? mediaQueryNode.value : '',
+        };
+
+        setStatus('Generating localized draft...');
+        const response = await fetch('/admin/blog/actions/generate-draft', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json().catch(function () { return {}; });
+        if (!response.ok || data.success === false) {
+          throw new Error((data.error && data.error.message) || 'Draft generation failed.');
+        }
+
+        const draft = data.data || {};
+        if (titleInput && draft.title) titleInput.value = draft.title;
+        if (slugInput && draft.slug) slugInput.value = draft.slug;
+        if (excerptInput && draft.excerpt) excerptInput.value = draft.excerpt;
+        if (contentInput && draft.content) contentInput.value = draft.content;
+        if (categoryInput && draft.category) categoryInput.value = draft.category;
+        if (tagsInput && draft.tags) tagsInput.value = draft.tags;
+
+        const mediaItems = Array.isArray(draft.mediaLibrary) ? draft.mediaLibrary : [];
+        const pagination = draft.mediaPagination || {};
+        mediaState.page = Number(pagination.page) || 1;
+        mediaState.hasMore = !!pagination.hasMore;
+        mediaState.totalItems = Number(pagination.totalItems || mediaItems.length);
+
+        renderMediaGrid(mediaItems, false);
+        if (mediaItems[0] && mediaItems[0].previewUrl) {
+          useCoverImage(mediaItems[0].previewUrl);
+        }
+
+        if (Array.isArray(draft.keywordSuggestions)) {
+          renderKeywordSuggestions(draft.keywordSuggestions);
+        }
+
+        setStatus('Draft generated. Review and edit before publishing.');
+      }
+
+      if (searchMediaButton) {
+        searchMediaButton.addEventListener('click', function () {
+          fetchMedia(false).catch(function (error) {
+            setStatus(error.message, true);
+          });
+        });
+      }
+
+      if (mediaLoadMoreButton) {
+        mediaLoadMoreButton.addEventListener('click', function () {
+          if (!mediaState.hasMore) {
+            return;
+          }
+          mediaState.page += 1;
+          fetchMedia(true).catch(function (error) {
+            mediaState.page = Math.max(1, mediaState.page - 1);
+            setStatus(error.message, true);
+          });
+        });
+      }
+
+      if (generateButton) {
+        generateButton.addEventListener('click', function () {
+          generateDraft().catch(function (error) {
+            setStatus(error.message, true);
+          });
+        });
+      }
+
+      if (coverImageInput) {
+        coverImageInput.addEventListener('input', function () {
+          useCoverImage(coverImageInput.value);
+        });
+      }
+
+      if (localeNode) {
+        localeNode.addEventListener('change', function () {
+          fetchKeywordSuggestions().catch(function () { return null; });
+        });
+      }
+
+      if (keywordsNode) {
+        keywordsNode.addEventListener('input', function () {
+          renderKeywordChips();
+          if (keywordSuggestTimer) {
+            clearTimeout(keywordSuggestTimer);
+          }
+          keywordSuggestTimer = setTimeout(function () {
+            fetchKeywordSuggestions().catch(function () { return null; });
+          }, 250);
+        });
+      }
+
+      if (addSocialLinkButton) {
+        addSocialLinkButton.addEventListener('click', function () {
+          socialLinksState.push({ icon: 'lab la-facebook-f', url: '#' });
+          renderSocialLinks();
+        });
+      }
+
+      if (addCommentButton) {
+        addCommentButton.addEventListener('click', function () {
+          commentsState.push({ name: '', email: '', dateLabel: '', avatar: '', message: '', replies: [] });
+          renderComments();
+        });
+      }
+
+      if (blogForm) {
+        blogForm.addEventListener('submit', function (event) {
+          socialLinksError.style.display = 'none';
+          commentsError.style.display = 'none';
+
+          var socialLinks = collectSocialLinks();
+          var comments = collectComments();
+
+          var hasInvalidSocial = socialLinks.some(function (item) {
+            return !item.icon || !item.url;
+          });
+          var hasInvalidComment = comments.some(function (item) {
+            return !item.name || !item.message;
+          });
+          var hasInvalidReply = comments.some(function (item) {
+            return Array.isArray(item.replies) && item.replies.some(function (reply) {
+              return !reply.name || !reply.message;
+            });
+          });
+
+          if (hasInvalidSocial) {
+            socialLinksError.style.display = 'block';
+            event.preventDefault();
+            return;
+          }
+
+          if (hasInvalidComment || hasInvalidReply) {
+            commentsError.style.display = 'block';
+            commentsError.textContent = hasInvalidReply
+              ? 'Each reply requires name and message.'
+              : 'Each comment requires at least name and message.';
+            event.preventDefault();
+            return;
+          }
+
+          if (socialLinksInput) {
+            socialLinksInput.value = JSON.stringify(socialLinks);
+          }
+          if (commentsInput) {
+            commentsInput.value = JSON.stringify(comments);
+          }
+          syncGalleryInputs();
+        });
+      }
+
+      bindMediaButtons();
+      renderSocialLinks();
+      renderComments();
+      syncGalleryInputs();
+      renderKeywordChips();
+      updateMediaMeta();
+      fetchKeywordSuggestions().catch(function () { return null; });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <h1 class="mb-0"><%= mode === 'edit' ? 'Edit Car' : 'Create Car' %></h1>
+          <a href="/admin/cars" class="btn btn-outline-secondary">Back</a>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="card card-primary card-outline">
+            <div class="card-body">
+              <form method="post" action="<%= mode === 'edit' ? ('/admin/cars/' + car._id + '/update') : '/admin/cars/new' %>">
+                <div class="form-row">
+                  <div class="form-group col-md-8">
+                    <label>Title</label>
+                    <input class="form-control" name="title" value="<%= car.title || '' %>" required>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Slug</label>
+                    <input class="form-control" name="slug" value="<%= car.slug || '' %>" placeholder="auto-from-title">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>City</label>
+                    <input class="form-control" name="city" value="<%= car.city || '' %>">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Transmission</label>
+                    <input class="form-control" name="transmission" value="<%= car.transmission || '' %>">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Display Order</label>
+                    <input type="number" min="0" class="form-control" name="displayOrder" value="<%= Number(car.displayOrder || 0) %>">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>List Image URL</label>
+                    <input class="form-control" name="image" value="<%= car.image || '' %>">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Details Image URL</label>
+                    <input class="form-control" name="detailImage" value="<%= car.detailImage || '' %>">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Price Per KM</label>
+                    <input type="number" min="0" step="0.01" class="form-control" name="pricePerKm" value="<%= Number(car.pricePerKm || 0) %>">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Initial Charge</label>
+                    <input type="number" min="0" step="0.01" class="form-control" name="initialCharge" value="<%= Number(car.initialCharge || 0) %>">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Per Mile/KM</label>
+                    <input type="number" min="0" step="0.01" class="form-control" name="perMileKm" value="<%= Number(car.perMileKm || 0) %>">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Per Stopped Traffic</label>
+                    <input type="number" min="0" step="0.01" class="form-control" name="perStoppedTraffic" value="<%= Number(car.perStoppedTraffic || 0) %>">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Passengers</label>
+                    <input type="number" min="1" class="form-control" name="passengers" value="<%= Number(car.passengers || 1) %>">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Luggage Carry</label>
+                    <input type="number" min="0" class="form-control" name="luggageCarry" value="<%= Number(car.luggageCarry || 0) %>">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Mileage</label>
+                    <input class="form-control" name="mileage" value="<%= car.mileage || '' %>">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Engine</label>
+                    <input class="form-control" name="engine" value="<%= car.engine || '' %>">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea class="form-control" name="description" rows="5"><%= car.description || '' %></textarea>
+                </div>
+
+                <div class="form-group form-check">
+                  <input class="form-check-input" type="checkbox" name="airCondition" value="true" id="air-condition-check" <%= car.airCondition ? 'checked' : '' %>>
+                  <label class="form-check-label" for="air-condition-check">Air Condition Available</label>
+                </div>
+
+                <div class="form-group form-check">
+                  <input class="form-check-input" type="checkbox" name="isPublished" value="true" id="published-check" <%= car.isPublished ? 'checked' : '' %>>
+                  <label class="form-check-label" for="published-check">Published</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary"><%= mode === 'edit' ? 'Update Car' : 'Create Car' %></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

@@ -6,8 +6,8 @@
         <div class="container">
             <div class="page-header-info">
                 <h4><%= t('pages.services.details.header.eyebrow') %></h4>
-                <h2><%= t('pages.services.details.header.titleLine1') %> <br> <%= t('pages.services.details.header.titleLine2') %> <span><%= t('pages.services.details.header.titleBrand') %></span></h2>
-                <p><%= t('pages.services.details.header.description') %></p>
+                <h2><%= service && service.title ? service.title : (t('pages.services.details.header.titleLine1') + ' ' + t('pages.services.details.header.titleLine2')) %></h2>
+                <p><%= service && service.shortDescription ? service.shortDescription : t('pages.services.details.header.description') %></p>
             </div>
         </div>
     </section>
@@ -18,50 +18,43 @@
             <div class="row">
                 <div class="col-lg-8 sm-padding">
                     <div class="service-details-info">
-                        <img src="/assets/img/post-2.jpg" alt="img">
-                        <h2><%= t('pages.services.details.title') %></h2>
-                        <p><%= t('pages.services.details.paragraph1') %></p>
-                        <p><%= t('pages.services.details.paragraph2') %></p>
+                        <img src="<%= service && service.featureImage ? service.featureImage : '/assets/img/post-2.jpg' %>" alt="img">
+                        <h2><%= service && service.title ? service.title : t('pages.services.details.title') %></h2>
+                        <p><%= service && service.description ? service.description : t('pages.services.details.paragraph1') %></p>
+                        <p><%= service && service.shortDescription ? service.shortDescription : t('pages.services.details.paragraph2') %></p>
                         <ul class="service-features">
-                            <li>
-                                <div><i class="las la-shipping-fast"></i></div>
-                                <div>
-                                    <h3><%= t('pages.services.details.features.fastPickups.title') %></h3>
-                                    <p><%= t('pages.services.details.features.fastPickups.description') %></p>
-                                </div>
-                            </li>
-                            <li>
-                                <div><i class="las la-taxi"></i></div>
-                                <div>
-                                    <h3><%= t('pages.services.details.features.instantCar.title') %></h3>
-                                    <p><%= t('pages.services.details.features.instantCar.description') %></p>
-                                </div>
-                            </li>
-                            <li>
-                                <div><i class="las la-tachometer-alt"></i></div>
-                                <div>
-                                    <h3><%= t('pages.services.details.features.safeDrive.title') %></h3>
-                                    <p><%= t('pages.services.details.features.safeDrive.description') %></p>
-                                </div>
-                            </li>
-                            <li>
-                                <div><i class="las la-user-astronaut"></i></div>
-                                <div>
-                                    <h3><%= t('pages.services.details.features.support247.title') %></h3>
-                                    <p><%= t('pages.services.details.features.support247.description') %></p>
-                                </div>
-                            </li>
+                            <% const detailsFeatures = service && Array.isArray(service.features) && service.features.length ? service.features : []; %>
+                            <% if (detailsFeatures.length) { %>
+                                <% detailsFeatures.forEach(function(feature) { %>
+                                    <li>
+                                        <div><i class="<%= feature.iconClass || 'las la-check' %>"></i></div>
+                                        <div>
+                                            <h3><%= feature.title || '' %></h3>
+                                            <p><%= feature.description || '' %></p>
+                                        </div>
+                                    </li>
+                                <% }) %>
+                            <% } else { %>
+                                <li>
+                                    <div><i class="las la-shipping-fast"></i></div>
+                                    <div>
+                                        <h3><%= t('pages.services.details.features.fastPickups.title') %></h3>
+                                        <p><%= t('pages.services.details.features.fastPickups.description') %></p>
+                                    </div>
+                                </li>
+                            <% } %>
                         </ul>
                         <p><%= t('pages.services.details.paragraph3') %></p>
                         <div class="service-details-list">
-                            <img src="/assets/img/post-1.jpg" alt="img">
+                            <img src="<%= service && service.benefitsImage ? service.benefitsImage : '/assets/img/post-1.jpg' %>" alt="img">
                             <div>
                                 <h3><%= t('pages.services.details.benefits.title') %></h3>
                                 <p><%= t('pages.services.details.benefits.description') %></p>
                                 <ul class="service-icon-list">
-                                    <li><i class="las la-hand-point-right"></i><%= t('pages.services.details.benefits.item1') %></li>
-                                    <li><i class="las la-hand-point-right"></i><%= t('pages.services.details.benefits.item2') %></li>
-                                    <li><i class="las la-hand-point-right"></i><%= t('pages.services.details.benefits.item3') %></li>
+                                    <% const benefitPoints = service && Array.isArray(service.benefitPoints) && service.benefitPoints.length ? service.benefitPoints : [t('pages.services.details.benefits.item1'), t('pages.services.details.benefits.item2'), t('pages.services.details.benefits.item3')]; %>
+                                    <% benefitPoints.forEach(function(point) { %>
+                                        <li><i class="las la-hand-point-right"></i><%= point %></li>
+                                    <% }) %>
                                 </ul>
                             </div>
                         </div>
@@ -73,11 +66,13 @@
                             <h3><%= t('pages.services.details.categories.title') %></h3>
                         </div>
                         <ul>
-                            <li><a href="#"><%= t('home.services.regularTransport') %></a><i class="las la-arrow-right"></i></li>
-                            <li><a href="#"><%= t('home.services.cityTransport') %></a><i class="las la-arrow-right"></i></li>
-                            <li><a href="#"><%= t('home.services.airportTransport') %></a><i class="las la-arrow-right"></i></li>
-                            <li><a href="#"><%= t('pages.services.details.categories.longJourney') %></a><i class="las la-arrow-right"></i></li>
-                            <li><a href="#"><%= t('home.services.luggageTransport') %></a><i class="las la-arrow-right"></i></li>
+                            <% if (Array.isArray(services) && services.length) { %>
+                                <% services.forEach(function(item) { %>
+                                    <li><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.title %></a><i class="las la-arrow-right"></i></li>
+                                <% }) %>
+                            <% } else { %>
+                                <li><a href="#"><%= t('home.services.regularTransport') %></a><i class="las la-arrow-right"></i></li>
+                            <% } %>
                         </ul>
                     </div>
                     <div class="sidebar-widget banner">
@@ -94,15 +89,10 @@
                             <h3><%= t('pages.services.details.tagsTitle') %></h3>
                         </div>
                         <ul class="tags">
-                            <li><a href="#"><%= t('pages.users.services.details.business', 'business') %></a></li>
-                            <li><a href="#"><%= t('pages.users.services.details.marketing', 'marketing') %></a></li>
-                            <li><a href="#"><%= t('pages.users.services.details.startup', 'startup') %></a></li>
-                            <li><a href="#"><%= t('pages.users.services.details.design', 'design') %></a></li>
-                            <li><a href="#"><%= t('pages.users.services.details.consulting', 'consulting') %></a></li>
-                            <li><a href="#"><%= t('pages.users.services.details.strategy', 'strategy') %></a></li>
-                            <li><a href="#"><%= t('pages.users.services.details.development', 'development') %></a></li>
-                            <li><a href="#"><%= t('pages.users.services.details.tips', 'tips') %></a></li>
-                            <li><a href="#"><%= t('pages.users.services.details.seo', 'Seo') %></a></li>
+                            <% const tags = service && Array.isArray(service.tags) && service.tags.length ? service.tags : [t('pages.users.services.details.business', 'business'), t('pages.users.services.details.marketing', 'marketing'), t('pages.users.services.details.startup', 'startup')]; %>
+                            <% tags.forEach(function(tag) { %>
+                                <li><a href="#"><%= tag %></a></li>
+                            <% }) %>
                         </ul>
                     </div>
                     <!--Tags-->

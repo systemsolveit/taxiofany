@@ -18,6 +18,27 @@
             <div class="row">
                 <div class="col-lg-8 sm-padding">
                     <div class="classic-post">
+                        <% if (Array.isArray(blogPosts) && blogPosts.length) { %>
+                        <% blogPosts.forEach(function(post) { %>
+                        <div class="post-card">
+                            <div class="post-thumb">
+                                <img src="<%= post.coverImage || '/assets/img/post-1.jpg' %>" alt="post">
+                                <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="post-category"><%= post.category || t('pages.users.blog.classic.business', 'Business') %></a>
+                            </div>
+                            <div class="post-content-wrap">
+                                <ul class="post-meta">
+                                    <li><i class="las la-calendar"></i><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-GB') : t('pages.users.blog.classic.jan_01_2022', 'Jan 01 2022') %></li>
+                                    <li><i class="las la-user"></i><%= post.authorName || t('pages.users.blog.classic.elliot_alderson', 'Elliot Alderson') %></li>
+                                </ul>
+                                <div class="post-content">
+                                    <h3><a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="hover"><%= post.title %></a></h3>
+                                    <p><%= post.excerpt || '' %></p>
+                                    <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="read-more"><%= t('pages.users.blog.classic.read_more', 'Read More') %></a>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                        <% } else { %>
                         <div class="post-card">
                             <div class="post-thumb">
                                 <img src="/assets/img/post-1.jpg" alt="post">
@@ -69,22 +90,29 @@
                                 </div>
                             </div>
                         </div>
+                        <% } %>
                     </div>
                     <ul class="pagination-wrap text-left mt-30">
-                        <li><a href="#"><i class="las la-arrow-left"></i></a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#" class="active">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#"><i class="las la-arrow-right"></i></a></li>
+                        <% if (blogPagination && blogPagination.totalPages > 1) { %>
+                            <% const currentPage = Number(blogPagination.page || 1); %>
+                            <% const totalPages = Number(blogPagination.totalPages || 1); %>
+                            <% const queryBase = `q=${encodeURIComponent((blogFilters && blogFilters.q) || '')}&category=${encodeURIComponent((blogFilters && blogFilters.category) || '')}`; %>
+                            <li><a href="/blog/classic?<%= queryBase %>&page=<%= currentPage > 1 ? currentPage - 1 : 1 %>"><i class="las la-arrow-left"></i></a></li>
+                            <% for (let p = 1; p <= totalPages; p += 1) { %>
+                                <li><a href="/blog/classic?<%= queryBase %>&page=<%= p %>" class="<%= p === currentPage ? 'active' : '' %>"><%= p %></a></li>
+                            <% } %>
+                            <li><a href="/blog/classic?<%= queryBase %>&page=<%= currentPage < totalPages ? currentPage + 1 : totalPages %>"><i class="las la-arrow-right"></i></a></li>
+                        <% } %>
                     </ul>
                     <!--Pagination-->
                 </div>
                 <!--Blog Grid-->
                 <div class="col-lg-4 sm-padding">
                     <div class="sidebar-widget">
-                        <form action="" class="search-form">
-                            <input type="text" class="form-control" placeholder="Search">
-                            <button class="search-btn" type="button"><i class="fa fa-search"></i></button>
+                        <form action="/blog/classic" method="get" class="search-form">
+                            <input type="text" class="form-control" name="q" value="<%= (blogFilters && blogFilters.q) || '' %>" placeholder="Search">
+                            <input type="hidden" name="category" value="<%= (blogFilters && blogFilters.category) || '' %>">
+                            <button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
                     <!--Search Form-->
@@ -93,11 +121,17 @@
                             <h3><%= t('pages.users.blog.classic.categories', 'Categories') %></h3>
                         </div>
                         <ul class="category-list">
-                            <li><a href="/blog"><%= t('pages.users.blog.classic.business_strategy', 'Business Strategy') %></a><span>23</span></li>
-                            <li><a href="/blog"><%= t('pages.users.blog.classic.project_management', 'Project Management') %></a><span>05</span></li>
-                            <li><a href="/blog"><%= t('pages.users.blog.classic.digital_marketing', 'Digital Marketing') %></a><span>18</span></li>
-                            <li><a href="/blog"><%= t('pages.users.blog.classic.customer_experience', 'Customer Experience') %></a><span>04</span></li>
-                            <li><a href="/blog"><%= t('pages.users.blog.classic.partnership_system', 'Partnership System') %></a><span>15</span></li>
+                            <% if (blogSidebar && Array.isArray(blogSidebar.categories) && blogSidebar.categories.length) { %>
+                                <% blogSidebar.categories.forEach(function(category) { %>
+                                    <li><a href="/blog/classic?category=<%= encodeURIComponent(category.name) %>"><%= category.name %></a><span><%= category.count %></span></li>
+                                <% }) %>
+                            <% } else { %>
+                                <li><a href="/blog"><%= t('pages.users.blog.classic.business_strategy', 'Business Strategy') %></a><span>23</span></li>
+                                <li><a href="/blog"><%= t('pages.users.blog.classic.project_management', 'Project Management') %></a><span>05</span></li>
+                                <li><a href="/blog"><%= t('pages.users.blog.classic.digital_marketing', 'Digital Marketing') %></a><span>18</span></li>
+                                <li><a href="/blog"><%= t('pages.users.blog.classic.customer_experience', 'Customer Experience') %></a><span>04</span></li>
+                                <li><a href="/blog"><%= t('pages.users.blog.classic.partnership_system', 'Partnership System') %></a><span>15</span></li>
+                            <% } %>
                         </ul>
                     </div>
                     <!--Categories-->
@@ -106,33 +140,29 @@
                             <h3><%= t('pages.users.blog.classic.recent_articles', 'Recent Articles') %></h3>
                         </div>
                         <ul class="thumb-post">
-                            <li>
-                                <div class="thumb">
-                                    <img src="/assets/img/post-thumb-1.jpg" alt="thumb">
-                                </div>
-                                <div class="thumb-post-info">
-                                    <h3><a href="/blog/details"><%= t('pages.users.blog.classic.how_to_go_about_initiating_an_startup_in_few_day', 'How To Go About Initiating An Startup In Few Days.') %></a></h3>
-                                    <a href="#" class="date">Jan 01 2022</a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="thumb">
-                                    <img src="/assets/img/post-thumb-2.jpg" alt="thumb">
-                                </div>
-                                <div class="thumb-post-info">
-                                    <h3><a href="/blog/details">Financial Experts Support Help You To Find Out.</a></h3>
-                                    <a href="#" class="date">Jan 01 2022</a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="thumb">
-                                    <img src="/assets/img/post-thumb-3.jpg" alt="thumb">
-                                </div>
-                                <div class="thumb-post-info">
-                                    <h3><a href="/blog/details"><%= t('pages.users.blog.classic.innovative_helping_business_all_over_the_world', 'Innovative Helping Business All Over The World.') %></a></h3>
-                                    <a href="#" class="date">Jan 01 2022</a>
-                                </div>
-                            </li>
+                            <% if (blogSidebar && Array.isArray(blogSidebar.recentArticles) && blogSidebar.recentArticles.length) { %>
+                                <% blogSidebar.recentArticles.forEach(function(article) { %>
+                                    <li>
+                                        <div class="thumb">
+                                            <img src="<%= article.coverImage || '/assets/img/post-thumb-1.jpg' %>" alt="thumb">
+                                        </div>
+                                        <div class="thumb-post-info">
+                                            <h3><a href="/blog/details/<%= encodeURIComponent(article.slug) %>"><%= article.title %></a></h3>
+                                            <a href="#" class="date"><%= article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('en-GB') : 'Jan 01 2022' %></a>
+                                        </div>
+                                    </li>
+                                <% }) %>
+                            <% } else { %>
+                                <li>
+                                    <div class="thumb">
+                                        <img src="/assets/img/post-thumb-1.jpg" alt="thumb">
+                                    </div>
+                                    <div class="thumb-post-info">
+                                        <h3><a href="/blog/details"><%= t('pages.users.blog.classic.how_to_go_about_initiating_an_startup_in_few_day', 'How To Go About Initiating An Startup In Few Days.') %></a></h3>
+                                        <a href="#" class="date">Jan 01 2022</a>
+                                    </div>
+                                </li>
+                            <% } %>
                         </ul>
                     </div>
                     <!--Recent Thumb Post-->
@@ -141,15 +171,21 @@
                             <h3><%= t('pages.users.blog.classic.tags', 'Tags') %></h3>
                         </div>
                         <ul class="tags">
-                            <li><a href="#">business</a></li>
-                            <li><a href="#"><%= t('pages.users.blog.classic.marketing', 'marketing') %></a></li>
-                            <li><a href="#">startup</a></li>
-                            <li><a href="#"><%= t('pages.users.blog.classic.design', 'design') %></a></li>
-                            <li><a href="#"><%= t('pages.users.blog.classic.consulting', 'consulting') %></a></li>
-                            <li><a href="#"><%= t('pages.users.blog.classic.strategy', 'strategy') %></a></li>
-                            <li><a href="#"><%= t('pages.users.blog.classic.development', 'development') %></a></li>
-                            <li><a href="#"><%= t('pages.users.blog.classic.tips', 'tips') %></a></li>
-                            <li><a href="#"><%= t('pages.users.blog.classic.seo', 'Seo') %></a></li>
+                            <% if (blogSidebar && Array.isArray(blogSidebar.popularTags) && blogSidebar.popularTags.length) { %>
+                                <% blogSidebar.popularTags.forEach(function(tag) { %>
+                                    <li><a href="#"><%= tag.name %></a></li>
+                                <% }) %>
+                            <% } else { %>
+                                <li><a href="#"><%= t('pages.users.services.details.business', 'business') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.classic.marketing', 'marketing') %></a></li>
+                                <li><a href="#"><%= t('pages.users.services.details.startup', 'startup') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.classic.design', 'design') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.classic.consulting', 'consulting') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.classic.strategy', 'strategy') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.classic.development', 'development') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.classic.tips', 'tips') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.classic.seo', 'Seo') %></a></li>
+                            <% } %>
                         </ul>
                     </div>
                     <!--Tags-->

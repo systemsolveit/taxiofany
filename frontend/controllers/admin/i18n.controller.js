@@ -314,6 +314,15 @@ async function page(req, res, next) {
         .filter((entry) => entry.source !== 'db')
         .map((entry) => ({ key: entry.key, value: entry.value }))
     );
+    const coverageAuditEntriesJson = JSON.stringify(
+      coverageGroups
+        .flatMap((group) => group.items || [])
+        .filter((item) => item.status !== 'translated' && item.suggestedKey)
+        .map((item) => ({
+          key: item.suggestedKey,
+          value: item.currentValue || item.text || '',
+        }))
+    );
 
     return res.render('admin/i18n/index', {
       pageTitle: 'Admin i18n',
@@ -328,6 +337,7 @@ async function page(req, res, next) {
       coverageGroups,
       summary: buildSummary(entriesData.entries || [], extractedKeywords, entryGroups, keywordGroups, coverageGroups),
       inheritedEntriesJson,
+      coverageAuditEntriesJson,
       autoTranslate,
       notice: consumeNotice(req),
     });

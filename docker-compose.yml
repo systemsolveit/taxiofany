@@ -24,10 +24,19 @@ services:
       PORT: ${BACKEND_PORT:-3000}
       MONGO_URI: ${MONGO_URI_DOCKER:-mongodb://mongo:27017/taxiofany}
       I18N_USERS_VIEWS_DIR: /frontend/views/users
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      CONTACT_RECIPIENT_EMAIL: ${CONTACT_RECIPIENT_EMAIL:-}
     volumes:
       - ./backend:/app
       - /app/node_modules
       - ./frontend/views:/frontend/views
+      - ./uploads/mediahub:/app/uploads/mediahub
+      - ./uploads/mediahub-data:/app/data/mediahub
     depends_on:
       mongo:
         condition: service_healthy

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .email-hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .email-stat {
+      border: 1px solid #dbeafe;
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+      border-radius: 0.9rem;
+      padding: 1rem 1.2rem;
+      color: #1f2937;
+    }
+
+    .email-stat strong {
+      display: block;
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <h1>Email Management</h1>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="email-hero">
+            <div class="email-stat">
+              <strong><%= Array.isArray(templates) ? templates.length : 0 %></strong>
+              <span>Total email templates</span>
+            </div>
+            <a href="/admin/emails/new" class="btn btn-primary"><i class="fas fa-envelope-open-text mr-1"></i>Create Template</a>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Template Library</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Template</th>
+                    <th>Subject</th>
+                    <th>Audience</th>
+                    <th>Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (!templates || !templates.length) { %>
+                    <tr>
+                      <td colspan="5" class="text-center text-muted py-4">No email templates found.</td>
+                    </tr>
+                  <% } else { %>
+                    <% templates.forEach(function(item) { %>
+                      <tr>
+                        <td>
+                          <strong><%= item.title %></strong>
+                          <div class="text-muted small"><%= item.category || '-' %> / <%= item.slug %></div>
+                        </td>
+                        <td><%= item.subject || '-' %></td>
+                        <td><%= item.audience || '-' %></td>
+                        <td><span class="badge badge-<%= item.isPublished ? 'success' : 'secondary' %>"><%= item.isPublished ? 'published' : 'draft' %></span></td>
+                        <td class="text-right"><a href="/admin/emails/<%= item._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a></td>
+                      </tr>
+                    <% }) %>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

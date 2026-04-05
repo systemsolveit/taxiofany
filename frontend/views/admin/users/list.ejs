@@ -2,6 +2,50 @@
 <html lang="en">
 <head>
   <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .users-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .users-summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      border-radius: 0.75rem;
+      background: linear-gradient(135deg, #f8fbff 0%, #edf4ff 100%);
+      border: 1px solid #d8e7ff;
+      color: #1f2937;
+    }
+
+    .users-summary strong {
+      display: block;
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    .users-summary span {
+      color: #6b7280;
+      font-size: 0.88rem;
+    }
+
+    .user-name-cell {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name-cell small {
+      color: #6b7280;
+    }
+
+    .table td, .table th {
+      vertical-align: middle;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
@@ -17,31 +61,63 @@
 
       <section class="content">
         <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="users-toolbar">
+            <div class="users-summary">
+              <div>
+                <strong><%= Array.isArray(users) ? users.length : 0 %></strong>
+                <span>Total user accounts</span>
+              </div>
+            </div>
+            <a href="/admin/users/create" class="btn btn-primary">
+              <i class="fas fa-user-plus mr-1"></i>Create User
+            </a>
+          </div>
+
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Latest Users</h3>
+              <h3 class="card-title">Users Directory</h3>
             </div>
             <div class="card-body table-responsive p-0">
               <table class="table table-hover text-nowrap">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Status</th>
+                    <th>Joined</th>
+                    <th class="text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% users.forEach(function(user) { %>
+                  <% if (!users || !users.length) { %>
                     <tr>
-                      <td><a href="/admin/users/<%= user.id %>"><%= user.id %></a></td>
-                      <td><%= user.name %></td>
-                      <td><%= user.email %></td>
-                      <td><%= user.role %></td>
-                      <td><span class="badge badge-<%= user.status === 'Active' ? 'success' : user.status === 'Pending' ? 'warning' : 'danger' %>"><%= user.status %></span></td>
+                      <td colspan="6" class="text-center text-muted py-4">No users found.</td>
                     </tr>
-                  <% }) %>
+                  <% } else { %>
+                    <% users.forEach(function(user) { %>
+                      <% const status = String(user.status || 'pending').toLowerCase(); %>
+                      <tr>
+                        <td>
+                          <div class="user-name-cell">
+                            <a href="/admin/users/<%= user._id %>"><strong><%= user.fullName || '-' %></strong></a>
+                            <small>ID: <%= user._id %></small>
+                          </div>
+                        </td>
+                        <td><%= user.email || '-' %></td>
+                        <td><span class="badge badge-light border text-dark"><%= user.role || '-' %></span></td>
+                        <td><span class="badge badge-<%= status === 'active' ? 'success' : status === 'pending' ? 'warning' : 'danger' %>"><%= status %></span></td>
+                        <td><%= user.createdAt ? new Date(user.createdAt).toLocaleString('en-GB') : '-' %></td>
+                        <td class="text-right">
+                          <a href="/admin/users/<%= user._id %>" class="btn btn-sm btn-outline-primary">Manage</a>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  <% } %>
                 </tbody>
               </table>
             </div>

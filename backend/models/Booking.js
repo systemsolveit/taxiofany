@@ -18,6 +18,15 @@ const bookingSchema = new Schema(
       trim: true,
       lowercase: true,
     },
+    packageType: {
+      type: String,
+      trim: true,
+    },
+    passengers: {
+      type: Number,
+      min: 1,
+      default: 1,
+    },
     pickupLocation: {
       type: String,
       required: true,
@@ -30,6 +39,14 @@ const bookingSchema = new Schema(
     },
     rideDate: {
       type: Date,
+    },
+    requestedDateText: {
+      type: String,
+      trim: true,
+    },
+    rideTime: {
+      type: String,
+      trim: true,
     },
     status: {
       type: String,

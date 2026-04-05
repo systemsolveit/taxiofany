@@ -22,6 +22,26 @@ function getNestedValue(obj, key) {
   return key.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
 }
 
+function humanizeKey(key) {
+  const raw = String(key || '').trim();
+  if (!raw) {
+    return '';
+  }
+
+  const lastSegment = raw.split('.').pop() || raw;
+  const withSpaces = lastSegment
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[_\-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!withSpaces) {
+    return raw;
+  }
+
+  return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
+}
+
 async function getSupportedLocales() {
   try {
     const locales = await i18nApi.fetchLocales();
@@ -84,7 +104,7 @@ async function attachI18n(req, res, next) {
     if (fallback) {
       return fallback;
     }
-    return key;
+    return humanizeKey(key);
   };
 
   res.locals.switchLangUrl = (langCode) => {

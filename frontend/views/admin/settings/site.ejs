@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .settings-tabs .nav-link {
+      border-radius: 999px;
+      margin-right: 0.4rem;
+      padding: 0.45rem 0.9rem;
+    }
+
+    .settings-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 0.9rem;
+      background: #fff;
+    }
+
+    .hint-box {
+      border: 1px solid #dcfce7;
+      background: #f0fdf4;
+      color: #14532d;
+      border-radius: 0.7rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .table td,
+    .table th {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <h1 class="mb-0">Settings</h1>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="settings-tabs mb-3">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a class="nav-link" href="/admin/settings/mail"><i class="fas fa-envelope mr-1"></i>Mail Integrations</a></li>
+              <li class="nav-item"><a class="nav-link active" href="/admin/settings/site"><i class="fas fa-palette mr-1"></i>Site & Navigation</a></li>
+            </ul>
+          </div>
+
+          <div class="hint-box">
+            <strong>Control Point:</strong> set brand color, navbar menu items, and page visibility from one tab. Navbar builder auto-checks all configured pages and keeps their paths synced.
+          </div>
+
+          <form method="post" action="/admin/settings/site/update">
+            <div class="card settings-card mb-3">
+              <div class="card-header">
+                <h3 class="card-title">Site Color</h3>
+              </div>
+              <div class="card-body">
+                <% const primaryColorValue = (siteSettings && siteSettings.effective && siteSettings.effective.primaryColor) || '#f59e0b'; %>
+                <div class="form-row align-items-end">
+                  <div class="form-group col-md-4">
+                    <label>Primary Color (HEX)</label>
+                    <input class="form-control" name="primaryColor" value="<%= primaryColorValue %>" placeholder="#f59e0b">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <input type="color" class="form-control" value="<%= primaryColorValue %>" disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card settings-card mb-3">
+              <div class="card-header">
+                <h3 class="card-title">Navbar Menu</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-striped mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width:18%;">Key</th>
+                        <th style="width:32%;">Label</th>
+                        <th style="width:35%;">URL</th>
+                        <th style="width:15%;">Enabled</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% const menuItems = (siteSettings && siteSettings.effective && siteSettings.effective.navbarMenu) || []; %>
+                      <% menuItems.forEach(function(item, i) { %>
+                        <tr>
+                          <td><input class="form-control" name="navbarMenu[<%= i %>][key]" value="<%= item.key %>"></td>
+                          <td><input class="form-control" name="navbarMenu[<%= i %>][label]" value="<%= item.label %>"></td>
+                          <td><input class="form-control" name="navbarMenu[<%= i %>][url]" value="<%= item.url %>"></td>
+                          <td>
+                            <input type="hidden" name="navbarMenu[<%= i %>][enabled]" value="false">
+                            <input type="checkbox" name="navbarMenu[<%= i %>][enabled]" value="true" <%= item.enabled ? 'checked' : '' %>>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="card settings-card mb-3">
+              <div class="card-header">
+                <h3 class="card-title">Header Top Links</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-striped mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width:18%;">Key</th>
+                        <th style="width:32%;">Label</th>
+                        <th style="width:35%;">URL</th>
+                        <th style="width:15%;">Enabled</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% const headerTopLinks = (siteSettings && siteSettings.effective && siteSettings.effective.header && siteSettings.effective.header.topLinks) || []; %>
+                      <% headerTopLinks.forEach(function(item, i) { %>
+                        <tr>
+                          <td><input class="form-control" name="header[topLinks][<%= i %>][key]" value="<%= item.key %>"></td>
+                          <td><input class="form-control" name="header[topLinks][<%= i %>][label]" value="<%= item.label %>"></td>
+                          <td><input class="form-control" name="header[topLinks][<%= i %>][url]" value="<%= item.url %>"></td>
+                          <td>
+                            <input type="hidden" name="header[topLinks][<%= i %>][enabled]" value="false">
+                            <input type="checkbox" name="header[topLinks][<%= i %>][enabled]" value="true" <%= item.enabled ? 'checked' : '' %>>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="card settings-card mb-3">
+              <div class="card-header">
+                <h3 class="card-title">Header Contact & CTA</h3>
+              </div>
+              <div class="card-body">
+                <% const headerInfo = (siteSettings && siteSettings.effective && siteSettings.effective.header) || {}; %>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Phone</label>
+                    <input class="form-control" name="header[phone]" value="<%= headerInfo.phone || '' %>">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Email</label>
+                    <input class="form-control" name="header[email]" value="<%= headerInfo.email || '' %>">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Location</label>
+                    <input class="form-control" name="header[location]" value="<%= headerInfo.location || '' %>">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Navbar Button Label</label>
+                    <input class="form-control" name="header[navButtonLabel]" value="<%= headerInfo.navButtonLabel || '' %>">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Navbar Button URL</label>
+                    <input class="form-control" name="header[navButtonUrl]" value="<%= headerInfo.navButtonUrl || '' %>">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card settings-card mb-3">
+              <div class="card-header">
+                <h3 class="card-title">Header Social Links</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-striped mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width:20%;">Key</th>
+                        <th style="width:35%;">Icon Class</th>
+                        <th style="width:30%;">URL</th>
+                        <th style="width:15%;">Enabled</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% const socialItems = (siteSettings && siteSettings.effective && siteSettings.effective.header && siteSettings.effective.header.socialLinks) || []; %>
+                      <% socialItems.forEach(function(item, i) { %>
+                        <tr>
+                          <td><input class="form-control" name="header[socialLinks][<%= i %>][key]" value="<%= item.key %>"></td>
+                          <td><input class="form-control" name="header[socialLinks][<%= i %>][iconClass]" value="<%= item.iconClass %>"></td>
+                          <td><input class="form-control" name="header[socialLinks][<%= i %>][url]" value="<%= item.url %>"></td>
+                          <td>
+                            <input type="hidden" name="header[socialLinks][<%= i %>][enabled]" value="false">
+                            <input type="checkbox" name="header[socialLinks][<%= i %>][enabled]" value="true" <%= item.enabled ? 'checked' : '' %>>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="card settings-card mb-3">
+              <div class="card-header">
+                <h3 class="card-title">Pages</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-striped mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width:18%;">Key</th>
+                        <th style="width:32%;">Title</th>
+                        <th style="width:35%;">Path</th>
+                        <th style="width:15%;">Enabled</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% const pageItems = (siteSettings && siteSettings.effective && siteSettings.effective.pages) || []; %>
+                      <% pageItems.forEach(function(item, i) { %>
+                        <tr>
+                          <td><input class="form-control" name="pages[<%= i %>][key]" value="<%= item.key %>"></td>
+                          <td><input class="form-control" name="pages[<%= i %>][title]" value="<%= item.title %>"></td>
+                          <td><input class="form-control" name="pages[<%= i %>][path]" value="<%= item.path %>"></td>
+                          <td>
+                            <input type="hidden" name="pages[<%= i %>][enabled]" value="false">
+                            <input type="checkbox" name="pages[<%= i %>][enabled]" value="true" <%= item.enabled ? 'checked' : '' %>>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <button type="submit" class="btn btn-primary">Save Site Settings</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

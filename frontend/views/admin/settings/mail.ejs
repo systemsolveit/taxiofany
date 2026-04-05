@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .settings-tabs .nav-link {
+      border-radius: 999px;
+      margin-right: 0.4rem;
+      padding: 0.45rem 0.9rem;
+    }
+
+    .settings-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 0.9rem;
+      background: #fff;
+    }
+
+    .hint-box {
+      border: 1px solid #dbeafe;
+      background: #eff6ff;
+      color: #1e3a8a;
+      border-radius: 0.7rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <h1 class="mb-0">Settings</h1>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="settings-tabs mb-3">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a class="nav-link active" href="/admin/settings/mail"><i class="fas fa-envelope mr-1"></i>Mail Integrations</a></li>
+              <li class="nav-item"><a class="nav-link" href="/admin/settings/site"><i class="fas fa-palette mr-1"></i>Site & Navigation</a></li>
+            </ul>
+          </div>
+
+          <div class="hint-box">
+            <strong>Control Point:</strong> configure SMTP here for Contact Us and all mail integrations.
+            <div>Current source: <strong><%= mailSettings && mailSettings.source ? mailSettings.source.toUpperCase() : 'ENV' %></strong> | SMTP configured: <strong><%= mailSettings && mailSettings.smtpConfigured ? 'YES' : 'NO' %></strong></div>
+          </div>
+
+          <div class="card settings-card">
+            <div class="card-header">
+              <h3 class="card-title">SMTP Configuration</h3>
+            </div>
+            <div class="card-body">
+              <form method="post" action="/admin/settings/mail/update">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>SMTP Host</label>
+                    <input class="form-control" name="smtpHost" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.smtpHost) || '' %>" placeholder="smtp.gmail.com">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>SMTP Port</label>
+                    <input type="number" min="1" max="65535" class="form-control" name="smtpPort" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.smtpPort) || '' %>" placeholder="587">
+                  </div>
+                  <div class="form-group col-md-3 d-flex align-items-center">
+                    <div class="form-check mt-4">
+                      <input class="form-check-input" type="checkbox" name="smtpSecure" value="true" id="smtp-secure" <%= mailSettings && mailSettings.effective && mailSettings.effective.smtpSecure ? 'checked' : '' %>>
+                      <label class="form-check-label" for="smtp-secure">Use SSL/TLS</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>SMTP User</label>
+                    <input class="form-control" name="smtpUser" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.smtpUser) || '' %>">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>SMTP Password</label>
+                    <input type="password" class="form-control" name="smtpPass" value="" placeholder="Enter new password to replace current value">
+                    <small class="text-muted">Saved password is masked for security.</small>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>From Email</label>
+                    <input type="email" class="form-control" name="smtpFrom" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.smtpFrom) || '' %>" placeholder="no-reply@yourdomain.com">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Recipient Email (Contact Us inbox)</label>
+                    <input type="email" class="form-control" name="contactRecipientEmail" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.contactRecipientEmail) || '' %>" placeholder="ops@yourdomain.com">
+                  </div>
+                </div>
+
+                <div class="d-flex" style="gap:0.5rem;">
+                  <button type="submit" class="btn btn-primary">Save Settings</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card settings-card mt-3">
+            <div class="card-header">
+              <h3 class="card-title">Test Integration</h3>
+            </div>
+            <div class="card-body">
+              <form method="post" action="/admin/settings/mail/test">
+                <div class="alert alert-light border mb-2">Sends a test email to the configured Contact recipient using current values.</div>
+                <button type="submit" class="btn btn-outline-primary">Send Test Email</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

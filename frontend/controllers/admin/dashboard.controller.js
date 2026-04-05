@@ -1,17 +1,56 @@
-exports.dashboardPage = (req, res) => {
-  res.render('admin/dashboard/index', {
-    pageTitle: 'Admin Dashboard',
-    activeSection: 'dashboard',
-    stats: [
-      { label: 'Active Bookings', value: 142, color: 'info', icon: 'fas fa-taxi' },
-      { label: 'Registered Users', value: 1284, color: 'success', icon: 'fas fa-users' },
-      { label: 'Available Drivers', value: 54, color: 'warning', icon: 'fas fa-id-badge' },
-      { label: 'Open Support Issues', value: 9, color: 'danger', icon: 'fas fa-life-ring' },
-    ],
-    recentBookings: [
-      { id: 'BK-1024', customer: 'Alaa Hassan', route: 'Airport to Maadi', status: 'Confirmed' },
-      { id: 'BK-1025', customer: 'Nada Ali', route: 'Nasr City to Zamalek', status: 'Pending' },
-      { id: 'BK-1026', customer: 'Omar Tarek', route: 'Heliopolis to New Cairo', status: 'Completed' },
-    ],
-  });
+const adminBookingsApi = require('../../services/adminBookingsApi');
+
+function getAdminToken(req) {
+  return req.session && req.session.admin ? req.session.admin.token : null;
+}
+
+function isAuthError(error) {
+  return error && (error.statusCode === 401 || error.statusCode === 403);
+}
+
+function redirectToLogin(req, res, message) {
+  if (req.session) {
+    delete req.session.admin;
+    req.session.authError = message || 'Your admin session expired. Please log in again.';
+  }
+  return res.redirect('/admin/login');
+}
+
+exports.dashboardPage = async (req, res, next) => {
+  const token = getAdminToken(req);
+  if (!token) {
+    return res.redirect('/admin/login');
+  }
+
+  try {
+    const bookings = await adminBookingsApi.listBookings(token);
+    const stats = [
+      { label: 'Total Ride Requests', value: bookings.length, color: 'primary', icon: 'fas fa-taxi' },
+      { label: 'Pending Dispatch', value: bookings.filter((item) => item.status === 'pending').length, color: 'warning', icon: 'fas fa-hourglass-half' },
+      { label: 'Confirmed Rides', value: bookings.filter((item) => item.status === 'confirmed').length, color: 'info', icon: 'fas fa-circle-check' },
+      { label: 'Completed Trips', value: bookings.filter((item) => item.status === 'completed').length, color: 'success', icon: 'fas fa-flag-checkered' },
+    ];
+
+    const recentBookings = bookings.slice(0, 6).map((booking) => ({
+      id: booking._id,
+      bookingCode: booking.bookingCode,
+      customer: booking.customerName,
+      route: `${booking.pickupLocation} to ${booking.destinationLocation}`,
+      status: booking.status,
+      requestedDateText: booking.requestedDateText,
+      rideTime: booking.rideTime,
+    }));
+
+    return res.render('admin/dashboard/index', {
+      pageTitle: 'Admin Dashboard',
+      activeSection: 'dashboard',
+      stats,
+      recentBookings,
+    });
+  } catch (error) {
+    if (isAuthError(error)) {
+      return redirectToLogin(req, res);
+    }
+    return next(error);
+  }
 };

@@ -2,6 +2,22 @@
 <html lang="en">
 <head>
   <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+  <style>
+    .user-meta-label {
+      display: block;
+      color: #6b7280;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .user-meta-value {
+      display: block;
+      font-weight: 600;
+      color: #111827;
+      word-break: break-word;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
@@ -10,31 +26,95 @@
 
     <div class="content-wrapper">
       <section class="content-header">
-        <div class="container-fluid">
-          <h1>User Details</h1>
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <h1 class="mb-0">User Details</h1>
+          <a href="/admin/users" class="btn btn-outline-secondary">Back to Users</a>
         </div>
       </section>
 
       <section class="content">
         <div class="container-fluid">
-          <div class="card card-primary card-outline">
-            <div class="card-body box-profile">
-              <div class="text-center">
-                <img class="profile-user-img img-fluid img-circle" src="/assets/img/comment-1.png" alt="User profile picture" />
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                  <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="/assets/img/comment-1.png" alt="User profile picture" />
+                  </div>
+
+                  <h3 class="profile-username text-center"><%= user.fullName || '-' %></h3>
+                  <p class="text-muted text-center mb-3"><%= user.role || '-' %></p>
+
+                  <div class="mb-3">
+                    <span class="user-meta-label">Status</span>
+                    <span class="user-meta-value"><span class="badge badge-<%= String(user.status || 'pending').toLowerCase() === 'active' ? 'success' : String(user.status || 'pending').toLowerCase() === 'pending' ? 'warning' : 'danger' %>"><%= user.status || 'pending' %></span></span>
+                  </div>
+                  <div class="mb-3">
+                    <span class="user-meta-label">Email</span>
+                    <span class="user-meta-value"><%= user.email || '-' %></span>
+                  </div>
+                  <div class="mb-3">
+                    <span class="user-meta-label">Database ID</span>
+                    <span class="user-meta-value"><%= user._id %></span>
+                  </div>
+                  <div class="mb-3">
+                    <span class="user-meta-label">Created</span>
+                    <span class="user-meta-value"><%= user.createdAt ? new Date(user.createdAt).toLocaleString('en-GB') : '-' %></span>
+                  </div>
+                  <div>
+                    <span class="user-meta-label">Last Login</span>
+                    <span class="user-meta-value"><%= user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString('en-GB') : '-' %></span>
+                  </div>
+                </div>
               </div>
+            </div>
 
-              <h3 class="profile-username text-center"><%= user.name %></h3>
-              <p class="text-muted text-center"><%= user.role %></p>
+            <div class="col-lg-8">
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h3 class="card-title mb-0">Edit Account</h3>
+                </div>
+                <div class="card-body">
+                  <form method="post" action="/admin/users/<%= user._id %>/update">
+                    <div class="form-group">
+                      <label>Full Name</label>
+                      <input class="form-control" name="fullName" value="<%= user.fullName || '' %>" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Phone</label>
+                      <input class="form-control" name="phone" value="<%= user.phone || '' %>">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label>Role</label>
+                        <select class="form-control" name="role">
+                          <% ['customer', 'driver', 'dispatcher', 'admin', 'super_admin'].forEach(function(role) { %>
+                            <option value="<%= role %>" <%= String(user.role || '').toLowerCase() === role ? 'selected' : '' %>><%= role %></option>
+                          <% }) %>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label>Status</label>
+                        <select class="form-control" name="status">
+                          <% ['active', 'pending', 'suspended'].forEach(function(status) { %>
+                            <option value="<%= status %>" <%= String(user.status || '').toLowerCase() === status ? 'selected' : '' %>><%= status %></option>
+                          <% }) %>
+                        </select>
+                      </div>
+                    </div>
 
-              <ul class="list-group list-group-unbordered mb-3">
-                <li class="list-group-item"><b>ID</b> <span class="float-right"><%= user.id %></span></li>
-                <li class="list-group-item"><b>Email</b> <span class="float-right"><%= user.email %></span></li>
-                <li class="list-group-item"><b>Phone</b> <span class="float-right"><%= user.phone %></span></li>
-                <li class="list-group-item"><b>Status</b> <span class="float-right"><%= user.status %></span></li>
-                <li class="list-group-item"><b>Joined</b> <span class="float-right"><%= user.joinedAt %></span></li>
-              </ul>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </form>
 
-              <a href="/admin/users" class="btn btn-primary btn-block"><b>Back to Users</b></a>
+                  <form method="post" action="/admin/users/<%= user._id %>/delete" onsubmit="return confirm('Delete this user account?');" class="mt-3">
+                    <button type="submit" class="btn btn-outline-danger">Delete User</button>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </div>

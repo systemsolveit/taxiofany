@@ -47,21 +47,30 @@
                   <table class="table table-striped mb-0">
                     <thead>
                       <tr>
-                        <th>ID</th>
+                        <th>Code</th>
                         <th>Customer</th>
                         <th>Route</th>
+                        <th>Schedule</th>
                         <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <% recentBookings.forEach(function(booking) { %>
+                      <% if (!recentBookings || !recentBookings.length) { %>
                         <tr>
-                          <td><a href="/admin/bookings/<%= booking.id %>"><%= booking.id %></a></td>
-                          <td><%= booking.customer %></td>
-                          <td><%= booking.route %></td>
-                          <td><span class="badge badge-info"><%= booking.status %></span></td>
+                          <td colspan="5" class="text-center text-muted py-4">No ride requests submitted yet.</td>
                         </tr>
-                      <% }) %>
+                      <% } else { %>
+                        <% recentBookings.forEach(function(booking) { %>
+                          <% const status = String(booking.status || 'pending').toLowerCase(); %>
+                          <tr>
+                            <td><a href="/admin/bookings/<%= booking.id %>"><%= booking.bookingCode %></a></td>
+                            <td><%= booking.customer %></td>
+                            <td><%= booking.route %></td>
+                            <td><%= booking.requestedDateText || '-' %><%= booking.rideTime ? (' / ' + booking.rideTime) : '' %></td>
+                            <td><span class="badge badge-<%= status === 'completed' ? 'success' : status === 'pending' ? 'warning' : status === 'cancelled' ? 'danger' : 'info' %>"><%= status %></span></td>
+                          </tr>
+                        <% }) %>
+                      <% } %>
                     </tbody>
                   </table>
                 </div>

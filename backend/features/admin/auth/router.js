@@ -1,10 +1,13 @@
 const express = require('express');
 const controller = require('./controller');
 const { requireAdminAuth } = require('./middleware');
+const config = require('../../../config');
+const { createAuthRateLimiter } = require('../../../middlewares/rateLimit');
 const validateRequest = require('../../../middlewares/validateRequest');
 const { loginValidation } = require('./validation');
 
 const router = express.Router();
+const authRateLimiter = createAuthRateLimiter(config);
 
 /**
  * @openapi
@@ -29,7 +32,7 @@ const router = express.Router();
  *       200:
  *         description: Admin login succeeded
  */
-router.post('/login', loginValidation, validateRequest, controller.login);
+router.post('/login', authRateLimiter, loginValidation, validateRequest, controller.login);
 
 /**
  * @openapi

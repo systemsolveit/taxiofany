@@ -4,13 +4,14 @@
 <section class="page-header blog-details">
         <div class="container">
             <div class="page-header-info text-center">
-                <h4><%= t('pages.users.blog.details.blog_details', 'Blog Details') %></h4>
-                <h2><%= t('pages.users.blog.details.fresh_startup_ideas_for', 'Fresh Startup Ideas For') %> <br> <%= t('pages.users.blog.details.digital_business', 'Digital Business') %></h2>
-                <p><%= t('pages.users.blog.details.our_versatile_team_is_built_of_designers_develop', 'Our versatile team is built of designers, developers and') %> <br><%= t('pages.users.blog.details.digital_marketers_who_all_bring_unique_experienc', 'digital marketers who all bring unique experience.') %></p>
+                <h4><%= blogPost && blogPost.category ? blogPost.category : t('pages.users.blog.details.blog_details', 'Blog Details') %></h4>
+                <h2><%= blogPost && blogPost.title ? blogPost.title : (t('pages.users.blog.details.fresh_startup_ideas_for', 'Fresh Startup Ideas For') + ' ' + t('pages.users.blog.details.digital_business', 'Digital Business')) %></h2>
+                <p><%= blogPost && blogPost.excerpt ? blogPost.excerpt : (t('pages.users.blog.details.our_versatile_team_is_built_of_designers_develop', 'Our versatile team is built of designers, developers and') + ' ' + t('pages.users.blog.details.digital_marketers_who_all_bring_unique_experienc', 'digital marketers who all bring unique experience.')) %></p>
                 <ul class="post-meta">
-                    <li><i class="las la-user"></i><%= t('pages.users.blog.details.elliot_alderson', 'Elliot Alderson') %></li>
-                    <li><i class="las la-calendar"></i><%= t('pages.users.blog.details.jan_01_2022', 'Jan 01 2022') %></li>
-                    <li><i class="las la-comments"></i><%= t('pages.users.blog.details.comments_0', 'Comments 0') %></li>
+                    <li><i class="las la-user"></i><%= blogPost && blogPost.authorName ? blogPost.authorName : t('pages.users.blog.details.elliot_alderson', 'Elliot Alderson') %></li>
+                    <li><i class="las la-calendar"></i><%= blogPost && blogPost.publishedAt ? new Date(blogPost.publishedAt).toLocaleDateString('en-GB') : t('pages.users.blog.details.jan_01_2022', 'Jan 01 2022') %></li>
+                    <% const approvedCommentsCount = blogPost && Array.isArray(blogPost.comments) ? blogPost.comments.filter(function(comment) { return comment.approved !== false; }).length : 0; %>
+                    <li><i class="las la-comments"></i><%= approvedCommentsCount > 0 ? ('Comments ' + approvedCommentsCount) : t('pages.users.blog.details.comments_0', 'Comments 0') %></li>
                 </ul>
             </div>
         </div>
@@ -22,54 +23,82 @@
             <div class="row">
                 <div class="col-lg-8 offset-lg-2">
                     <div class="post-details">
-                        <div class="post-thumb"><img src="/assets/img/post-1.jpg" alt="img"></div>
-                        <p><%= t('pages.users.blog.details.financial_experts_support_or_help_you_to_to_find', 'Financial experts support or help you to to find out which way you can raise your funds more. Arkit a trusted name for providing assistants. Initially their main objective was to ensure the service they provide these people are loyal to their industry, experienced and professional.') %></p>
+                        <div class="post-thumb"><img src="<%= blogPost && blogPost.coverImage ? blogPost.coverImage : '/assets/img/post-1.jpg' %>" alt="img"></div>
+                        <p><%= blogPost && blogPost.content ? blogPost.content : t('pages.users.blog.details.financial_experts_support_or_help_you_to_to_find', 'Financial experts support or help you to to find out which way you can raise your funds more. Arkit a trusted name for providing assistants. Initially their main objective was to ensure the service they provide these people are loyal to their industry, experienced and professional.') %></p>
 
-                        <p><%= t('pages.users.blog.details.unless_you_are_the_one_who_really_cares_about_th', 'Unless you are the one who really cares about this, it is not terribly important. What all matters are how your hybrid mobile application development is going to work in the long run as no one will care about how it was built.') %></p>
+                        <p><%= blogPost && blogPost.contentSecondary ? blogPost.contentSecondary : t('pages.users.blog.details.unless_you_are_the_one_who_really_cares_about_th', 'Unless you are the one who really cares about this, it is not terribly important. What all matters are how your hybrid mobile application development is going to work in the long run as no one will care about how it was built.') %></p>
 
                         <blockquote>
                             <i class="fas fa-quote-right"></i>
-                            <%= t('pages.users.blog.details.there_are_no_secrets_to_success_it_is_the_result', 'There are no secrets to success. It is the result preparation, hard work and learning from failure.') %><span><%= t('pages.users.blog.details.winston_churchill', '- Winston Churchill.') %></span>
+                            <%= blogPost && blogPost.quoteText ? blogPost.quoteText : t('pages.users.blog.details.there_are_no_secrets_to_success_it_is_the_result', 'There are no secrets to success. It is the result preparation, hard work and learning from failure.') %><span><%= blogPost && blogPost.quoteAuthor ? blogPost.quoteAuthor : t('pages.users.blog.details.winston_churchill', '- Winston Churchill.') %></span>
                         </blockquote>
 
-                        <p><%= t('pages.users.blog.details.there_are_some_big_shifts_taking_place_in_the_fi', 'There are some big shifts taking place in the field of construction equipment mathematics. Starting with the integration of mathematics devices in vehicles right from the manufacturers, to the standardization and integration of mathematics data across various business functions, the future of mathematics has never seemed so full of potential for fleet-based businesses.') %></p>
+                        <p><%= blogPost && blogPost.contentTertiary ? blogPost.contentTertiary : t('pages.users.blog.details.there_are_some_big_shifts_taking_place_in_the_fi', 'There are some big shifts taking place in the field of construction equipment mathematics. Starting with the integration of mathematics devices in vehicles right from the manufacturers, to the standardization and integration of mathematics data across various business functions, the future of mathematics has never seemed so full of potential for fleet-based businesses.') %></p>
 
                         <ul class="post-details-gallery">
-                            <li><img src="/assets/img/post-1.jpg" alt="img"></li>
-                            <li><img src="/assets/img/post-2.jpg" alt="img"></li>
+                            <% if (blogPost && Array.isArray(blogPost.galleryImages) && blogPost.galleryImages.length) { %>
+                                <% blogPost.galleryImages.slice(0, 4).forEach(function(imageUrl) { %>
+                                    <li><img src="<%= imageUrl %>" alt="img"></li>
+                                <% }) %>
+                            <% } else { %>
+                                <li><img src="/assets/img/post-1.jpg" alt="img"></li>
+                                <li><img src="/assets/img/post-2.jpg" alt="img"></li>
+                            <% } %>
                         </ul>
                         <!--Gallary-->
 
-                        <h3><%= t('pages.users.blog.details.creative_approach_to_every_project', 'Creative approach to every project') %></h3>
-                        <p>Financial experts support or help you to to find out which way you can raise your funds more. Arkit a trusted name for providing assistants. Initially their main objective was to ensure the service they provide these people are loyal to their industry, experienced and professional.</p>
-                        <p><%= t('pages.users.blog.details.another_speaker_john_meuse_senior_director_of_he', 'Another speaker, John Meuse, senior director of heavy equipment at Waste Management Inc., echoed this, citing a cost-saving of $17,000 for the company when it cut idling time of a single Caterpillar 966 wheel loader.') %></p>
+                        <h3><%= blogPost && blogPost.sectionHeading ? blogPost.sectionHeading : t('pages.users.blog.details.creative_approach_to_every_project', 'Creative approach to every project') %></h3>
+                        <p><%= blogPost && blogPost.sectionParagraphOne ? blogPost.sectionParagraphOne : 'Financial experts support or help you to to find out which way you can raise your funds more. Arkit a trusted name for providing assistants. Initially their main objective was to ensure the service they provide these people are loyal to their industry, experienced and professional.' %></p>
+                        <p><%= blogPost && blogPost.sectionParagraphTwo ? blogPost.sectionParagraphTwo : t('pages.users.blog.details.another_speaker_john_meuse_senior_director_of_he', 'Another speaker, John Meuse, senior director of heavy equipment at Waste Management Inc., echoed this, citing a cost-saving of $17,000 for the company when it cut idling time of a single Caterpillar 966 wheel loader.') %></p>
 
                         <ul class="tags">
-                            <li><a href="#"><%= t('pages.users.blog.details.business', 'Business') %></a></li>
-                            <li><a href="#"><%= t('pages.users.blog.details.marketing', 'Marketing') %></a></li>
-                            <li><a href="#"><%= t('pages.users.blog.details.startup', 'Startup') %></a></li>
-                            <li><a href="#"><%= t('pages.users.blog.details.design', 'Design') %></a></li>
+                            <% if (blogPost && Array.isArray(blogPost.tags) && blogPost.tags.length) { %>
+                                <% blogPost.tags.forEach(function(tag) { %>
+                                    <li><a href="#"><%= tag %></a></li>
+                                <% }) %>
+                            <% } else { %>
+                                <li><a href="#"><%= t('pages.users.blog.details.business', 'Business') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.details.marketing', 'Marketing') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.details.startup', 'Startup') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.details.design', 'Design') %></a></li>
+                            <% } %>
                         </ul>
                         <!--Tags-->
 
                         <ul class="post-navigation">
-                            <li><a href="/blog/details"><span><i class="las la-angle-left"></i><%= t('pages.users.blog.details.previous', 'Previous') %></span><%= t('pages.users.blog.details.how_to_start_initiating_an_startup_in_few_days', 'How To Start Initiating An Startup In Few Days.') %></a></li>
-                            <li><a href="/blog/details"><span><%= t('pages.users.blog.details.next', 'Next') %><i class="las la-angle-right"></i></span><%= t('pages.users.blog.details.fresh_startup_ideas_for_digital_business', 'Fresh Startup Ideas For Digital Business.') %></a></li>
+                            <li>
+                                <a href="<%= previousPost && previousPost.slug ? ('/blog/details/' + encodeURIComponent(previousPost.slug)) : '/blog/details' %>">
+                                    <span><i class="las la-angle-left"></i><%= t('pages.users.blog.details.previous', 'Previous') %></span>
+                                    <%= previousPost && previousPost.title ? previousPost.title : t('pages.users.blog.details.how_to_start_initiating_an_startup_in_few_days', 'How To Start Initiating An Startup In Few Days.') %>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<%= nextPost && nextPost.slug ? ('/blog/details/' + encodeURIComponent(nextPost.slug)) : '/blog/details' %>">
+                                    <span><%= t('pages.users.blog.details.next', 'Next') %><i class="las la-angle-right"></i></span>
+                                    <%= nextPost && nextPost.title ? nextPost.title : t('pages.users.blog.details.fresh_startup_ideas_for_digital_business', 'Fresh Startup Ideas For Digital Business.') %>
+                                </a>
+                            </li>
                         </ul>
                         <!--Post Navigations-->
 
                         <div class="author-box">
                             <div class="author-thumb">
-                                <img src="/assets/img/auhtor.png" alt="img">
+                                <img src="<%= blogPost && blogPost.authorAvatar ? blogPost.authorAvatar : '/assets/img/auhtor.png' %>" alt="img">
                             </div>
                             <div class="author-info">
-                                <h3>Elliot Alderson</h3>
-                                <p>Our versatile team is built of designers, developers and digital marketers who all bring unique experience.</p>
+                                <h3><%= blogPost && blogPost.authorName ? blogPost.authorName : 'Elliot Alderson' %></h3>
+                                <p><%= blogPost && blogPost.authorBio ? blogPost.authorBio : 'Our versatile team is built of designers, developers and digital marketers who all bring unique experience.' %></p>
                                 <ul class="social-icon">
-                                    <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
-                                    <li><a href="#"><i class="lab la-twitter"></i></a></li>
-                                    <li><a href="#"><i class="lab la-instagram"></i></a></li>
-                                    <li><a href="#"><i class="lab la-behance"></i></a></li>
+                                    <% if (blogPost && Array.isArray(blogPost.authorSocialLinks) && blogPost.authorSocialLinks.length) { %>
+                                        <% blogPost.authorSocialLinks.forEach(function(link) { %>
+                                            <li><a href="<%= link.url || '#' %>"><i class="<%= link.icon || 'lab la-link' %>"></i></a></li>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                        <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                        <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                        <li><a href="#"><i class="lab la-behance"></i></a></li>
+                                    <% } %>
                                 </ul>
                             </div>
                         </div>
@@ -77,55 +106,67 @@
 
                         <h3 class="comment-title"><%= t('pages.users.blog.details.post_comments', 'Post Comments') %></h3>
                         <ul class="comments-box">
-                            <li class="comment">
-                                <div class="comment-inner">
-                                    <div class="comment-thumb"><img src="/assets/img/comment-1.png" alt="img"></div>
-                                    <div class="comment-wrap">
-                                        <div class="comments-meta">
-                                            <h4><%= t('pages.users.blog.details.ashton_porter', 'Ashton Porter') %> <span><%= t('pages.users.blog.details.jan_01_2022_at_8_00', 'Jan 01, 2022 at 8:00') %></span></h4>
-                                        </div>
-                                        <div class="comment-area">
-                                            <p><%= t('pages.users.blog.details.you_guys_have_put_so_much_work_effort_and_time_w', 'You guys have put so much work, effort, and time while designing this awesome theme I can see that passion when I incorporated it into my website.') %></p>
-                                            <a href="#" class="reply"><%= t('pages.users.blog.details.reply', 'Reply') %></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <ul class="children">
+                            <% const approvedComments = blogPost && Array.isArray(blogPost.comments) ? blogPost.comments.filter(function(comment) { return comment.approved !== false; }) : []; %>
+                            <% if (approvedComments.length) { %>
+                                <% approvedComments.forEach(function(comment) { %>
                                     <li class="comment">
                                         <div class="comment-inner">
-                                            <div class="comment-thumb"><img src="/assets/img/comment-2.png" alt="img"></div>
+                                            <div class="comment-thumb"><img src="<%= comment.avatar || '/assets/img/comment-1.png' %>" alt="img"></div>
                                             <div class="comment-wrap">
                                                 <div class="comments-meta">
-                                                    <h4><%= t('pages.users.blog.details.melania_trump', 'Melania Trump') %> <span>Jan 01, 2022 at 8:00</span></h4>
+                                                    <h4><%= comment.name || 'Guest' %> <span><%= comment.dateLabel || '' %></span></h4>
                                                 </div>
                                                 <div class="comment-area">
-                                                    <p><%= t('pages.users.blog.details.the_only_thing_i_love_more_than_this_theme_and_i', 'The only thing I LOVE more than this theme and itâ€™s incredible options is the support team! They are freaking amazable!') %></p>
-                                                    <a href="#" class="reply">Reply</a>
+                                                    <p><%= comment.message || '' %></p>
+                                                    <a href="#" class="reply"><%= t('pages.users.blog.details.reply', 'Reply') %></a>
                                                 </div>
                                             </div>
                                         </div>
+                                        <% const approvedReplies = Array.isArray(comment.replies) ? comment.replies.filter(function(reply) { return reply.approved !== false; }) : []; %>
+                                        <% if (approvedReplies.length) { %>
+                                            <ul class="children">
+                                                <% approvedReplies.forEach(function(reply) { %>
+                                                    <li class="comment">
+                                                        <div class="comment-inner">
+                                                            <div class="comment-thumb"><img src="<%= reply.avatar || '/assets/img/comment-2.png' %>" alt="img"></div>
+                                                            <div class="comment-wrap">
+                                                                <div class="comments-meta">
+                                                                    <h4><%= reply.name || 'Guest' %> <span><%= reply.dateLabel || '' %></span></h4>
+                                                                </div>
+                                                                <div class="comment-area">
+                                                                    <p><%= reply.message || '' %></p>
+                                                                    <a href="#" class="reply"><%= t('pages.users.blog.details.reply', 'Reply') %></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <% }) %>
+                                            </ul>
+                                        <% } %>
                                     </li>
-                                </ul>
-                            </li>
-                            <li class="comment">
-                                <div class="comment-inner">
-                                    <div class="comment-thumb"><img src="/assets/img/comment-3.png" alt="img"></div>
-                                    <div class="comment-wrap">
-                                        <div class="comments-meta">
-                                            <h4>Elliot Alderson <span>Jan 01, 2022 at 8:00</span></h4>
-                                        </div>
-                                        <div class="comment-area">
-                                            <p><%= t('pages.users.blog.details.outstanding_quality_in_this_theme_brilliant_effe', 'Outstanding quality in this theme, brilliant Effects and perfect crafted Code. We absolutely love it and can highly recommend DynamicLayers!') %></p>
-                                            <a href="#" class="reply">Reply</a>
+                                <% }) %>
+                            <% } else { %>
+                                <li class="comment">
+                                    <div class="comment-inner">
+                                        <div class="comment-wrap">
+                                            <div class="comments-meta">
+                                                <h4><%= t('pages.users.blog.details.no_comments_yet', 'No comments yet') %></h4>
+                                            </div>
+                                            <div class="comment-area">
+                                                <p><%= t('pages.users.blog.details.be_the_first_to_share_feedback', 'Be the first to share feedback on this post.') %></p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            <% } %>
                         </ul>
                         <!--Comments-->
                         
                         <h3 class="comment-title"><%= t('pages.users.blog.details.leave_a_comment', 'Leave a Comment') %></h3>
-                        <form action="#" method="post" class="comment-form form-horizontal">
+                        <% const commentSubmitted = commentStatus === 'submitted'; %>
+                        <% const commentValidationError = commentStatus === 'validation'; %>
+                        <% const commentSubmitError = commentStatus === 'error'; %>
+                        <form action="<%= commentAction || '#' %>" method="post" class="comment-form form-horizontal">
                             <div class="form-group row">
                                 <div class="col-sm-6 padding-15">
                                     <input type="text" id="name" name="name" class="form-control" placeholder="Name*" required>
@@ -138,7 +179,15 @@
                                 </div>
                                 <div class="col-md-12 padding-15">
                                     <button id="submit" class="default-btn" type="submit"><%= t('pages.users.blog.details.submit_comment', 'Submit Comment') %><span></span></button>
-                                    <div id="form-messages" class="alert" role="alert"></div>
+                                    <% if (commentSubmitted) { %>
+                                        <div id="form-messages" class="alert alert-success mt-3" role="alert"><%= t('pages.users.blog.details.comment_pending_moderation', 'Thanks! Your comment was submitted and is pending moderation.') %></div>
+                                    <% } else if (commentValidationError) { %>
+                                        <div id="form-messages" class="alert alert-warning mt-3" role="alert"><%= t('pages.users.blog.details.comment_validation_error', 'Please fill in name, email, and comment before submitting.') %></div>
+                                    <% } else if (commentSubmitError) { %>
+                                        <div id="form-messages" class="alert alert-danger mt-3" role="alert"><%= t('pages.users.blog.details.comment_submit_failed', 'Could not submit your comment right now. Please try again.') %></div>
+                                    <% } else { %>
+                                        <div id="form-messages" class="alert" role="alert"></div>
+                                    <% } %>
                                 </div>
                             </div>
                         </form>

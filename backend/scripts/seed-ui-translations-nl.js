@@ -234,15 +234,23 @@ async function run() {
   console.log(`Seeded ${operations.length} ui translation keys for nl.`);
 }
 
-run()
-  .catch((error) => {
-    console.error('Failed to seed nl UI translations:', error.message);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    try {
-      await mongoose.connection.close();
-    } catch (error) {
-      // Ignore close errors.
-    }
-  });
+module.exports = {
+  entries,
+  ensureLocale,
+  run,
+};
+
+if (require.main === module) {
+  run()
+    .catch((error) => {
+      console.error('Failed to seed nl UI translations:', error.message);
+      process.exitCode = 1;
+    })
+    .finally(async () => {
+      try {
+        await mongoose.connection.close();
+      } catch (error) {
+        // Ignore close errors.
+      }
+    });
+}

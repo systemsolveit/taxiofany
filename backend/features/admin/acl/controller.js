@@ -1,20 +1,30 @@
 const service = require('./service');
 
-function roles(req, res) {
-  res.json({
-    success: true,
-    data: service.listRoles(),
-  });
+async function roles(req, res, next) {
+  try {
+    const data = await service.listRoles();
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
-function permissions(req, res) {
-  res.json({
-    success: true,
-    data: service.listPermissions(),
-  });
+async function permissions(req, res, next) {
+  try {
+    const data = await service.listPermissions();
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
-function check(req, res) {
+async function check(req, res, next) {
   const { role, permission } = req.body;
 
   if (!role || !permission) {
@@ -27,26 +37,52 @@ function check(req, res) {
     });
   }
 
-  return res.json({
-    success: true,
-    data: {
-      role,
-      permission,
-      allowed: service.can(role, permission),
-      grantedPermissions: service.getRolePermissions(role),
-    },
-  });
+  try {
+    return res.json({
+      success: true,
+      data: {
+        role,
+        permission,
+        allowed: await service.can(role, permission),
+        grantedPermissions: await service.getRolePermissions(role),
+      },
+    });
+  } catch (error) {
+    return next(error);
+  }
 }
 
-function myPermissions(req, res) {
+async function myPermissions(req, res, next) {
   const role = req.auth.role;
-  return res.json({
-    success: true,
-    data: {
-      role,
-      permissions: service.getRolePermissions(role),
-    },
-  });
+  try {
+    return res.json({
+      success: true,
+      data: {
+        role,
+        permissions: await service.getRolePermissions(role),
+      },
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function updateRolePermissions(req, res, next) {
+  try {
+    const data = await service.upsertRolePermissions(req.params.role, req.body.permissions || []);
+    return res.json({ success: true, data });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function resetRolePermissions(req, res, next) {
+  try {
+    const data = await service.resetRolePermissions(req.params.role);
+    return res.json({ success: true, data });
+  } catch (error) {
+    return next(error);
+  }
 }
 
 module.exports = {
@@ -54,4 +90,6 @@ module.exports = {
   permissions,
   check,
   myPermissions,
+  updateRolePermissions,
+  resetRolePermissions,
 };

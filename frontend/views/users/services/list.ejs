@@ -16,102 +16,30 @@
     <section class="service-section bg-grey bd-bottom padding">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-sm-6 padding-15">
-                    <div class="service-item">
-                        <div class="service-thumb">
-                            <img src="/assets/img/service-1.jpg" alt="img">
-                            <div class="service-shape-wrap">
-                                <div class="service-shape"></div>
+                <% if (Array.isArray(services) && services.length) { %>
+                    <% services.forEach(function(item) { %>
+                        <div class="col-lg-4 col-sm-6 padding-15">
+                            <div class="service-item">
+                                <div class="service-thumb">
+                                    <img src="<%= item.coverImage || '/assets/img/service-1.jpg' %>" alt="img">
+                                    <div class="service-shape-wrap">
+                                        <div class="service-shape"></div>
+                                    </div>
+                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
+                                </div>
+                                <div class="service-content">
+                                    <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.title || t('home.services.regularTransport') %></a></h3>
+                                    <p><%= item.shortDescription || item.description || t('home.services.itemDescription') %></p>
+                                    <a class="read-more" href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= t('home.services.readMore') %></a>
+                                </div>
                             </div>
-                            <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
                         </div>
-                        <div class="service-content">
-                            <h3><a href="/services/details"><%= t('home.services.regularTransport') %></a></h3>
-                            <p><%= t('home.services.itemDescription') %></p>
-                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="col-12 text-center text-muted">
+                        <p><%= t('pages.services.list.noServices', 'No services available right now.') %></p>
                     </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 padding-15">
-                    <div class="service-item">
-                        <div class="service-thumb">
-                            <img src="/assets/img/service-2.jpg" alt="img">
-                            <div class="service-shape-wrap">
-                                <div class="service-shape"></div>
-                            </div>
-                            <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                        </div>
-                        <div class="service-content">
-                            <h3><a href="/services/details"><%= t('home.services.airportTransport') %></a></h3>
-                            <p><%= t('home.services.itemDescription') %></p>
-                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 padding-15">
-                    <div class="service-item">
-                        <div class="service-thumb">
-                            <img src="/assets/img/service-3.jpg" alt="img">
-                            <div class="service-shape-wrap">
-                                <div class="service-shape"></div>
-                            </div>
-                            <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                        </div>
-                        <div class="service-content">
-                            <h3><a href="/services/details"><%= t('home.services.luggageTransport') %></a></h3>
-                            <p><%= t('home.services.itemDescription') %></p>
-                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 padding-15">
-                    <div class="service-item">
-                        <div class="service-thumb">
-                            <img src="/assets/img/service-4.jpg" alt="img">
-                            <div class="service-shape-wrap">
-                                <div class="service-shape"></div>
-                            </div>
-                            <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                        </div>
-                        <div class="service-content">
-                            <h3><a href="/services/details"><%= t('home.services.cityTransport') %></a></h3>
-                            <p><%= t('home.services.itemDescription') %></p>
-                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 padding-15">
-                    <div class="service-item">
-                        <div class="service-thumb">
-                            <img src="/assets/img/service-5.jpg" alt="img">
-                            <div class="service-shape-wrap">
-                                <div class="service-shape"></div>
-                            </div>
-                            <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                        </div>
-                        <div class="service-content">
-                            <h3><a href="/services/details"><%= t('home.services.businessTransport') %></a></h3>
-                            <p><%= t('home.services.itemDescription') %></p>
-                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 padding-15">
-                    <div class="service-item">
-                        <div class="service-thumb">
-                            <img src="/assets/img/service-5.jpg" alt="img">
-                            <div class="service-shape-wrap">
-                                <div class="service-shape"></div>
-                            </div>
-                            <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                        </div>
-                        <div class="service-content">
-                            <h3><a href="/services/details"><%= t('pages.services.list.localTransport') %></a></h3>
-                            <p><%= t('home.services.itemDescription') %></p>
-                            <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                        </div>
-                    </div>
-                </div>
+                <% } %>
             </div>
         </div>
     </section>

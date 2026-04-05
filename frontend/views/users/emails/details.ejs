@@ -1,0 +1,51 @@
+<%- include('../../shared/partials/legacy-head') %>
+<%- include('../../shared/partials/legacy-header-nav') %>
+
+<section class="page-header">
+  <div class="page-header-shape"></div>
+  <div class="container">
+    <div class="page-header-info">
+      <h4><%= template ? (template.category || 'Email') : 'Email' %></h4>
+      <h2><%= template ? template.title : 'Template not found' %></h2>
+      <p><%= template ? (template.previewText || template.summary || '') : ('No published email template is available for slug: ' + (requestedSlug || 'unknown')) %></p>
+    </div>
+  </div>
+</section>
+
+<section class="about-section padding">
+  <div class="container">
+    <% if (!template) { %>
+      <div class="alert alert-light border text-center">This email template is not available.</div>
+    <% } else { %>
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="section-heading mb-30">
+            <h4><span></span><%= template.subject %></h4>
+            <h2><%= template.heroTitle || template.title %></h2>
+            <p><%= template.heroDescription || template.summary || '' %></p>
+          </div>
+          <div class="p-4 bg-grey rounded">
+            <h3><%= template.bodyTitle || 'Message Content' %></h3>
+            <p style="white-space: pre-line;"><%= template.bodyContent || template.summary || '' %></p>
+            <% if (template.ctaLabel && template.ctaUrl) { %>
+              <a href="<%= template.ctaUrl %>" class="default-btn"><%= template.ctaLabel %></a>
+            <% } %>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="service-item p-4">
+            <h3>Template Summary</h3>
+            <ul class="list-unstyled mb-0">
+              <li><strong>Audience:</strong> <%= template.audience || '-' %></li>
+              <li><strong>Category:</strong> <%= template.category || '-' %></li>
+              <li><strong>Tone:</strong> <%= template.tone || '-' %></li>
+              <li><strong>Status:</strong> <%= template.isPublished ? 'Published' : 'Draft' %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../../shared/partials/legacy-footer') %>
