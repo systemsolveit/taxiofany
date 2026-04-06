@@ -6,9 +6,9 @@
     <p style="color:#666;"><%= t('account.tripsSubtitle') %></p>
 
     <nav class="account-tabs" aria-label="Account tabs">
-      <a class="account-tab <%= activeAccountTab === 'account' ? 'active' : '' %>" href="/account"><%= t('account.tabs.account') %></a>
-      <a class="account-tab <%= activeAccountTab === 'trips' ? 'active' : '' %>" href="/account/trips"><%= t('account.tabs.trips') %></a>
-      <a class="account-tab <%= activeAccountTab === 'password' ? 'active' : '' %>" href="/account/password"><%= t('account.tabs.password') %></a>
+      <a class="account-tab <%= activeAccountTab === 'account' ? 'active' : '' %>" href="<%= withLocale('/account') %>"><%= t('account.tabs.account') %></a>
+      <a class="account-tab <%= activeAccountTab === 'trips' ? 'active' : '' %>" href="<%= withLocale('/account/trips') %>"><%= t('account.tabs.trips') %></a>
+      <a class="account-tab <%= activeAccountTab === 'password' ? 'active' : '' %>" href="<%= withLocale('/account/password') %>"><%= t('account.tabs.password') %></a>
     </nav>
 
     <section class="card">

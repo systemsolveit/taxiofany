@@ -13,6 +13,20 @@
       border: 1px solid #e5e7eb;
       border-radius: 0.9rem;
       background: #fff;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    }
+
+    .settings-card .card-header {
+      border-bottom: 1px solid #eef2f7;
+      background: #fafbfc;
+    }
+
+    .settings-card .card-subtitle {
+      font-size: 0.875rem;
+      color: #64748b;
+      margin: 0.35rem 0 0;
+      font-weight: 400;
+      line-height: 1.45;
     }
 
     .hint-box {
@@ -28,6 +42,77 @@
     .table th {
       vertical-align: middle;
     }
+
+    .site-help-btn {
+      min-width: 1.75rem;
+      min-height: 1.75rem;
+      line-height: 1;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #0f172a !important;
+      border: 1px solid #cbd5e1 !important;
+      background: #f8fafc !important;
+    }
+
+    .site-help-btn:hover,
+    .site-help-btn:focus {
+      background: #e2e8f0 !important;
+      color: #0f172a !important;
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+
+    .site-settings-sticky {
+      position: sticky;
+      bottom: 0;
+      z-index: 1020;
+      margin: 1.5rem -15px -15px;
+      padding: 1rem 1.25rem;
+      background: linear-gradient(to top, #fff 70%, rgba(255,255,255,0.92));
+      border-top: 1px solid #e5e7eb;
+      box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .sr-only-help {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .site-settings-accordion .card-header {
+      background: #fafbfc;
+    }
+
+    .site-settings-accordion .btn-link {
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: none;
+    }
+
+    .site-settings-accordion .btn-link:hover,
+    .site-settings-accordion .btn-link:focus {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .site-settings-accordion .site-acc-chevron {
+      transition: transform 0.2s ease;
+    }
+
+    .site-settings-accordion .btn-link:not(.collapsed) .site-acc-chevron {
+      transform: rotate(180deg);
+    }
   </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -39,11 +124,12 @@
       <section class="content-header">
         <div class="container-fluid">
           <h1 class="mb-0">Settings</h1>
+          <p class="text-muted mb-0 small">Site &amp; navigation — control public appearance and which routes visitors can open.</p>
         </div>
       </section>
 
       <section class="content">
-        <div class="container-fluid">
+        <div class="container-fluid pb-5">
           <% if (notice) { %>
             <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
           <% } %>
@@ -57,33 +143,64 @@
           </div>
 
           <div class="hint-box">
-            <strong>Control Point:</strong> set brand color, navbar menu items, and page visibility from one tab. Navbar builder auto-checks all configured pages and keeps their paths synced.
+            <strong>Control point:</strong> set brand color, navbar menu items, and page visibility from this screen. Saving updates the public site after cache refresh.
           </div>
 
-          <form method="post" action="/admin/settings/site/update">
-            <div class="card settings-card mb-3">
-              <div class="card-header">
-                <h3 class="card-title">Site Color</h3>
+          <form method="post" action="/admin/settings/site/update" id="siteSettingsForm">
+            <div class="accordion site-settings-accordion mb-3" id="siteSettingsAccordion">
+            <div class="card settings-card mb-2">
+              <div class="card-header p-0 border-bottom-0" id="siteAccHColor">
+                <h3 class="mb-0">
+                  <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" style="white-space: normal;" data-toggle="collapse" data-target="#siteAccCColor" aria-expanded="false" aria-controls="siteAccCColor">
+                    <span class="pr-2">
+                      <span class="card-title d-block mb-0">Site color</span>
+                      <span class="card-subtitle">Accent color used in public CSS (buttons, highlights). Enter a valid HEX value.</span>
+                    </span>
+                    <i class="fas fa-chevron-down site-acc-chevron mt-1 flex-shrink-0 text-muted" aria-hidden="true"></i>
+                  </button>
+                </h3>
               </div>
-              <div class="card-body">
+              <div id="siteAccCColor" class="collapse" data-parent="#siteSettingsAccordion" aria-labelledby="siteAccHColor">
+              <div class="card-body border-top">
                 <% const primaryColorValue = (siteSettings && siteSettings.effective && siteSettings.effective.primaryColor) || '#f59e0b'; %>
                 <div class="form-row align-items-end">
                   <div class="form-group col-md-4">
-                    <label>Primary Color (HEX)</label>
-                    <input class="form-control" name="primaryColor" value="<%= primaryColorValue %>" placeholder="#f59e0b">
+                    <label class="d-flex align-items-center flex-wrap" for="primaryColorInput">
+                      Primary color (HEX)
+                      <button type="button" class="btn btn-sm site-help-btn ml-2" tabindex="0"
+                        data-toggle="popover" data-trigger="hover focus" data-placement="right" data-container="body"
+                        title="Primary color"
+                        data-content="Sets the CSS variable used on the public site for primary actions and accents. Use a 6-digit HEX such as #f59e0b. The color picker next to it is read-only preview."
+                        aria-label="Help: primary site color">
+                        ?
+                      </button>
+                    </label>
+                    <input id="primaryColorInput" class="form-control" name="primaryColor" value="<%= primaryColorValue %>" placeholder="#f59e0b" autocomplete="off" aria-describedby="helpPrimaryColor">
+                    <span id="helpPrimaryColor" class="sr-only-help">Sets public site accent color via HEX. Preview only on the swatch beside this field.</span>
                   </div>
                   <div class="form-group col-md-2">
-                    <input type="color" class="form-control" value="<%= primaryColorValue %>" disabled>
+                    <label class="d-block small text-muted">Preview</label>
+                    <input type="color" class="form-control" value="<%= primaryColorValue %>" disabled aria-hidden="true">
                   </div>
                 </div>
               </div>
+              </div>
             </div>
 
-            <div class="card settings-card mb-3">
-              <div class="card-header">
-                <h3 class="card-title">Navbar Menu</h3>
+            <div class="card settings-card mb-2">
+              <div class="card-header p-0 border-bottom-0" id="siteAccHNav">
+                <h3 class="mb-0">
+                  <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" style="white-space: normal;" data-toggle="collapse" data-target="#siteAccCNav" aria-expanded="false" aria-controls="siteAccCNav">
+                    <span class="pr-2">
+                      <span class="card-title d-block mb-0">Navbar menu</span>
+                      <span class="card-subtitle">Top navigation links shown to visitors (when the theme uses the configured menu). Disable a row to hide that link without deleting it.</span>
+                    </span>
+                    <i class="fas fa-chevron-down site-acc-chevron mt-1 flex-shrink-0 text-muted" aria-hidden="true"></i>
+                  </button>
+                </h3>
               </div>
-              <div class="card-body p-0">
+              <div id="siteAccCNav" class="collapse" data-parent="#siteSettingsAccordion" aria-labelledby="siteAccHNav">
+              <div class="card-body p-0 border-top">
                 <div class="table-responsive">
                   <table class="table table-striped mb-0">
                     <thead>
@@ -91,19 +208,28 @@
                         <th style="width:18%;">Key</th>
                         <th style="width:32%;">Label</th>
                         <th style="width:35%;">URL</th>
-                        <th style="width:15%;">Enabled</th>
+                        <th style="width:15%;">
+                          Enabled
+                          <button type="button" class="btn btn-sm site-help-btn ml-1" tabindex="0"
+                            data-toggle="popover" data-trigger="hover focus" data-placement="left" data-container="body"
+                            title="Navbar: enabled"
+                            data-content="When checked, this row is shown in the public main navigation (subject to theme rules). When unchecked, the link is hidden from the bar but the URL may still work if typed directly."
+                            aria-label="Help: navbar enabled column">
+                            ?
+                          </button>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       <% const menuItems = (siteSettings && siteSettings.effective && siteSettings.effective.navbarMenu) || []; %>
                       <% menuItems.forEach(function(item, i) { %>
                         <tr>
-                          <td><input class="form-control" name="navbarMenu[<%= i %>][key]" value="<%= item.key %>"></td>
-                          <td><input class="form-control" name="navbarMenu[<%= i %>][label]" value="<%= item.label %>"></td>
-                          <td><input class="form-control" name="navbarMenu[<%= i %>][url]" value="<%= item.url %>"></td>
+                          <td><input class="form-control" name="navbarMenu[<%= i %>][key]" value="<%= item.key %>" aria-label="Navbar key <%= i + 1 %>"></td>
+                          <td><input class="form-control" name="navbarMenu[<%= i %>][label]" value="<%= item.label %>" aria-label="Navbar label <%= i + 1 %>"></td>
+                          <td><input class="form-control" name="navbarMenu[<%= i %>][url]" value="<%= item.url %>" aria-label="Navbar URL <%= i + 1 %>"></td>
                           <td>
                             <input type="hidden" name="navbarMenu[<%= i %>][enabled]" value="false">
-                            <input type="checkbox" name="navbarMenu[<%= i %>][enabled]" value="true" <%= item.enabled ? 'checked' : '' %>>
+                            <input type="checkbox" name="navbarMenu[<%= i %>][enabled]" value="true" <%= item.enabled ? 'checked' : '' %> aria-label="Enable navbar item <%= item.label || item.key %>">
                           </td>
                         </tr>
                       <% }) %>
@@ -111,13 +237,23 @@
                   </table>
                 </div>
               </div>
+              </div>
             </div>
 
-            <div class="card settings-card mb-3">
-              <div class="card-header">
-                <h3 class="card-title">Header Top Links</h3>
+            <div class="card settings-card mb-2">
+              <div class="card-header p-0 border-bottom-0" id="siteAccHTop">
+                <h3 class="mb-0">
+                  <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" style="white-space: normal;" data-toggle="collapse" data-target="#siteAccCTop" aria-expanded="false" aria-controls="siteAccCTop">
+                    <span class="pr-2">
+                      <span class="card-title d-block mb-0">Header top links</span>
+                      <span class="card-subtitle">Small text links in the top bar (e.g. Help, Support). Toggle without removing rows.</span>
+                    </span>
+                    <i class="fas fa-chevron-down site-acc-chevron mt-1 flex-shrink-0 text-muted" aria-hidden="true"></i>
+                  </button>
+                </h3>
               </div>
-              <div class="card-body p-0">
+              <div id="siteAccCTop" class="collapse" data-parent="#siteSettingsAccordion" aria-labelledby="siteAccHTop">
+              <div class="card-body p-0 border-top">
                 <div class="table-responsive">
                   <table class="table table-striped mb-0">
                     <thead>
@@ -125,7 +261,16 @@
                         <th style="width:18%;">Key</th>
                         <th style="width:32%;">Label</th>
                         <th style="width:35%;">URL</th>
-                        <th style="width:15%;">Enabled</th>
+                        <th style="width:15%;">
+                          Enabled
+                          <button type="button" class="btn btn-sm site-help-btn ml-1" tabindex="0"
+                            data-toggle="popover" data-trigger="hover focus" data-placement="left" data-container="body"
+                            title="Top links: enabled"
+                            data-content="When checked, this link appears in the header top strip. When unchecked, it is hidden; fallback header links may show if none are enabled."
+                            aria-label="Help: top links enabled column">
+                            ?
+                          </button>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -145,54 +290,113 @@
                   </table>
                 </div>
               </div>
+              </div>
             </div>
 
-            <div class="card settings-card mb-3">
-              <div class="card-header">
-                <h3 class="card-title">Header Contact & CTA</h3>
+            <div class="card settings-card mb-2">
+              <div class="card-header p-0 border-bottom-0" id="siteAccHContact">
+                <h3 class="mb-0">
+                  <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" style="white-space: normal;" data-toggle="collapse" data-target="#siteAccCContact" aria-expanded="false" aria-controls="siteAccCContact">
+                    <span class="pr-2">
+                      <span class="card-title d-block mb-0">Header contact &amp; CTA</span>
+                      <span class="card-subtitle">Phone, email, and location shown in the mid header; plus the orange navbar button label and destination.</span>
+                    </span>
+                    <i class="fas fa-chevron-down site-acc-chevron mt-1 flex-shrink-0 text-muted" aria-hidden="true"></i>
+                  </button>
+                </h3>
               </div>
-              <div class="card-body">
+              <div id="siteAccCContact" class="collapse" data-parent="#siteSettingsAccordion" aria-labelledby="siteAccHContact">
+              <div class="card-body border-top">
                 <% const headerInfo = (siteSettings && siteSettings.effective && siteSettings.effective.header) || {}; %>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label>Phone</label>
-                    <input class="form-control" name="header[phone]" value="<%= headerInfo.phone || '' %>">
+                    <label class="d-flex align-items-center">Phone
+                      <button type="button" class="btn btn-sm site-help-btn ml-2" tabindex="0"
+                        data-toggle="popover" data-trigger="hover focus" data-placement="top" data-container="body"
+                        title="Header phone"
+                        data-content="Displayed in the public header with click-to-call. Keep digits consistent with your tel: link expectations."
+                        aria-label="Help: header phone">?</button>
+                    </label>
+                    <input class="form-control" name="header[phone]" value="<%= headerInfo.phone || '' %>" autocomplete="tel">
                   </div>
                   <div class="form-group col-md-4">
-                    <label>Email</label>
-                    <input class="form-control" name="header[email]" value="<%= headerInfo.email || '' %>">
+                    <label class="d-flex align-items-center">Email
+                      <button type="button" class="btn btn-sm site-help-btn ml-2" tabindex="0"
+                        data-toggle="popover" data-trigger="hover focus" data-placement="top" data-container="body"
+                        title="Header email"
+                        data-content="Shown as plain text in the header info block (not a mailto by default). Use your public contact address."
+                        aria-label="Help: header email">?</button>
+                    </label>
+                    <input class="form-control" name="header[email]" value="<%= headerInfo.email || '' %>" autocomplete="email">
                   </div>
                   <div class="form-group col-md-4">
-                    <label>Location</label>
+                    <label class="d-flex align-items-center">Location
+                      <button type="button" class="btn btn-sm site-help-btn ml-2" tabindex="0"
+                        data-toggle="popover" data-trigger="hover focus" data-placement="top" data-container="body"
+                        title="Header location"
+                        data-content="Short location line in the header (city/region). Does not change map embeds elsewhere unless your theme uses it."
+                        aria-label="Help: header location">?</button>
+                    </label>
                     <input class="form-control" name="header[location]" value="<%= headerInfo.location || '' %>">
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <label>Navbar Button Label</label>
+                    <label class="d-flex align-items-center">Navbar button label
+                      <button type="button" class="btn btn-sm site-help-btn ml-2" tabindex="0"
+                        data-toggle="popover" data-trigger="hover focus" data-placement="top" data-container="body"
+                        title="Navbar button label"
+                        data-content="Text on the primary call-to-action button in the public nav (e.g. Book Taxi)."
+                        aria-label="Help: navbar button label">?</button>
+                    </label>
                     <input class="form-control" name="header[navButtonLabel]" value="<%= headerInfo.navButtonLabel || '' %>">
                   </div>
                   <div class="form-group col-md-6">
-                    <label>Navbar Button URL</label>
+                    <label class="d-flex align-items-center">Navbar button URL
+                      <button type="button" class="btn btn-sm site-help-btn ml-2" tabindex="0"
+                        data-toggle="popover" data-trigger="hover focus" data-placement="top" data-container="body"
+                        title="Navbar button URL"
+                        data-content="Target path when visitors click the navbar CTA (e.g. /book-taxi). Use a site-relative path."
+                        aria-label="Help: navbar button URL">?</button>
+                    </label>
                     <input class="form-control" name="header[navButtonUrl]" value="<%= headerInfo.navButtonUrl || '' %>">
                   </div>
                 </div>
               </div>
+              </div>
             </div>
 
-            <div class="card settings-card mb-3">
-              <div class="card-header">
-                <h3 class="card-title">Header Social Links</h3>
+            <div class="card settings-card mb-2">
+              <div class="card-header p-0 border-bottom-0" id="siteAccHSocial">
+                <h3 class="mb-0">
+                  <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" style="white-space: normal;" data-toggle="collapse" data-target="#siteAccCSocial" aria-expanded="false" aria-controls="siteAccCSocial">
+                    <span class="pr-2">
+                      <span class="card-title d-block mb-0">Header social links</span>
+                      <span class="card-subtitle">Icon buttons in the top bar. Icon class should match your loaded CSS (e.g. Font Awesome).</span>
+                    </span>
+                    <i class="fas fa-chevron-down site-acc-chevron mt-1 flex-shrink-0 text-muted" aria-hidden="true"></i>
+                  </button>
+                </h3>
               </div>
-              <div class="card-body p-0">
+              <div id="siteAccCSocial" class="collapse" data-parent="#siteSettingsAccordion" aria-labelledby="siteAccHSocial">
+              <div class="card-body p-0 border-top">
                 <div class="table-responsive">
                   <table class="table table-striped mb-0">
                     <thead>
                       <tr>
                         <th style="width:20%;">Key</th>
-                        <th style="width:35%;">Icon Class</th>
+                        <th style="width:35%;">Icon class</th>
                         <th style="width:30%;">URL</th>
-                        <th style="width:15%;">Enabled</th>
+                        <th style="width:15%;">
+                          Enabled
+                          <button type="button" class="btn btn-sm site-help-btn ml-1" tabindex="0"
+                            data-toggle="popover" data-trigger="hover focus" data-placement="left" data-container="body"
+                            title="Social links: enabled"
+                            data-content="When checked, this icon link appears in the header social row. When unchecked, the icon is hidden."
+                            aria-label="Help: social links enabled column">
+                            ?
+                          </button>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -212,13 +416,23 @@
                   </table>
                 </div>
               </div>
+              </div>
             </div>
 
-            <div class="card settings-card mb-3">
-              <div class="card-header">
-                <h3 class="card-title">Pages</h3>
+            <div class="card settings-card mb-2">
+              <div class="card-header p-0 border-bottom-0" id="siteAccHPages">
+                <h3 class="mb-0">
+                  <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" style="white-space: normal;" data-toggle="collapse" data-target="#siteAccCPages" aria-expanded="false" aria-controls="siteAccCPages">
+                    <span class="pr-2">
+                      <span class="card-title d-block mb-0">Pages</span>
+                      <span class="card-subtitle">Visibility flags used by public middleware: disabling a page can return 404 for that path unless another rule allows it (e.g. menu or home exception).</span>
+                    </span>
+                    <i class="fas fa-chevron-down site-acc-chevron mt-1 flex-shrink-0 text-muted" aria-hidden="true"></i>
+                  </button>
+                </h3>
               </div>
-              <div class="card-body p-0">
+              <div id="siteAccCPages" class="collapse" data-parent="#siteSettingsAccordion" aria-labelledby="siteAccHPages">
+              <div class="card-body p-0 border-top">
                 <div class="table-responsive">
                   <table class="table table-striped mb-0">
                     <thead>
@@ -226,7 +440,16 @@
                         <th style="width:18%;">Key</th>
                         <th style="width:32%;">Title</th>
                         <th style="width:35%;">Path</th>
-                        <th style="width:15%;">Enabled</th>
+                        <th style="width:15%;">
+                          Enabled
+                          <button type="button" class="btn btn-sm site-help-btn ml-1" tabindex="0"
+                            data-toggle="popover" data-trigger="hover focus" data-placement="left" data-container="body"
+                            title="Pages: enabled"
+                            data-content="Controls whether this path is treated as enabled for visitors. If disabled and no exception applies, the public site may show a 404 for matching URLs. Account and profile paths are always exempt in middleware."
+                            aria-label="Help: pages enabled column">
+                            ?
+                          </button>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -246,10 +469,15 @@
                   </table>
                 </div>
               </div>
+              </div>
+            </div>
             </div>
 
-            <div class="mb-3">
-              <button type="submit" class="btn btn-primary">Save Site Settings</button>
+            <div class="site-settings-sticky">
+              <button type="submit" class="btn btn-primary btn-lg" form="siteSettingsForm">
+                <i class="fas fa-save mr-1"></i> Save site settings
+              </button>
+              <span class="text-muted small ml-3 d-none d-md-inline">Changes apply to the public site after save (cache may refresh immediately).</span>
             </div>
           </form>
         </div>
@@ -262,5 +490,16 @@
   </div>
 
   <%- include('../../shared/partials/admin-scripts') %>
+  <script>
+    (function () {
+      if (typeof jQuery === 'undefined' || !jQuery.fn.popover) return;
+      jQuery(function () {
+        jQuery('[data-toggle="popover"]').popover({
+          container: 'body',
+          html: false
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

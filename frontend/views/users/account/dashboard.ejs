@@ -6,10 +6,41 @@
     <p style="color:#666;"><%= t('account.overview') %></p>
 
     <nav class="account-tabs" aria-label="Account tabs">
-      <a class="account-tab <%= activeAccountTab === 'account' ? 'active' : '' %>" href="/account"><%= t('account.tabs.account') %></a>
-      <a class="account-tab <%= activeAccountTab === 'trips' ? 'active' : '' %>" href="/account/trips"><%= t('account.tabs.trips') %></a>
-      <a class="account-tab <%= activeAccountTab === 'password' ? 'active' : '' %>" href="/account/password"><%= t('account.tabs.password') %></a>
+      <a class="account-tab <%= activeAccountTab === 'account' ? 'active' : '' %>" href="<%= withLocale('/account') %>"><%= t('account.tabs.account') %></a>
+      <a class="account-tab <%= activeAccountTab === 'trips' ? 'active' : '' %>" href="<%= withLocale('/account/trips') %>"><%= t('account.tabs.trips') %></a>
+      <a class="account-tab <%= activeAccountTab === 'password' ? 'active' : '' %>" href="<%= withLocale('/account/password') %>"><%= t('account.tabs.password') %></a>
     </nav>
+
+    <% if (typeof dashboardBookingsError !== 'undefined' && dashboardBookingsError) { %>
+      <p style="color:#b91c1c;margin-bottom:12px;"><%= dashboardBookingsError %></p>
+    <% } %>
+
+    <% if (typeof recentBookings !== 'undefined' && recentBookings && recentBookings.length) { %>
+    <section class="card" style="margin-bottom:16px;">
+      <h3 style="margin-top:0;"><%= t('account.recentRides', 'Recent ride requests') %></h3>
+      <table style="width:100%; border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;"><%= t('account.tripId') %></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;"><%= t('account.route') %></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;"><%= t('account.date') %></th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;"><%= t('account.status') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recentBookings.forEach((trip) => { %>
+            <tr>
+              <td style="padding:8px; border-bottom:1px solid #f1f5f9;"><%= trip.id %></td>
+              <td style="padding:8px; border-bottom:1px solid #f1f5f9;"><%= trip.from %> → <%= trip.to %></td>
+              <td style="padding:8px; border-bottom:1px solid #f1f5f9;"><%= trip.date %></td>
+              <td style="padding:8px; border-bottom:1px solid #f1f5f9;"><%= trip.status %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <p style="margin-top:12px;"><a href="<%= withLocale('/account/trips') %>"><%= t('account.viewAllTrips', 'View all trips') %></a></p>
+    </section>
+    <% } %>
 
     <section class="card">
       <h3 style="margin-top:0;"><%= t('account.profile') %></h3>
@@ -20,9 +51,9 @@
     </section>
 
     <section style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
-      <a href="/book-taxi"><%= t('account.bookRide') %></a>
-      <a href="/contact"><%= t('account.support') %></a>
-      <form action="/account/logout" method="post" style="margin:0;">
+      <a href="<%= withLocale('/book-taxi') %>"><%= t('account.bookRide') %></a>
+      <a href="<%= withLocale('/contact') %>"><%= t('account.support') %></a>
+      <form action="<%= withLocale('/account/logout') %>" method="post" style="margin:0;">
         <button type="submit"><%= t('account.logout') %></button>
       </form>
     </section>

@@ -143,6 +143,16 @@ async function attachI18n(req, res, next) {
     return `/${normalized}${targetPath}${queryString}`;
   };
 
+  const safeLocale = supportedLocales.includes(locale) ? locale : FALLBACK_LOCALE;
+  res.locals.withLocale = (pathname) => {
+    const raw = pathname === undefined || pathname === null ? '/' : String(pathname).trim();
+    const path = raw === '' ? '/' : (raw.startsWith('/') ? raw : `/${raw}`);
+    if (path === '/') {
+      return `/${safeLocale}`;
+    }
+    return `/${safeLocale}${path}`;
+  };
+
   return next();
 }
 
@@ -191,6 +201,7 @@ async function handleLocalePrefix(req, res, next) {
   const rest = segments.slice(1).join('/');
   const rewrittenPath = rest ? `/${rest}` : '/';
   req.url = `${rewrittenPath}${queryString}`;
+  delete req._parsedUrl;
 
   return next();
 }

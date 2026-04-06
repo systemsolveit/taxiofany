@@ -9,13 +9,13 @@
       <div style="background:#fdecea;color:#b42318;padding:12px;border-radius:8px;margin-bottom:16px;"><%= errorMessage %></div>
     <% } %>
 
-    <form action="/account/login" method="post" style="display:grid;gap:12px;">
+    <form action="<%= withLocale('/account/login') %>" method="post" style="display:grid;gap:12px;">
       <input type="email" name="email" placeholder="<%= t('account.emailPlaceholder') %>" required />
       <input type="password" name="password" placeholder="<%= t('account.passwordPlaceholder') %>" required />
       <button type="submit"><%= t('account.login') %></button>
     </form>
 
-    <p style="margin-top:12px;"><%= t('account.noAccount') %> <a href="/account/register"><%= t('account.createOne') %></a></p>
+    <p style="margin-top:12px;"><%= t('account.noAccount') %> <a href="<%= withLocale('/account/register') %>"><%= t('account.createOne') %></a></p>
   </main>
 
   <%- include('../../shared/partials/legacy-footer') %>
