@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <h1 class="mb-0">Profile</h1>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Account</h3>
+            </div>
+            <div class="card-body">
+              <% if (profile) { %>
+                <p><strong>Name:</strong> <%= profile.fullName %></p>
+                <p><strong>Email:</strong> <%= profile.email %></p>
+                <p><strong>Role:</strong> <%= profile.role %></p>
+                <p><strong>Status:</strong> <%= profile.status %></p>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recent activity</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+              <table class="table table-sm table-hover">
+                <thead>
+                  <tr>
+                    <th>When</th>
+                    <th>Action</th>
+                    <th>Resource</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% const items = audit && audit.items ? audit.items : []; %>
+                  <% if (!items.length) { %>
+                    <tr><td colspan="3" class="text-muted text-center py-3">No audit entries yet.</td></tr>
+                  <% } else { %>
+                    <% items.forEach(function(row) { %>
+                      <tr>
+                        <td class="text-nowrap"><%= row.createdAt ? new Date(row.createdAt).toLocaleString() : '-' %></td>
+                        <td><%= row.action %></td>
+                        <td><%= row.resource || '-' %></td>
+                      </tr>
+                    <% }) %>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

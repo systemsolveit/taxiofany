@@ -8,9 +8,9 @@ function normalizeBaseUrl(value) {
 function buildApiPath(pathPart = '') {
   const base = normalizeBaseUrl(config.apiBaseUrl);
   if (base.endsWith('/api/v1')) {
-    return `${base}/admin/emails${pathPart}`;
+    return `${base}/admin/auth${pathPart}`;
   }
-  return `${base}/api/v1/admin/emails${pathPart}`;
+  return `${base}/api/v1/admin/auth${pathPart}`;
 }
 
 async function request(pathPart, token, options = {}) {
@@ -18,6 +18,7 @@ async function request(pathPart, token, options = {}) {
     url: buildApiPath(pathPart),
     method: options.method || 'get',
     data: options.body,
+    params: options.params,
     headers: {
       Authorization: `Bearer ${token}`,
       ...(options.headers || {}),
@@ -27,7 +28,7 @@ async function request(pathPart, token, options = {}) {
 
   const payload = response.data || {};
   if (response.status >= 400 || payload.success === false) {
-    const error = new Error(payload?.error?.message || 'Email templates API request failed.');
+    const error = new Error(payload?.error?.message || 'Admin account API request failed.');
     error.statusCode = response.status;
     throw error;
   }
@@ -35,45 +36,27 @@ async function request(pathPart, token, options = {}) {
   return payload.data;
 }
 
-function listTemplates(token) {
-  return request('', token);
+function getProfile(token) {
+  return request('/me', token);
 }
 
-function getTemplate(token, id) {
-  return request(`/${encodeURIComponent(id)}`, token);
-}
-
-function createTemplate(token, body) {
-  return request('', token, {
-    method: 'post',
-    body,
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
-
-function updateTemplate(token, id, body) {
-  return request(`/${encodeURIComponent(id)}`, token, {
+function patchPassword(token, body) {
+  return request('/me/password', token, {
     method: 'patch',
     body,
     headers: { 'Content-Type': 'application/json' },
   });
 }
 
-function deleteTemplate(token, id) {
-  return request(`/${encodeURIComponent(id)}`, token, {
-    method: 'delete',
+function getAuditLog(token, params) {
+  return request('/me/audit', token, {
+    method: 'get',
+    params,
   });
 }
 
-function previewTemplate(token, id) {
-  return request(`/${encodeURIComponent(id)}/preview`, token);
-}
-
 module.exports = {
-  listTemplates,
-  getTemplate,
-  createTemplate,
-  updateTemplate,
-  deleteTemplate,
-  previewTemplate,
+  getProfile,
+  patchPassword,
+  getAuditLog,
 };

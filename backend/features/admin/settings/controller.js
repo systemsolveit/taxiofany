@@ -1,4 +1,6 @@
 const service = require('./service');
+const auditService = require('../audit/service');
+const emailsService = require('../emails/service');
 
 async function getMailSettings(req, res, next) {
   try {
@@ -12,6 +14,12 @@ async function getMailSettings(req, res, next) {
 async function updateMailSettings(req, res, next) {
   try {
     const data = await service.updateMailSettings(req.body);
+    await auditService.logAdminAudit({
+      adminUserId: req.auth.sub,
+      action: 'settings.mail_update',
+      resource: 'mail',
+      ip: auditService.getClientIp(req),
+    });
     return res.json({ success: true, data });
   } catch (error) {
     return next(error);
@@ -39,6 +47,12 @@ async function getSiteSettings(req, res, next) {
 async function updateSiteSettings(req, res, next) {
   try {
     const data = await service.updateSiteSettings(req.body);
+    await auditService.logAdminAudit({
+      adminUserId: req.auth.sub,
+      action: 'settings.site_update',
+      resource: 'site',
+      ip: auditService.getClientIp(req),
+    });
     return res.json({ success: true, data });
   } catch (error) {
     return next(error);
@@ -58,6 +72,32 @@ async function getLogs(req, res, next) {
   }
 }
 
+async function getNotificationsSettings(req, res, next) {
+  try {
+    await emailsService.ensureRideStatusDefaultTemplate();
+    const data = await service.getNotificationsSettings();
+    return res.json({ success: true, data });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function patchNotificationsSettings(req, res, next) {
+  try {
+    const data = await service.patchNotificationsSettings(req.body);
+    await auditService.logAdminAudit({
+      adminUserId: req.auth.sub,
+      action: 'settings.notifications_update',
+      resource: 'notifications',
+      metadata: req.body,
+      ip: auditService.getClientIp(req),
+    });
+    return res.json({ success: true, data });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   getMailSettings,
   updateMailSettings,
@@ -65,4 +105,6 @@ module.exports = {
   getSiteSettings,
   updateSiteSettings,
   getLogs,
+  getNotificationsSettings,
+  patchNotificationsSettings,
 };

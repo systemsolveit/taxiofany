@@ -4,7 +4,7 @@ const { requireAdminAuth } = require('./middleware');
 const config = require('../../../config');
 const { createAuthRateLimiter } = require('../../../middlewares/rateLimit');
 const validateRequest = require('../../../middlewares/validateRequest');
-const { loginValidation } = require('./validation');
+const { loginValidation, changePasswordValidation } = require('./validation');
 
 const router = express.Router();
 const authRateLimiter = createAuthRateLimiter(config);
@@ -45,5 +45,7 @@ router.post('/login', authRateLimiter, loginValidation, validateRequest, control
  *         description: Admin profile returned
  */
 router.get('/me', requireAdminAuth, controller.me);
+router.patch('/me/password', requireAdminAuth, changePasswordValidation, validateRequest, controller.patchPassword);
+router.get('/me/audit', requireAdminAuth, controller.myAudit);
 
 module.exports = router;

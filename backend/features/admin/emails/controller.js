@@ -57,10 +57,24 @@ async function deleteTemplate(req, res, next) {
   }
 }
 
+async function previewTemplate(req, res, next) {
+  try {
+    const data = await service.previewTemplateById(req.params.id);
+    if (!data) {
+      return res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Email template not found.' } });
+    }
+
+    return res.json({ success: true, data });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   listTemplates,
   getTemplate,
   createTemplate,
   updateTemplate,
   deleteTemplate,
+  previewTemplate,
 };

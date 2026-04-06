@@ -4,6 +4,7 @@ const { getRecentLogs } = require('../../../middlewares/logger');
 
 const MAIL_KEY = 'mail';
 const SITE_KEY = 'site';
+const NOTIFICATIONS_KEY = 'notifications';
 
 const DEFAULT_NAVBAR_MENU = [
   { key: 'home', label: 'Home', url: '/', enabled: true },
@@ -82,16 +83,79 @@ function toBool(value, fallback = false) {
   return fallback;
 }
 
+function normalizeSmtpProviderField(value) {
+  const s = String(value || 'custom').trim().toLowerCase();
+  if (s === 'gmail' || s === 'office365') {
+    return s;
+  }
+  return 'custom';
+}
+
 function normalizeMailSettings(payload = {}) {
+  const provider = normalizeSmtpProviderField(payload.smtpProvider);
+  let smtpHost = String(payload.smtpHost || '').trim();
+  let smtpPort = Number(payload.smtpPort) || 0;
+  let smtpSecure = toBool(payload.smtpSecure, false);
+
+  if (provider === 'gmail') {
+    if (!smtpHost) {
+      smtpHost = 'smtp.gmail.com';
+    }
+    if (!smtpPort) {
+      smtpPort = 465;
+    }
+    if (payload.smtpSecure === undefined || payload.smtpSecure === null || payload.smtpSecure === '') {
+      smtpSecure = true;
+    }
+  } else if (provider === 'office365') {
+    if (!smtpHost) {
+      smtpHost = 'smtp.office365.com';
+    }
+    if (!smtpPort) {
+      smtpPort = 587;
+    }
+    if (payload.smtpSecure === undefined || payload.smtpSecure === null || payload.smtpSecure === '') {
+      smtpSecure = false;
+    }
+  }
+
   return {
-    smtpHost: String(payload.smtpHost || '').trim(),
-    smtpPort: Number(payload.smtpPort) || 0,
-    smtpSecure: toBool(payload.smtpSecure, false),
+    smtpProvider: provider,
+    smtpHost,
+    smtpPort,
+    smtpSecure,
     smtpUser: String(payload.smtpUser || '').trim(),
     smtpPass: String(payload.smtpPass || '').trim(),
     smtpFrom: String(payload.smtpFrom || '').trim(),
     contactRecipientEmail: String(payload.contactRecipientEmail || '').trim().toLowerCase(),
   };
+}
+
+function normalizeNotificationsSettings(payload = {}) {
+  let rideStatusEmailTemplateId = null;
+  if (payload.rideStatusEmailTemplateId !== undefined && payload.rideStatusEmailTemplateId !== null) {
+    const raw = String(payload.rideStatusEmailTemplateId).trim();
+    rideStatusEmailTemplateId = raw === '' ? null : raw;
+  }
+  let sendOnStatusChange = true;
+  if (payload.sendOnStatusChange !== undefined) {
+    sendOnStatusChange = toBool(payload.sendOnStatusChange, true);
+  }
+  return {
+    rideStatusEmailTemplateId,
+    sendOnStatusChange,
+  };
+}
+
+function normalizeProvidedNotificationsSettings(payload = {}) {
+  const normalized = normalizeNotificationsSettings(payload);
+  const provided = {};
+  Object.keys(normalized).forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(payload, key)) {
+      provided[key] = normalized[key];
+    }
+  });
+  return provided;
 }
 
 function normalizeHexColor(value, fallback = '#f59e0b') {
@@ -366,6 +430,10 @@ async function getMailSettings() {
     stored: sanitizeForResponse(fromDb || {}),
     effective: sanitizeForResponse(effective),
     smtpConfigured: mailer.isMailConfigUsable(effective),
+    hints: {
+      gmailAppPassword:
+        'Google may block normal passwords. Create an App Password in your Google Account (Security → 2-Step Verification → App passwords) and paste it here.',
+    },
   };
 }
 
@@ -400,7 +468,14 @@ async function getLogs(options = {}) {
 }
 
 async function testMailSettings(payload = {}) {
-  const mapped = normalizeProvidedMailSettings(payload);
+  const testTo =
+    payload && payload.testTo !== undefined && payload.testTo !== null
+      ? String(payload.testTo).trim().toLowerCase()
+      : '';
+  const rest = { ...(payload || {}) };
+  delete rest.testTo;
+
+  const mapped = normalizeProvidedMailSettings(rest);
   const existing = await getStoredMailSettingsRaw();
   const merged = {
     ...(existing || {}),
@@ -411,7 +486,10 @@ async function testMailSettings(payload = {}) {
     merged.smtpPass = existing.smtpPass;
   }
 
-  const result = await mailer.sendTestEmail(merged);
+  const result = await mailer.sendTestEmail({
+    ...merged,
+    ...(testTo ? { testTo } : {}),
+  });
 
   return {
     success: Boolean(result && result.sent),
@@ -446,6 +524,63 @@ async function updateSiteSettings(payload = {}) {
   return getSiteSettings();
 }
 
+async function getStoredNotificationsRaw() {
+  const record = await IntegrationSetting.findOne({ key: NOTIFICATIONS_KEY }).lean();
+  if (!record || !record.value || typeof record.value !== 'object') {
+    return null;
+  }
+  return normalizeNotificationsSettings(record.value);
+}
+
+async function getNotificationsSettings() {
+  const fromDb = await getStoredNotificationsRaw();
+  const effective = fromDb || normalizeNotificationsSettings({});
+
+  return {
+    source: fromDb ? 'db' : 'default',
+    effective,
+  };
+}
+
+async function updateNotificationsSettings(payload = {}) {
+  const mapped = normalizeNotificationsSettings(payload);
+
+  await IntegrationSetting.updateOne(
+    { key: NOTIFICATIONS_KEY },
+    {
+      $set: {
+        key: NOTIFICATIONS_KEY,
+        value: mapped,
+      },
+    },
+    { upsert: true }
+  );
+
+  return getNotificationsSettings();
+}
+
+async function patchNotificationsSettings(payload = {}) {
+  const mapped = normalizeProvidedNotificationsSettings(payload);
+  const existing = await getStoredNotificationsRaw();
+  const next = {
+    ...(existing || normalizeNotificationsSettings({})),
+    ...mapped,
+  };
+
+  await IntegrationSetting.updateOne(
+    { key: NOTIFICATIONS_KEY },
+    {
+      $set: {
+        key: NOTIFICATIONS_KEY,
+        value: normalizeNotificationsSettings(next),
+      },
+    },
+    { upsert: true }
+  );
+
+  return getNotificationsSettings();
+}
+
 module.exports = {
   getMailSettings,
   updateMailSettings,
@@ -456,4 +591,8 @@ module.exports = {
   updateSiteSettings,
   getStoredSiteSettingsRaw,
   normalizeSiteSettings,
+  getNotificationsSettings,
+  updateNotificationsSettings,
+  patchNotificationsSettings,
+  normalizeNotificationsSettings,
 };

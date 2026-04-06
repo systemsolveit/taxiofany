@@ -1,4 +1,5 @@
 const { EmailTemplate } = require('../../../models');
+const mailer = require('../../../services/mailer');
 
 function normalizeSlug(value = '') {
   return String(value || '')
@@ -70,10 +71,72 @@ async function deleteTemplateById(id) {
   return existing;
 }
 
+const RIDE_STATUS_SLUG = 'ride-status-update';
+
+function sampleRidePlaceholders() {
+  return {
+    customerName: 'Jane Doe',
+    bookingCode: 'TX-10042',
+    status: 'confirmed',
+    previousStatus: 'pending',
+    pickup: '123 Main Street, Downtown',
+    destination: 'International Airport — Terminal 2',
+    rideDate: 'April 3, 2026',
+    fareAmount: '45.00',
+  };
+}
+
+async function previewTemplateById(id) {
+  const templateDoc = await EmailTemplate.findById(id).lean();
+  if (!templateDoc) {
+    return null;
+  }
+
+  const map = sampleRidePlaceholders();
+  const subject = mailer.applyPlaceholderMap(templateDoc.subject || '', map);
+  const innerHtml = mailer.buildRideEmailInnerFromTemplate(templateDoc, map);
+  const primaryColor = await mailer.getSitePrimaryColor();
+  const html = mailer.buildThemedRideEmailHtml({ primaryColor, innerHtml });
+
+  return { subject, html };
+}
+
+async function ensureRideStatusDefaultTemplate() {
+  const existing = await EmailTemplate.findOne({ slug: RIDE_STATUS_SLUG }).lean();
+  if (existing) {
+    return existing;
+  }
+
+  const created = await EmailTemplate.create({
+    title: 'Ride status update',
+    slug: RIDE_STATUS_SLUG,
+    category: 'Transactional',
+    audience: 'Customers',
+    subject: 'Your booking {{bookingCode}} is now {{status}}',
+    previewText: 'Ride status notification',
+    summary: 'Sent when an admin changes a booking status.',
+    heroTitle: 'Hello {{customerName}}',
+    heroDescription: 'Your ride request has been updated.',
+    bodyTitle: 'Trip details',
+    bodyContent:
+      'Booking code: {{bookingCode}}\nPrevious status: {{previousStatus}}\nNew status: {{status}}\nPickup: {{pickup}}\nDestination: {{destination}}\nDate: {{rideDate}}',
+    ctaLabel: '',
+    ctaUrl: '',
+    tone: 'Professional',
+    isPublished: true,
+    displayOrder: 0,
+  });
+
+  return EmailTemplate.findById(created._id).lean();
+}
+
 module.exports = {
   listTemplates,
   getTemplateById,
   createTemplate,
   updateTemplateById,
   deleteTemplateById,
+  previewTemplateById,
+  ensureRideStatusDefaultTemplate,
+  sampleRidePlaceholders,
 };

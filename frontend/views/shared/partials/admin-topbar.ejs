@@ -8,17 +8,21 @@
     </li>
   </ul>
 
-  <ul class="navbar-nav ml-auto">
-    <li class="nav-item d-none d-sm-inline-block mt-1 mr-2 text-muted">
-      <%= adminSession && adminSession.user ? adminSession.user.fullName : 'Admin' %>
-    </li>
-    <li class="nav-item d-none d-sm-inline-block">
-      <a href="/" class="nav-link"><i class="fas fa-arrow-up-right-from-square mr-1"></i>Back to Website</a>
-    </li>
-    <li class="nav-item">
-      <form action="/admin/logout" method="post" class="mb-0">
-        <button type="submit" class="btn btn-link nav-link" style="cursor: pointer;"><i class="fas fa-right-from-bracket mr-1"></i>Logout</button>
-      </form>
+  <ul class="navbar-nav ml-auto align-items-center">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="adminAccountMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="d-none d-sm-inline mr-1"><%= adminSession && adminSession.user ? adminSession.user.fullName : 'Admin' %></span>
+        <i class="fas fa-user-circle fa-lg text-secondary"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="adminAccountMenu">
+        <a class="dropdown-item" href="/admin/account/profile"><i class="fas fa-id-card mr-2 text-muted"></i>Profile</a>
+        <a class="dropdown-item" href="/admin/account/password"><i class="fas fa-key mr-2 text-muted"></i>Change password</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/" target="_blank" rel="noopener noreferrer"><i class="fas fa-arrow-up-right-from-square mr-2 text-muted"></i>Back to website</a>
+        <form action="/admin/logout" method="post" class="px-3 pt-2 mb-0">
+          <button type="submit" class="btn btn-outline-danger btn-sm btn-block"><i class="fas fa-right-from-bracket mr-1"></i>Logout</button>
+        </form>
+      </div>
     </li>
   </ul>
 </nav>

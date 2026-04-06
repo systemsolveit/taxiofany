@@ -1,26 +1,48 @@
 const { RolePermission, ROLE_ENUM } = require('../../../models');
 
 const DEFAULT_ROLE_PERMISSIONS = {
-  super_admin: [
-    '*',
-  ],
+  super_admin: ['*'],
   admin: [
     'users.read',
     'users.write',
     'bookings.read',
     'bookings.write',
+    'bookings.update',
+    'contact.read',
+    'contact.update',
+    'i18n.read',
+    'i18n.write',
+    'blog.read',
+    'blog.write',
+    'services.read',
+    'services.write',
+    'cars.read',
+    'cars.write',
+    'drivers.read',
+    'drivers.write',
+    'emails.read',
+    'emails.write',
     'acl.read',
     'acl.write',
+    'settings.read',
+    'settings.write',
+    'settings.mail',
+    'settings.site',
+    'settings.logs',
+    'notifications.write',
+    'mediahub.read',
+    'mediahub.write',
   ],
   dispatcher: [
     'users.read',
     'bookings.read',
     'bookings.write',
+    'bookings.update',
+    'contact.read',
+    'emails.read',
     'acl.read',
   ],
-  driver: [
-    'bookings.read',
-  ],
+  driver: ['bookings.read'],
   customer: [],
 };
 
@@ -66,7 +88,27 @@ async function getRolePermissions(role) {
 
 async function can(role, permission) {
   const permissions = await getRolePermissions(role);
-  return permissions.includes('*') || permissions.includes(permission);
+  if (permissions.includes('*')) {
+    return true;
+  }
+  if (permissions.includes(permission)) {
+    return true;
+  }
+
+  const legacy = {
+    'bookings.update': 'bookings.write',
+    'settings.mail': 'settings.write',
+    'settings.site': 'settings.write',
+    'settings.logs': 'settings.write',
+    'notifications.write': 'settings.write',
+  };
+
+  const alt = legacy[permission];
+  if (alt && permissions.includes(alt)) {
+    return true;
+  }
+
+  return false;
 }
 
 async function upsertRolePermissions(role, permissions = []) {

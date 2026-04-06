@@ -128,10 +128,41 @@ async function getAdminProfile(userId) {
   return sanitizeUser(user);
 }
 
+async function changeAdminPassword(userId, currentPassword, newPassword) {
+  const user = await User.findById(userId).select('+passwordHash');
+  if (!user) {
+    const error = new Error('User not found.');
+    error.statusCode = 404;
+    error.code = 'NOT_FOUND';
+    throw error;
+  }
+
+  if (!ADMIN_ROLES.has(user.role)) {
+    const error = new Error('Access denied for non-admin account.');
+    error.statusCode = 403;
+    error.code = 'ROLE_NOT_ALLOWED';
+    throw error;
+  }
+
+  const currentOk = await bcrypt.compare(String(currentPassword || ''), user.passwordHash);
+  if (!currentOk) {
+    const error = new Error('Current password is incorrect.');
+    error.statusCode = 400;
+    error.code = 'INVALID_PASSWORD';
+    throw error;
+  }
+
+  user.passwordHash = await bcrypt.hash(String(newPassword || ''), 10);
+  await user.save();
+
+  return { updated: true };
+}
+
 module.exports = {
   ADMIN_ROLES,
   registerAdmin,
   loginAdmin,
   verifyToken,
   getAdminProfile,
+  changeAdminPassword,
 };

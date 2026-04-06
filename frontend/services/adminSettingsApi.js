@@ -75,6 +75,18 @@ function getLogs(token, params) {
   });
 }
 
+function getNotificationsSettings(token) {
+  return request('/notifications', token);
+}
+
+function patchNotificationsSettings(token, body) {
+  return request('/notifications', token, {
+    method: 'patch',
+    body,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
 module.exports = {
   getMailSettings,
   updateMailSettings,
@@ -82,4 +94,6 @@ module.exports = {
   getSiteSettings,
   updateSiteSettings,
   getLogs,
+  getNotificationsSettings,
+  patchNotificationsSettings,
 };
