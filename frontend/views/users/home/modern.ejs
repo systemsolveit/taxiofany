@@ -162,86 +162,33 @@
             <div class="swiper-outside">
                 <div class="service-carousel">
                     <div class="swiper-wrapper">
+                        <% const fleetCars = typeof cars !== 'undefined' && Array.isArray(cars) ? cars : []; %>
+                        <% const serviceSlides = [
+                          { bg: '/assets/img/service-1.jpg', titleKey: 'home.services.regularTransport', delay: '200ms', wow: true },
+                          { bg: '/assets/img/service-2.jpg', titleKey: 'home.services.airportTransport', delay: '400ms', wow: true },
+                          { bg: '/assets/img/service-3.jpg', titleKey: 'home.services.luggageTransport', delay: '600ms', wow: true },
+                          { bg: '/assets/img/service-4.jpg', titleKey: 'home.services.cityTransport', delay: '', wow: false },
+                          { bg: '/assets/img/service-5.jpg', titleKey: 'home.services.businessTransport', delay: '', wow: false },
+                        ]; %>
+                        <% serviceSlides.forEach(function(slide, idx) { %>
+                        <% const carImg = fleetCars.length ? (fleetCars[idx % fleetCars.length].detailImage || fleetCars[idx % fleetCars.length].image || '/assets/img/car-1.png') : '/assets/img/car-1.png'; %>
                         <div class="swiper-slide">
-                            <div class="service-item wow fade-in-bottom" data-wow-delay="200ms">
+                            <div class="service-item<%= slide.wow ? ' wow fade-in-bottom' : '' %>"<% if (slide.delay) { %> data-wow-delay="<%= slide.delay %>"<% } %>>
                                 <div class="service-thumb">
-                                    <img src="/assets/img/service-1.jpg" alt="img">
+                                    <img src="<%= slide.bg %>" alt="">
                                     <div class="service-shape-wrap">
                                         <div class="service-shape"></div>
                                     </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
+                                    <div class="service-car"><img src="<%= carImg %>" alt=""></div>
                                 </div>
                                 <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.regularTransport') %></a></h3>
+                                    <h3><a href="<%= typeof withLocale === 'function' ? withLocale('/services/details') : '/services/details' %>"><%= t(slide.titleKey) %></a></h3>
                                     <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
+                                    <a class="read-more" href="<%= typeof withLocale === 'function' ? withLocale('/services/details') : '/services/details' %>"><%= t('home.services.readMore') %></a>
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
-                            <div class="service-item wow fade-in-bottom" data-wow-delay="400ms">
-                                <div class="service-thumb">
-                                    <img src="/assets/img/service-2.jpg" alt="img">
-                                    <div class="service-shape-wrap">
-                                        <div class="service-shape"></div>
-                                    </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                                </div>
-                                <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.airportTransport') %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="service-item wow fade-in-bottom" data-wow-delay="600ms">
-                                <div class="service-thumb">
-                                    <img src="/assets/img/service-3.jpg" alt="img">
-                                    <div class="service-shape-wrap">
-                                        <div class="service-shape"></div>
-                                    </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                                </div>
-                                <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.luggageTransport') %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="service-item">
-                                <div class="service-thumb">
-                                    <img src="/assets/img/service-4.jpg" alt="img">
-                                    <div class="service-shape-wrap">
-                                        <div class="service-shape"></div>
-                                    </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                                </div>
-                                <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.cityTransport') %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="service-item">
-                                <div class="service-thumb">
-                                    <img src="/assets/img/service-5.jpg" alt="img">
-                                    <div class="service-shape-wrap">
-                                        <div class="service-shape"></div>
-                                    </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                                </div>
-                                <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.businessTransport') %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                                </div>
-                            </div>
-                        </div>
+                        <% }); %>
                     </div>
                     <div class="swiper-pagination"></div><!-- Carousel Dots -->
                 </div>
@@ -299,206 +246,33 @@
                 </li>
             </ul>
             <!--Tab Menu-->
+            <% const pt = pricingTabs && pricingTabs.length === 3 ? pricingTabs : [[], [], []]; %>
             <div class="tab-content" id="pricing-tab-content">
                 <div class="tab-pane fade show active" id="hybrid-taxi-content" role="tabpanel" aria-labelledby="hybrid-taxi">
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price"><%= t('pages.users.home.modern.2_50_km', '$2.50/km') %></div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('home.pricing.carBmw', 'BMW X5 2008') %></a></h3>
-                                    <span class="location"><%= t('pages.users.home.modern.chicago', 'Chicago') %></span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('pages.users.home.modern.initial_charge', 'Initial Charge:') %> <span>$2.50</span></li>
-                                    <li><%= t('pages.users.home.modern.per_mile_km', 'Per Mile/KM:') %> <span>$4.20</span></li>
-                                    <li><%= t('pages.users.home.modern.per_stopped_trafic', 'Per Stopped Trafic:') %> <span>$1.50</span></li>
-                                    <li><%= t('pages.users.home.modern.passengers', 'Passengers:') %> <span><%= t('pages.users.bookings.book-taxi.4_person', '4 Person') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('pages.users.home.modern.book_taxi_now', 'Book Taxi Now') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price"><%= t('pages.users.home.modern.3_50_km', '$3.50/km') %></div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('home.pricing.carMercedes', 'Mercedes-Benz') %></a></h3>
-                                    <span class="location"><%= t('pages.users.home.modern.florida', 'Florida') %></span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li>Initial Charge: <span>$2.50</span></li>
-                                    <li>Per Mile/KM: <span>$4.20</span></li>
-                                    <li>Per Stopped Trafic: <span>$1.50</span></li>
-                                    <li>Passengers: <span>4 Person</span></li>
-                                    <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price"><%= t('pages.users.home.modern.4_50_km', '$4.50/km') %></div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('home.pricing.carHyundai', 'Hyundai 2022') %></a></h3>
-                                    <span class="location"><%= t('pages.users.home.modern.new_york', 'New York') %></span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li>Initial Charge: <span>$2.50</span></li>
-                                    <li>Per Mile/KM: <span>$4.20</span></li>
-                                    <li>Per Stopped Trafic: <span>$1.50</span></li>
-                                    <li>Passengers: <span>4 Person</span></li>
-                                    <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <% if (pt[0].length) { pt[0].forEach(function(car) { %>
+                            <%- include('../partials/pricing-car-item', { car: car, t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
+                        <% }); } else { %>
+                            <div class="col-12 text-center text-muted py-4"><%= t('home.pricing.noCars', 'No vehicles published yet. Add cars in the admin panel.') %></div>
+                        <% } %>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="town-taxi-content" role="tabpanel" aria-labelledby="town-taxi-content">
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$2.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('home.pricing.carBmw', 'BMW X5 2008') %></a></h3>
-                                    <span class="location">Chicago</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li>Initial Charge: <span>$2.50</span></li>
-                                    <li>Per Mile/KM: <span>$4.20</span></li>
-                                    <li>Per Stopped Trafic: <span>$1.50</span></li>
-                                    <li>Passengers: <span>4 Person</span></li>
-                                    <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$3.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('home.pricing.carMercedes', 'Mercedes-Benz') %></a></h3>
-                                    <span class="location">Florida</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li>Initial Charge: <span>$2.50</span></li>
-                                    <li>Per Mile/KM: <span>$4.20</span></li>
-                                    <li>Per Stopped Trafic: <span>$1.50</span></li>
-                                    <li>Passengers: <span>4 Person</span></li>
-                                    <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$4.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('home.pricing.carHyundai', 'Hyundai 2022') %></a></h3>
-                                    <span class="location">New York</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li>Initial Charge: <span>$2.50</span></li>
-                                    <li>Per Mile/KM: <span>$4.20</span></li>
-                                    <li>Per Stopped Trafic: <span>$1.50</span></li>
-                                    <li>Passengers: <span>4 Person</span></li>
-                                    <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <% if (pt[1].length) { pt[1].forEach(function(car) { %>
+                            <%- include('../partials/pricing-car-item', { car: car, t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
+                        <% }); } else { %>
+                            <div class="col-12 text-center text-muted py-4"><%= t('home.pricing.noCars', 'No vehicles published yet. Add cars in the admin panel.') %></div>
+                        <% } %>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="limousine-taxi-content" role="tabpanel" aria-labelledby="limousine-taxi">
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$2.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('home.pricing.carBmw', 'BMW X5 2008') %></a></h3>
-                                    <span class="location">Chicago</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li>Initial Charge: <span>$2.50</span></li>
-                                    <li>Per Mile/KM: <span>$4.20</span></li>
-                                    <li>Per Stopped Trafic: <span>$1.50</span></li>
-                                    <li>Passengers: <span>4 Person</span></li>
-                                    <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$3.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('home.pricing.carMercedes', 'Mercedes-Benz') %></a></h3>
-                                    <span class="location">Florida</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li>Initial Charge: <span>$2.50</span></li>
-                                    <li>Per Mile/KM: <span>$4.20</span></li>
-                                    <li>Per Stopped Trafic: <span>$1.50</span></li>
-                                    <li>Passengers: <span>4 Person</span></li>
-                                    <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$4.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('home.pricing.carHyundai', 'Hyundai 2022') %></a></h3>
-                                    <span class="location">New York</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li>Initial Charge: <span>$2.50</span></li>
-                                    <li>Per Mile/KM: <span>$4.20</span></li>
-                                    <li>Per Stopped Trafic: <span>$1.50</span></li>
-                                    <li>Passengers: <span>4 Person</span></li>
-                                    <li><a href="/book-taxi" class="default-btn">Book Taxi Now</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <% if (pt[2].length) { pt[2].forEach(function(car) { %>
+                            <%- include('../partials/pricing-car-item', { car: car, t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
+                        <% }); } else { %>
+                            <div class="col-12 text-center text-muted py-4"><%= t('home.pricing.noCars', 'No vehicles published yet. Add cars in the admin panel.') %></div>
+                        <% } %>
                     </div>
                 </div>
             </div><!-- Tab Content -->
@@ -538,50 +312,12 @@
                 <p><%= t('home.team.description', 'We successfully cope with tasks of varying complexity, provide long-term guarantees and regularly master new technologies.') %></p>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-md-6 sm-padding wow fade-in-bottom" data-wow-delay="200ms">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-1.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.home.modern.f_lix_lengyel', 'FÃ©lix Lengyel') %></a></h3>
-                            <h4><%= t('pages.users.home.modern.bmw_x5_2008', 'BMW X5 2008') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 sm-padding wow fade-in-bottom" data-wow-delay="300ms">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-2.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.home.modern.henry_nathan', 'Henry Nathan') %></a></h3>
-                            <h4><%= t('pages.users.home.modern.mercedes_benz', 'Mercedesâ€‘Benz') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 sm-padding wow fade-in-bottom" data-wow-delay="400ms">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-3.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.home.modern.brandon_larned', 'Brandon Larned') %></a></h3>
-                            <h4><%= t('pages.users.home.modern.hyundai_2022', 'Hyundai 2022') %></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 sm-padding wow fade-in-bottom" data-wow-delay="500ms">
-                    <div class="team-item">
-                        <div class="team-thumb">
-                            <img src="/assets/img/team-4.jpg" alt="thumb">
-                        </div>
-                        <div class="team-content">
-                            <h3><a href="/drivers/details"><%= t('pages.users.home.modern.sasha_hostyn', 'Sasha Hostyn') %></a></h3>
-                            <h4><%= t('pages.users.home.modern.toyota_xcorola', 'Toyota XCorola') %></h4>
-                        </div>
-                    </div>
-                </div>
+                <% const teamDrivers = typeof drivers !== 'undefined' && Array.isArray(drivers) ? drivers : []; %>
+                <% if (teamDrivers.length) { teamDrivers.forEach(function(driver) { %>
+                    <%- include('../partials/driver-team-item', { driver: driver, t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
+                <% }); } else { %>
+                    <div class="col-12 text-center text-muted py-4"><%= t('home.team.noDrivers', 'No drivers published yet. Add drivers in the admin panel.') %></div>
+                <% } %>
             </div>
         </div>
     </section>
