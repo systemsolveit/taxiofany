@@ -1,5 +1,6 @@
 module.exports = {
   User: require('./User'),
+  AdminAuditLog: require('./AdminAuditLog'),
   Booking: require('./Booking'),
   Driver: require('./Driver'),
   Locale: require('./Locale'),

@@ -13,7 +13,13 @@ const registerValidation = [
   body('role').optional().isString().withMessage('role must be a string.'),
 ];
 
+const changePasswordValidation = [
+  body('currentPassword').isString().notEmpty().withMessage('currentPassword is required.'),
+  body('newPassword').isString().isLength({ min: 8 }).withMessage('newPassword must be at least 8 characters.'),
+];
+
 module.exports = {
   loginValidation,
   registerValidation,
+  changePasswordValidation,
 };

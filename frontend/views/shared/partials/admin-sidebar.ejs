@@ -82,6 +82,14 @@
             <p>Roles</p>
           </a>
         </li>
+        <% if (adminSession && adminSession.user && adminSession.user.role === 'super_admin') { %>
+        <li class="nav-item">
+          <a href="/admin/database" class="nav-link <%= activeSection === 'database' ? 'active' : '' %>">
+            <i class="nav-icon fas fa-database"></i>
+            <p>Database</p>
+          </a>
+        </li>
+        <% } %>
         <li class="nav-item">
           <a href="/admin/settings/mail" class="nav-link <%= activeSection === 'settings' ? 'active' : '' %>">
             <i class="nav-icon fas fa-sliders-h"></i>

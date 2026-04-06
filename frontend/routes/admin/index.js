@@ -14,12 +14,15 @@ const driversRouter = require('./drivers.router');
 const emailsRouter = require('./emails.router');
 const rolesRouter = require('./roles.router');
 const settingsRouter = require('./settings.router');
+const accountRouter = require('./account.router');
+const databaseRouter = require('./database.router');
 const { requireAdminSession } = require('../../middleware/adminSessionAuth');
 
 const router = express.Router();
 
 router.use('/', authRouter);
 router.use('/', requireAdminSession, dashboardRouter);
+router.use('/account', requireAdminSession, accountRouter);
 router.use('/users', requireAdminSession, usersRouter);
 router.use('/bookings', requireAdminSession, bookingsRouter);
 router.use('/contact', requireAdminSession, contactRouter);
@@ -32,5 +35,6 @@ router.use('/drivers', requireAdminSession, driversRouter);
 router.use('/emails', requireAdminSession, emailsRouter);
 router.use('/roles', requireAdminSession, rolesRouter);
 router.use('/settings', requireAdminSession, settingsRouter);
+router.use('/database', requireAdminSession, databaseRouter);
 
 module.exports = router;

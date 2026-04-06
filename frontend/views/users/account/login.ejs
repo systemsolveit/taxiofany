@@ -1,21 +1,38 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
 
-  <main class="container py-5" style="max-width: 760px; margin: 0 auto;">
-    <h1><%= t('account.loginTitle') %></h1>
-    <p style="color:#666;"><%= t('account.loginSubtitle') %></p>
+<main class="client-auth-page">
+  <div class="container">
+    <div class="client-auth-card">
+      <h1 class="client-auth-card__title"><%= t('account.loginTitle') %></h1>
+      <p class="client-auth-card__lead"><%= t('account.loginSubtitle') %></p>
 
-    <% if (errorMessage) { %>
-      <div style="background:#fdecea;color:#b42318;padding:12px;border-radius:8px;margin-bottom:16px;"><%= errorMessage %></div>
-    <% } %>
+      <% if (errorMessage) { %>
+        <div class="cp-alert cp-alert--error" role="alert"><%= errorMessage %></div>
+      <% } %>
 
-    <form action="/account/login" method="post" style="display:grid;gap:12px;">
-      <input type="email" name="email" placeholder="<%= t('account.emailPlaceholder') %>" required />
-      <input type="password" name="password" placeholder="<%= t('account.passwordPlaceholder') %>" required />
-      <button type="submit"><%= t('account.login') %></button>
-    </form>
+      <form action="<%= withLocale('/account/login') %>" method="post">
+        <div class="form-group">
+          <label for="login-email"><%= t('account.emailPlaceholder') %></label>
+          <input id="login-email" class="form-control" type="email" name="email" autocomplete="email" required placeholder="<%= t('account.emailPlaceholder') %>">
+        </div>
+        <div class="form-group">
+          <label for="login-password"><%= t('account.passwordPlaceholder') %></label>
+          <input id="login-password" class="form-control" type="password" name="password" autocomplete="current-password" required placeholder="<%= t('account.passwordPlaceholder') %>">
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span></span>
+          <a href="<%= withLocale('/account/forgot-password') %>" class="small"><%= t('account.forgotPasswordLink', 'Forgot password?') %></a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block"><%= t('account.login') %></button>
+      </form>
 
-    <p style="margin-top:12px;"><%= t('account.noAccount') %> <a href="/account/register"><%= t('account.createOne') %></a></p>
-  </main>
+      <p class="client-auth-card__footer mb-0">
+        <%= t('account.noAccount') %>
+        <a href="<%= withLocale('/account/register') %>"><%= t('account.createOne') %></a>
+      </p>
+    </div>
+  </div>
+</main>
 
-  <%- include('../../shared/partials/legacy-footer') %>
+<%- include('../../shared/partials/legacy-footer') %>

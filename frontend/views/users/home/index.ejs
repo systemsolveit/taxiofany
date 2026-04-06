@@ -234,6 +234,8 @@
     </section>
     <!--/.service-section-->
 
+    <% const bookingAuthed = typeof bookingPrefillEmail !== 'undefined' && bookingPrefillEmail; %>
+    <% const wl = typeof withLocale === 'function' ? withLocale : function (p) { return p; }; %>
     <section class="booking-section">
         <div class="container">
             <div class="row pos-relative padding">
@@ -246,18 +248,31 @@
                             <h4><span></span><%= t('home.booking.onlineBooking') %></h4>
                             <h2 class="white"><%= t('home.booking.bookTaxiRide') %></h2>
                         </div>
-                        <form action="/bookings/submit" id="book-taxi-ride">
+                        <form action="<%= wl('/book-taxi') %>" method="post" id="book-taxi-ride" data-booking-authed="<%= bookingAuthed ? '1' : '0' %>">
                             <div class="booking-form">
+                                <% if (bookingAuthed) { %>
+                                <div class="form-field booking-identity-field">
+                                    <i class="las la-user-tie"></i>
+                                    <input type="text" id="full-name" name="full-name" class="form-control booking-input-readonly"
+                                        placeholder="<%= t('home.booking.yourName') %>" value="<%= bookingPrefillName %>" autocomplete="name" readonly required aria-readonly="true">
+                                </div>
+                                <div class="form-field booking-identity-field">
+                                    <i class="las la-envelope-open"></i>
+                                    <input type="email" id="email" name="email" class="form-control booking-input-readonly" placeholder="<%= t('home.booking.email') %>"
+                                        value="<%= bookingPrefillEmail %>" autocomplete="email" readonly required aria-readonly="true">
+                                </div>
+                                <% } else { %>
                                 <div class="form-field">
                                     <i class="las la-user-tie"></i>
                                     <input type="text" id="full-name" name="full-name" class="form-control"
-                                        placeholder="<%= t('home.booking.yourName') %>" required>
+                                        placeholder="<%= t('home.booking.yourName') %>" value="<%= typeof bookingPrefillName !== 'undefined' ? bookingPrefillName : '' %>" autocomplete="name" required>
                                 </div>
                                 <div class="form-field">
                                     <i class="las la-envelope-open"></i>
                                     <input type="email" id="email" name="email" class="form-control" placeholder="<%= t('home.booking.email') %>"
-                                        required>
+                                        value="<%= typeof bookingPrefillEmail !== 'undefined' ? bookingPrefillEmail : '' %>" autocomplete="email" required>
                                 </div>
+                                <% } %>
                                 <div class="form-field">
                                     <i class="las la-tags"></i>
                                     <select name="package-type" id="type" class="niceSelect">
@@ -334,207 +349,34 @@
                 </li>
             </ul>
             <!--Tab Menu-->
+            <% const pt = pricingTabs && pricingTabs.length === 3 ? pricingTabs : [[], [], []]; %>
             <div class="tab-content" id="pricing-tab-content">
                 <div class="tab-pane fade show active" id="hybrid-taxi-content" role="tabpanel"
                     aria-labelledby="hybrid-taxi-content">
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price"><%= t('pages.users.home.2_50_km', '$2.50/km') %></div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('pages.users.home.bmw_x5_2008', 'BMW X5 2008') %></a></h3>
-                                    <span class="location"><%= t('pages.users.home.chicago', 'Chicago') %></span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('home.pricing.initialCharge') %> <span>$2.50</span></li>
-                                    <li><%= t('home.pricing.perMile') %> <span>$4.20</span></li>
-                                    <li><%= t('home.pricing.perStoppedTraffic') %> <span>$1.50</span></li>
-                                    <li><%= t('home.pricing.passengers') %> <span><%= t('home.booking.person4') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('home.pricing.bookTaxiNow') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price"><%= t('pages.users.home.3_50_km', '$3.50/km') %></div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('pages.users.home.mercedes_benz', 'Mercedesâ€‘Benz') %></a></h3>
-                                    <span class="location"><%= t('pages.users.home.florida', 'Florida') %></span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('home.pricing.initialCharge') %> <span>$2.50</span></li>
-                                    <li><%= t('home.pricing.perMile') %> <span>$4.20</span></li>
-                                    <li><%= t('home.pricing.perStoppedTraffic') %> <span>$1.50</span></li>
-                                    <li><%= t('home.pricing.passengers') %> <span><%= t('home.booking.person4') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('home.pricing.bookTaxiNow') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price"><%= t('pages.users.home.4_50_km', '$4.50/km') %></div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details"><%= t('pages.users.home.hyundai_2022', 'Hyundai 2022') %></a></h3>
-                                    <span class="location"><%= t('pages.users.home.new_york', 'New York') %></span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('home.pricing.initialCharge') %> <span>$2.50</span></li>
-                                    <li><%= t('home.pricing.perMile') %> <span>$4.20</span></li>
-                                    <li><%= t('home.pricing.perStoppedTraffic') %> <span>$1.50</span></li>
-                                    <li><%= t('home.pricing.passengers') %> <span><%= t('home.booking.person4') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('home.pricing.bookTaxiNow') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <% if (pt[0].length) { pt[0].forEach(function(car) { %>
+                            <%- include('../partials/pricing-car-item', { car: car, t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
+                        <% }); } else { %>
+                            <div class="col-12 text-center text-muted py-4"><%= t('home.pricing.noCars', 'No vehicles published yet. Add cars in the admin panel.') %></div>
+                        <% } %>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="town-taxi-content" role="tabpanel" aria-labelledby="town-taxi-content">
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$2.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details">BMW X5 2008</a></h3>
-                                    <span class="location">Chicago</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('home.pricing.initialCharge') %> <span>$2.50</span></li>
-                                    <li><%= t('home.pricing.perMile') %> <span>$4.20</span></li>
-                                    <li><%= t('home.pricing.perStoppedTraffic') %> <span>$1.50</span></li>
-                                    <li><%= t('home.pricing.passengers') %> <span><%= t('home.booking.person4') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('home.pricing.bookTaxiNow') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$3.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details">Mercedesâ€‘Benz</a></h3>
-                                    <span class="location">Florida</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('home.pricing.initialCharge') %> <span>$2.50</span></li>
-                                    <li><%= t('home.pricing.perMile') %> <span>$4.20</span></li>
-                                    <li><%= t('home.pricing.perStoppedTraffic') %> <span>$1.50</span></li>
-                                    <li><%= t('home.pricing.passengers') %> <span><%= t('home.booking.person4') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('home.pricing.bookTaxiNow') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$4.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details">Hyundai 2022</a></h3>
-                                    <span class="location">New York</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('home.pricing.initialCharge') %> <span>$2.50</span></li>
-                                    <li><%= t('home.pricing.perMile') %> <span>$4.20</span></li>
-                                    <li><%= t('home.pricing.perStoppedTraffic') %> <span>$1.50</span></li>
-                                    <li><%= t('home.pricing.passengers') %> <span><%= t('home.booking.person4') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('home.pricing.bookTaxiNow') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <% if (pt[1].length) { pt[1].forEach(function(car) { %>
+                            <%- include('../partials/pricing-car-item', { car: car, t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
+                        <% }); } else { %>
+                            <div class="col-12 text-center text-muted py-4"><%= t('home.pricing.noCars', 'No vehicles published yet. Add cars in the admin panel.') %></div>
+                        <% } %>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="limousine-taxi-content" role="tabpanel" aria-labelledby="limousine-taxi">
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$2.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details">BMW X5 2008</a></h3>
-                                    <span class="location">Chicago</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('home.pricing.initialCharge') %> <span>$2.50</span></li>
-                                    <li><%= t('home.pricing.perMile') %> <span>$4.20</span></li>
-                                    <li><%= t('home.pricing.perStoppedTraffic') %> <span>$1.50</span></li>
-                                    <li><%= t('home.pricing.passengers') %> <span><%= t('home.booking.person4') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('home.pricing.bookTaxiNow') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$3.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details">Mercedesâ€‘Benz</a></h3>
-                                    <span class="location">Florida</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('home.pricing.initialCharge') %> <span>$2.50</span></li>
-                                    <li><%= t('home.pricing.perMile') %> <span>$4.20</span></li>
-                                    <li><%= t('home.pricing.perStoppedTraffic') %> <span>$1.50</span></li>
-                                    <li><%= t('home.pricing.passengers') %> <span><%= t('home.booking.person4') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('home.pricing.bookTaxiNow') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-padding">
-                            <div class="pricing-item">
-                                <div class="pricing-head-wrap">
-                                    <div class="pricing-car">
-                                        <img src="/assets/img/pricing-car.png" alt="car">
-                                        <div class="price">$4.50/km</div>
-                                    </div>
-                                </div>
-                                <div class="pricing-head">
-                                    <h3><a href="/taxi/details">Hyundai 2022</a></h3>
-                                    <span class="location">New York</span>
-                                </div>
-                                <ul class="pricing-list">
-                                    <li><%= t('home.pricing.initialCharge') %> <span>$2.50</span></li>
-                                    <li><%= t('home.pricing.perMile') %> <span>$4.20</span></li>
-                                    <li><%= t('home.pricing.perStoppedTraffic') %> <span>$1.50</span></li>
-                                    <li><%= t('home.pricing.passengers') %> <span><%= t('home.booking.person4') %></span></li>
-                                    <li><a href="/book-taxi" class="default-btn"><%= t('home.pricing.bookTaxiNow') %></a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <% if (pt[2].length) { pt[2].forEach(function(car) { %>
+                            <%- include('../partials/pricing-car-item', { car: car, t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
+                        <% }); } else { %>
+                            <div class="col-12 text-center text-muted py-4"><%= t('home.pricing.noCars', 'No vehicles published yet. Add cars in the admin panel.') %></div>
+                        <% } %>
                     </div>
                 </div>
             </div><!-- Tab Content -->

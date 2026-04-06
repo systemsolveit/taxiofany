@@ -27,11 +27,26 @@ function combineRideDate(dateValue, timeValue) {
 }
 
 exports.createPage = (req, res) => {
-  res.render('users/bookings/create');
+  if (res.locals.withLocale) {
+    return res.redirect(res.locals.withLocale('/book-taxi'));
+  }
+  const loc = res.locals.locale || 'nl';
+  return res.redirect(`/${loc}/book-taxi`);
+};
+
+exports.redirectBookingsSubmitGet = (req, res) => {
+  if (res.locals.withLocale) {
+    return res.redirect(res.locals.withLocale('/book-taxi'));
+  }
+  const loc = res.locals.locale || 'nl';
+  return res.redirect(`/${loc}/book-taxi`);
 };
 
 exports.bookTaxiPage = (req, res) => {
-  res.render('users/bookings/book-taxi');
+  const loggedIn = !!(req.session && req.session.client && req.session.client.user);
+  res.render('users/bookings/book-taxi', {
+    portalSection: loggedIn ? 'book' : undefined,
+  });
 };
 
 exports.detailsPage = async (req, res, next) => {

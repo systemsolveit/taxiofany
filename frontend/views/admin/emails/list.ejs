@@ -52,6 +52,40 @@
             <a href="/admin/emails/new" class="btn btn-primary"><i class="fas fa-envelope-open-text mr-1"></i>Create Template</a>
           </div>
 
+          <% const ns = typeof notificationsSettings !== 'undefined' && notificationsSettings ? notificationsSettings : {}; %>
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title mb-0">Ride status emails</h3>
+            </div>
+            <div class="card-body">
+              <form method="post" action="/admin/settings/notifications/update">
+                <input type="hidden" name="_redirect" value="/admin/emails">
+                <div class="form-row align-items-end">
+                  <div class="form-group col-md-6 mb-md-0">
+                    <label for="rideStatusEmailTemplateId">Template for customer notifications</label>
+                    <select class="form-control" id="rideStatusEmailTemplateId" name="rideStatusEmailTemplateId">
+                      <option value="">Default (system “ride status update” template)</option>
+                      <% if (Array.isArray(templates)) { templates.forEach(function(t) { %>
+                        <option value="<%= t._id %>" <%= String(ns.rideStatusEmailTemplateId || '') === String(t._id) ? 'selected' : '' %>><%= t.title %></option>
+                      <% }); } %>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-3 mb-md-0">
+                    <label for="sendOnStatusChange">Send when booking status changes</label>
+                    <select class="form-control" id="sendOnStatusChange" name="sendOnStatusChange">
+                      <option value="true" <%= ns.sendOnStatusChange !== false ? 'selected' : '' %>>Enabled</option>
+                      <option value="false" <%= ns.sendOnStatusChange === false ? 'selected' : '' %>>Disabled</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-3 text-md-right">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+                <p class="text-muted small mb-0">Uses site primary color and template placeholders such as <code>{{customerName}}</code>, <code>{{bookingCode}}</code>, <code>{{status}}</code>.</p>
+              </form>
+            </div>
+          </div>
+
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Template Library</h3>
@@ -64,13 +98,14 @@
                     <th>Subject</th>
                     <th>Audience</th>
                     <th>Status</th>
+                    <th class="text-right">Preview</th>
                     <th class="text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% if (!templates || !templates.length) { %>
                     <tr>
-                      <td colspan="5" class="text-center text-muted py-4">No email templates found.</td>
+                      <td colspan="6" class="text-center text-muted py-4">No email templates found.</td>
                     </tr>
                   <% } else { %>
                     <% templates.forEach(function(item) { %>
@@ -82,6 +117,9 @@
                         <td><%= item.subject || '-' %></td>
                         <td><%= item.audience || '-' %></td>
                         <td><span class="badge badge-<%= item.isPublished ? 'success' : 'secondary' %>"><%= item.isPublished ? 'published' : 'draft' %></span></td>
+                        <td class="text-right">
+                          <button type="button" class="btn btn-sm btn-outline-secondary email-preview-btn" data-preview-url="/admin/emails/preview/<%= item._id %>">Preview</button>
+                        </td>
                         <td class="text-right"><a href="/admin/emails/<%= item._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a></td>
                       </tr>
                     <% }) %>
@@ -99,6 +137,32 @@
     </footer>
   </div>
 
+  <div class="modal fade" id="emailPreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Template preview</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body p-0" style="height:70vh;">
+          <iframe id="emailPreviewFrame" title="Email preview" style="width:100%;height:100%;border:0;"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <%- include('../../shared/partials/admin-scripts') %>
+  <script>
+    (function () {
+      $('.email-preview-btn').on('click', function () {
+        var url = $(this).data('preview-url');
+        $('#emailPreviewFrame').attr('src', url);
+        $('#emailPreviewModal').modal('show');
+      });
+      $('#emailPreviewModal').on('hidden.bs.modal', function () {
+        $('#emailPreviewFrame').attr('src', 'about:blank');
+      });
+    })();
+  </script>
 </body>
 </html>

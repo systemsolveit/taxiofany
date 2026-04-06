@@ -34,6 +34,7 @@ function redirectToLogin(req, res, message) {
 function mapMailPayload(body = {}) {
   const payload = {};
 
+  if (body.smtpProvider !== undefined) payload.smtpProvider = String(body.smtpProvider || 'custom').trim().toLowerCase();
   if (body.smtpHost !== undefined) payload.smtpHost = String(body.smtpHost || '').trim();
   if (body.smtpPort !== undefined) {
     const port = Number(body.smtpPort);
@@ -159,7 +160,12 @@ exports.testMailSettings = async (req, res) => {
   }
 
   try {
-    const result = await settingsApi.testMailSettings(token, {});
+    const testBody = { ...mapMailPayload(req.body) };
+    const testTo = typeof req.body.testTo === 'string' ? req.body.testTo.trim() : '';
+    if (testTo) {
+      testBody.testTo = testTo;
+    }
+    const result = await settingsApi.testMailSettings(token, testBody);
     if (result && result.success) {
       setNotice(req, 'success', 'SMTP test email sent successfully.');
     } else {
@@ -245,4 +251,37 @@ exports.updateSiteSettings = async (req, res) => {
   }
 
   return res.redirect('/admin/settings/site');
+};
+
+exports.updateNotificationsSettings = async (req, res) => {
+  const token = getAdminToken(req);
+  if (!token) {
+    return res.redirect('/admin/login');
+  }
+
+  try {
+    const rideRaw = req.body.rideStatusEmailTemplateId;
+    let rideStatusEmailTemplateId = null;
+    if (rideRaw !== undefined && rideRaw !== null && String(rideRaw).trim() !== '') {
+      rideStatusEmailTemplateId = String(rideRaw).trim();
+    }
+
+    await settingsApi.patchNotificationsSettings(token, {
+      rideStatusEmailTemplateId,
+      sendOnStatusChange: req.body.sendOnStatusChange === 'true' || req.body.sendOnStatusChange === true || req.body.sendOnStatusChange === 'on',
+    });
+    if (req.session) {
+      req.session.emailsNotice = { type: 'success', message: 'Notification preferences saved.' };
+    }
+  } catch (error) {
+    if (isAuthError(error)) {
+      return redirectToLogin(req, res);
+    }
+    if (req.session) {
+      req.session.emailsNotice = { type: 'danger', message: `Save failed: ${error.message}` };
+    }
+  }
+
+  const redirectTo = typeof req.body._redirect === 'string' && req.body._redirect ? req.body._redirect : '/admin/emails';
+  return res.redirect(redirectTo);
 };

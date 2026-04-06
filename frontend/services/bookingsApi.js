@@ -44,7 +44,17 @@ function getBooking(id) {
   return request(`/${encodeURIComponent(id)}`);
 }
 
+function listMyBookings(token) {
+  return request('/mine', {
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
 module.exports = {
   createBooking,
   getBooking,
+  listMyBookings,
 };

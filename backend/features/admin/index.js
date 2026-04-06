@@ -12,6 +12,7 @@ const servicesRouter = require('./services/router');
 const carsRouter = require('./cars/router');
 const driversRouter = require('./drivers/router');
 const settingsRouter = require('./settings/router');
+const databaseRouter = require('./database/router');
 
 const router = express.Router();
 
@@ -29,5 +30,6 @@ router.use('/services', servicesRouter);
 router.use('/cars', carsRouter);
 router.use('/drivers', driversRouter);
 router.use('/settings', settingsRouter);
+router.use('/database', databaseRouter);
 
 module.exports = router;

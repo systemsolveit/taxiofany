@@ -26,8 +26,11 @@ function createSessionMiddleware() {
 function attachSessionLocals(req, res, next) {
   const admin = req.session && req.session.admin ? req.session.admin : null;
   const client = req.session && req.session.client ? req.session.client : null;
+  const clientUser = client && client.user ? client.user : null;
   res.locals.adminSession = admin;
   res.locals.clientSession = client;
+  res.locals.bookingPrefillEmail = clientUser && clientUser.email ? String(clientUser.email) : '';
+  res.locals.bookingPrefillName = clientUser && clientUser.fullName ? String(clientUser.fullName) : '';
   next();
 }
 

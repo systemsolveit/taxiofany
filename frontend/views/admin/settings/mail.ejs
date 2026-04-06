@@ -3,26 +3,15 @@
 <head>
   <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
   <style>
-    .settings-tabs .nav-link {
-      border-radius: 999px;
-      margin-right: 0.4rem;
-      padding: 0.45rem 0.9rem;
-    }
-
-    .settings-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 0.9rem;
-      background: #fff;
-    }
-
-    .hint-box {
-      border: 1px solid #dbeafe;
-      background: #eff6ff;
-      color: #1e3a8a;
-      border-radius: 0.7rem;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1rem;
-    }
+    .settings-tabs .nav-link { border-radius: 999px; margin-right: 0.4rem; padding: 0.45rem 0.9rem; }
+    .settings-card { border: 1px solid #e5e7eb; border-radius: 0.9rem; background: #fff; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06); }
+    .hint-box { border: 1px solid #dbeafe; background: #eff6ff; color: #1e3a8a; border-radius: 0.7rem; padding: 0.75rem 1rem; margin-bottom: 1rem; }
+    .mail-settings-accordion .card-header { background: #fafbfc; }
+    .mail-settings-accordion .btn-link { color: #0f172a; text-decoration: none; font-weight: 600; box-shadow: none; }
+    .mail-settings-accordion .btn-link:hover { color: #2563eb; text-decoration: none; }
+    .mail-settings-accordion .mail-acc-chevron { transition: transform 0.2s ease; }
+    .mail-settings-accordion .btn-link:not(.collapsed) .mail-acc-chevron { transform: rotate(180deg); }
+    .card-subtitle { font-size: 0.875rem; color: #64748b; margin: 0.35rem 0 0; font-weight: 400; }
   </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -34,11 +23,12 @@
       <section class="content-header">
         <div class="container-fluid">
           <h1 class="mb-0">Settings</h1>
+          <p class="text-muted mb-0 small">Mail — SMTP, sender identity, and contact inbox.</p>
         </div>
       </section>
 
       <section class="content">
-        <div class="container-fluid">
+        <div class="container-fluid pb-4">
           <% if (notice) { %>
             <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
           <% } %>
@@ -51,72 +41,139 @@
             </ul>
           </div>
 
+          <% const eff = mailSettings && mailSettings.effective ? mailSettings.effective : {}; %>
+          <% const prov = eff.smtpProvider || 'custom'; %>
+          <% const hint = mailSettings && mailSettings.hints ? mailSettings.hints : {}; %>
+
           <div class="hint-box">
-            <strong>Control Point:</strong> configure SMTP here for Contact Us and all mail integrations.
-            <div>Current source: <strong><%= mailSettings && mailSettings.source ? mailSettings.source.toUpperCase() : 'ENV' %></strong> | SMTP configured: <strong><%= mailSettings && mailSettings.smtpConfigured ? 'YES' : 'NO' %></strong></div>
+            <strong>Status:</strong> source <strong><%= mailSettings && mailSettings.source ? mailSettings.source.toUpperCase() : 'ENV' %></strong>
+            &middot; SMTP ready: <strong><%= mailSettings && mailSettings.smtpConfigured ? 'YES' : 'NO' %></strong>
           </div>
 
-          <div class="card settings-card">
-            <div class="card-header">
-              <h3 class="card-title">SMTP Configuration</h3>
-            </div>
-            <div class="card-body">
-              <form method="post" action="/admin/settings/mail/update">
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label>SMTP Host</label>
-                    <input class="form-control" name="smtpHost" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.smtpHost) || '' %>" placeholder="smtp.gmail.com">
+          <form method="post" action="/admin/settings/mail/update" id="mailSettingsForm">
+            <div class="accordion mail-settings-accordion mb-3" id="mailSettingsAccordion">
+              <div class="card settings-card mb-2">
+                <div class="card-header p-0 border-bottom-0" id="mailAccH1">
+                  <h3 class="mb-0">
+                    <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" data-toggle="collapse" data-target="#mailAccC1" aria-expanded="true" aria-controls="mailAccC1">
+                      <span class="pr-2">
+                        <span class="card-title d-block mb-0">Provider preset</span>
+                        <span class="card-subtitle">Quick defaults for Gmail or Microsoft 365. You can still override host and port below.</span>
+                      </span>
+                      <i class="fas fa-chevron-down mail-acc-chevron mt-1 flex-shrink-0 text-muted"></i>
+                    </button>
+                  </h3>
+                </div>
+                <div id="mailAccC1" class="collapse show" data-parent="#mailSettingsAccordion" aria-labelledby="mailAccH1">
+                  <div class="card-body border-top">
+                    <div class="form-group">
+                      <label for="smtpProvider">Provider</label>
+                      <select class="form-control" id="smtpProvider" name="smtpProvider">
+                        <option value="custom" <%= prov === 'custom' ? 'selected' : '' %>>Custom SMTP</option>
+                        <option value="gmail" <%= prov === 'gmail' ? 'selected' : '' %>>Gmail (smtp.gmail.com)</option>
+                        <option value="office365" <%= prov === 'office365' ? 'selected' : '' %>>Microsoft 365 / Outlook</option>
+                      </select>
+                    </div>
+                    <% if (hint.gmailAppPassword) { %>
+                      <div class="alert alert-light border small mb-0"><%= hint.gmailAppPassword %></div>
+                    <% } %>
                   </div>
-                  <div class="form-group col-md-3">
-                    <label>SMTP Port</label>
-                    <input type="number" min="1" max="65535" class="form-control" name="smtpPort" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.smtpPort) || '' %>" placeholder="587">
-                  </div>
-                  <div class="form-group col-md-3 d-flex align-items-center">
-                    <div class="form-check mt-4">
-                      <input class="form-check-input" type="checkbox" name="smtpSecure" value="true" id="smtp-secure" <%= mailSettings && mailSettings.effective && mailSettings.effective.smtpSecure ? 'checked' : '' %>>
-                      <label class="form-check-label" for="smtp-secure">Use SSL/TLS</label>
+                </div>
+              </div>
+
+              <div class="card settings-card mb-2">
+                <div class="card-header p-0 border-bottom-0" id="mailAccH2">
+                  <h3 class="mb-0">
+                    <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" data-toggle="collapse" data-target="#mailAccC2" aria-expanded="false" aria-controls="mailAccC2">
+                      <span class="pr-2">
+                        <span class="card-title d-block mb-0">Connection</span>
+                        <span class="card-subtitle">Host, port, TLS, and SMTP credentials.</span>
+                      </span>
+                      <i class="fas fa-chevron-down mail-acc-chevron mt-1 flex-shrink-0 text-muted"></i>
+                    </button>
+                  </h3>
+                </div>
+                <div id="mailAccC2" class="collapse" data-parent="#mailSettingsAccordion" aria-labelledby="mailAccH2">
+                  <div class="card-body border-top">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label>SMTP host</label>
+                        <input class="form-control" id="smtpHost" name="smtpHost" value="<%= eff.smtpHost || '' %>" placeholder="smtp.gmail.com">
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label>SMTP port</label>
+                        <input type="number" min="1" max="65535" class="form-control" id="smtpPort" name="smtpPort" value="<%= eff.smtpPort || '' %>" placeholder="587">
+                      </div>
+                      <div class="form-group col-md-3 d-flex align-items-center">
+                        <div class="form-check mt-4">
+                          <input class="form-check-input" type="checkbox" name="smtpSecure" value="true" id="smtp-secure" <%= eff.smtpSecure ? 'checked' : '' %>>
+                          <label class="form-check-label" for="smtp-secure">SSL/TLS (secure)</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label>SMTP user</label>
+                        <input class="form-control" name="smtpUser" value="<%= eff.smtpUser || '' %>" autocomplete="off">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label>SMTP password</label>
+                        <input type="password" class="form-control" name="smtpPass" value="" placeholder="Leave blank to keep saved password" autocomplete="new-password">
+                        <small class="text-muted">Saved password is masked in API responses.</small>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label>SMTP User</label>
-                    <input class="form-control" name="smtpUser" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.smtpUser) || '' %>">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>SMTP Password</label>
-                    <input type="password" class="form-control" name="smtpPass" value="" placeholder="Enter new password to replace current value">
-                    <small class="text-muted">Saved password is masked for security.</small>
+              <div class="card settings-card mb-2">
+                <div class="card-header p-0 border-bottom-0" id="mailAccH3">
+                  <h3 class="mb-0">
+                    <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" data-toggle="collapse" data-target="#mailAccC3" aria-expanded="false" aria-controls="mailAccC3">
+                      <span class="pr-2">
+                        <span class="card-title d-block mb-0">Sender &amp; inbound contact</span>
+                        <span class="card-subtitle">From address for automated mail and where Contact form submissions are delivered.</span>
+                      </span>
+                      <i class="fas fa-chevron-down mail-acc-chevron mt-1 flex-shrink-0 text-muted"></i>
+                    </button>
+                  </h3>
+                </div>
+                <div id="mailAccC3" class="collapse" data-parent="#mailSettingsAccordion" aria-labelledby="mailAccH3">
+                  <div class="card-body border-top">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label>From email</label>
+                        <input type="email" class="form-control" name="smtpFrom" value="<%= eff.smtpFrom || '' %>" placeholder="no-reply@yourdomain.com">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label>Contact form recipient</label>
+                        <input type="email" class="form-control" name="contactRecipientEmail" value="<%= eff.contactRecipientEmail || '' %>" placeholder="ops@yourdomain.com">
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label>From Email</label>
-                    <input type="email" class="form-control" name="smtpFrom" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.smtpFrom) || '' %>" placeholder="no-reply@yourdomain.com">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>Recipient Email (Contact Us inbox)</label>
-                    <input type="email" class="form-control" name="contactRecipientEmail" value="<%= (mailSettings && mailSettings.effective && mailSettings.effective.contactRecipientEmail) || '' %>" placeholder="ops@yourdomain.com">
-                  </div>
-                </div>
-
-                <div class="d-flex" style="gap:0.5rem;">
-                  <button type="submit" class="btn btn-primary">Save Settings</button>
-                </div>
-              </form>
+              </div>
             </div>
-          </div>
+
+            <div class="site-settings-sticky text-right" style="position: sticky; bottom: 0; z-index: 1020; padding: 1rem 0; background: linear-gradient(to top, #fff 80%, rgba(255,255,255,0.9));">
+              <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save mr-1"></i>Save mail settings</button>
+            </div>
+          </form>
 
           <div class="card settings-card mt-3">
             <div class="card-header">
-              <h3 class="card-title">Test Integration</h3>
+              <h3 class="card-title mb-0">Send test email</h3>
             </div>
             <div class="card-body">
-              <form method="post" action="/admin/settings/mail/test">
-                <div class="alert alert-light border mb-2">Sends a test email to the configured Contact recipient using current values.</div>
-                <button type="submit" class="btn btn-outline-primary">Send Test Email</button>
+              <form method="post" action="/admin/settings/mail/test" class="mb-0">
+                <p class="text-muted">Uses the same transport as production. Optionally override the recipient; otherwise the Contact recipient inbox is used.</p>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Send to (optional)</label>
+                    <input type="email" class="form-control" name="testTo" placeholder="Leave blank for Contact recipient">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-outline-primary"><i class="fas fa-paper-plane mr-1"></i>Send test</button>
               </form>
             </div>
           </div>
@@ -130,5 +187,26 @@
   </div>
 
   <%- include('../../shared/partials/admin-scripts') %>
+  <script>
+    (function () {
+      var presets = {
+        custom: {},
+        gmail: { smtpHost: 'smtp.gmail.com', smtpPort: '465', smtpSecure: true },
+        office365: { smtpHost: 'smtp.office365.com', smtpPort: '587', smtpSecure: false }
+      };
+      var sel = document.getElementById('smtpProvider');
+      var host = document.getElementById('smtpHost');
+      var port = document.getElementById('smtpPort');
+      var sec = document.getElementById('smtp-secure');
+      if (!sel || !host || !port || !sec) return;
+      sel.addEventListener('change', function () {
+        var p = presets[sel.value];
+        if (!p || !p.smtpHost) return;
+        host.value = p.smtpHost;
+        port.value = p.smtpPort;
+        sec.checked = !!p.smtpSecure;
+      });
+    })();
+  </script>
 </body>
 </html>

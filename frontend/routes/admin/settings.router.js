@@ -9,5 +9,6 @@ router.post('/mail/test', controller.testMailSettings);
 router.get('/site', controller.siteSettingsPage);
 router.post('/site/update', controller.updateSiteSettings);
 router.get('/logs', controller.logsSettingsPage);
+router.post('/notifications/update', controller.updateNotificationsSettings);
 
 module.exports = router;

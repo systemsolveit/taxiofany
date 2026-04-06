@@ -1,4 +1,5 @@
 const emailsApi = require('../../services/adminEmailsApi');
+const settingsApi = require('../../services/adminSettingsApi');
 
 function consumeNotice(req) {
   const notice = req.session ? req.session.emailsNotice : null;
@@ -79,11 +80,15 @@ exports.listPage = async (req, res, next) => {
   }
 
   try {
-    const templates = await emailsApi.listTemplates(token);
+    const [templates, notificationsSettings] = await Promise.all([
+      emailsApi.listTemplates(token),
+      settingsApi.getNotificationsSettings(token).catch(() => ({ effective: { rideStatusEmailTemplateId: null, sendOnStatusChange: true } })),
+    ]);
     return res.render('admin/emails/list', {
       pageTitle: 'Email Management',
       activeSection: 'emails',
       templates,
+      notificationsSettings: notificationsSettings && notificationsSettings.effective ? notificationsSettings.effective : {},
       notice: consumeNotice(req),
     });
   } catch (error) {
@@ -167,6 +172,23 @@ exports.updateTemplate = async (req, res) => {
   }
 
   return res.redirect('/admin/emails');
+};
+
+exports.previewHtml = async (req, res, next) => {
+  const token = getAdminToken(req);
+  if (!token) {
+    return res.redirect('/admin/login');
+  }
+
+  try {
+    const data = await emailsApi.previewTemplate(token, req.params.id);
+    return res.type('html').send(data.html);
+  } catch (error) {
+    if (isAuthError(error)) {
+      return redirectToLogin(req, res);
+    }
+    return next(error);
+  }
 };
 
 exports.deleteTemplate = async (req, res) => {

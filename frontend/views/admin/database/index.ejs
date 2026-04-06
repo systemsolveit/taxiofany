@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../shared/partials/admin-head', { pageTitle: pageTitle }) %>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../../shared/partials/admin-topbar') %>
+    <%- include('../../shared/partials/admin-sidebar', { activeSection: activeSection }) %>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <h1 class="mb-0">Database management</h1>
+          <p class="text-muted mb-0">Super administrator tools. Use with care.</p>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="container-fluid">
+          <% if (notice) { %>
+            <div class="alert alert-<%= notice.type %>"><%= notice.message %></div>
+          <% } %>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="card h-100">
+                <div class="card-header"><h3 class="card-title mb-0">Export</h3></div>
+                <div class="card-body">
+                  <p>Download a JSON snapshot of core collections (password hashes are stripped from users).</p>
+                  <a href="/admin/database/export.json" class="btn btn-outline-primary"><i class="fas fa-download mr-1"></i>Download JSON</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100">
+                <div class="card-header"><h3 class="card-title mb-0">Import</h3></div>
+                <div class="card-body">
+                  <form method="post" action="/admin/database/import">
+                    <div class="form-group">
+                      <label>Paste export JSON</label>
+                      <textarea name="payload" class="form-control" rows="6" placeholder="{ &quot;collections&quot;: { ... } }"></textarea>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" name="dryRun" id="dry-run">
+                      <label class="form-check-label" for="dry-run">Dry run (validate only)</label>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Run import</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="card border-danger h-100">
+                <div class="card-header bg-danger"><h3 class="card-title mb-0 text-white">Reset content</h3></div>
+                <div class="card-body">
+                  <p>Deletes bookings, drivers, cars, services, blog posts, emails, contact submissions, locales, and translations. <strong>Super admin users are preserved.</strong></p>
+                  <form method="post" action="/admin/database/reset" onsubmit="return confirm('This will delete most content. Continue?');">
+                    <div class="form-group">
+                      <label>Type <code>RESET CONTENT</code> to confirm</label>
+                      <input class="form-control" name="confirm" autocomplete="off" placeholder="RESET CONTENT">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Reset content</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100">
+                <div class="card-header"><h3 class="card-title mb-0">Seed demo</h3></div>
+                <div class="card-body">
+                  <p>Creates sample service, driver, car, blog post, and booking if missing (idempotent).</p>
+                  <form method="post" action="/admin/database/seed" onsubmit="return confirm('Seed demo content?');">
+                    <button type="submit" class="btn btn-primary">Seed demo data</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <strong>Taxiofany Admin.</strong>
+    </footer>
+  </div>
+
+  <%- include('../../shared/partials/admin-scripts') %>
+</body>
+</html>

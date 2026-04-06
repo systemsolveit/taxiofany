@@ -1,14 +1,21 @@
+function clientLocalePrefix(res) {
+  const locale = res.locals && res.locals.locale ? String(res.locals.locale).toLowerCase() : 'nl';
+  return locale || 'nl';
+}
+
 function requireClientSession(req, res, next) {
   if (req.session && req.session.client && req.session.client.token) {
     return next();
   }
 
-  return res.redirect('/account/login');
+  const loc = clientLocalePrefix(res);
+  return res.redirect(`/${loc}/account/login`);
 }
 
 function redirectClientIfAuthenticated(req, res, next) {
   if (req.session && req.session.client && req.session.client.token) {
-    return res.redirect('/account');
+    const loc = clientLocalePrefix(res);
+    return res.redirect(`/${loc}/account`);
   }
 
   return next();

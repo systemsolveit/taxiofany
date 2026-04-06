@@ -10,6 +10,8 @@ router.post('/account/register', redirectClientIfAuthenticated, controller.regis
 router.get('/account/login', redirectClientIfAuthenticated, controller.loginPage);
 router.post('/account/login', redirectClientIfAuthenticated, controller.login);
 
+router.get('/account/forgot-password', redirectClientIfAuthenticated, controller.forgotPasswordPage);
+
 router.get('/account', requireClientSession, controller.accountPage);
 router.get('/account/trips', requireClientSession, controller.tripsPage);
 router.get('/account/password', requireClientSession, controller.passwordPage);

@@ -3,7 +3,8 @@ const controller = require('./controller');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const { requireAdminAuth } = require('../auth/middleware');
+const { requireAdminAuth, requirePermission } = require('../auth/middleware');
+const { PERMISSIONS } = require('../auth/permissionsCatalog');
 // const validateRequest = require('../../../middlewares/validateRequest');
 // const { someValidation } = require('./validation');
 
@@ -36,7 +37,7 @@ const router = express.Router();
  *       200:
  *         description: Media assets returned
  */
-router.get('/', requireAdminAuth, controller.listMedia);
+router.get('/', requireAdminAuth, requirePermission(PERMISSIONS.MEDIAHUB_READ), controller.listMedia);
 
 
 /**
@@ -59,8 +60,8 @@ router.get('/', requireAdminAuth, controller.listMedia);
  *       201:
  *         description: Media asset uploaded
  */
-router.post('/', requireAdminAuth, upload.single('file'), controller.uploadMedia);
-router.patch('/:filename', requireAdminAuth, controller.updateMedia);
-router.delete('/:filename', requireAdminAuth, controller.deleteMedia);
+router.post('/', requireAdminAuth, requirePermission(PERMISSIONS.MEDIAHUB_WRITE), upload.single('file'), controller.uploadMedia);
+router.patch('/:filename', requireAdminAuth, requirePermission(PERMISSIONS.MEDIAHUB_WRITE), controller.updateMedia);
+router.delete('/:filename', requireAdminAuth, requirePermission(PERMISSIONS.MEDIAHUB_WRITE), controller.deleteMedia);
 
 module.exports = router;

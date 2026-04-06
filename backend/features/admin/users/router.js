@@ -2,14 +2,36 @@ const express = require('express');
 const controller = require('./controller');
 const validateRequest = require('../../../middlewares/validateRequest');
 const { userIdValidation, updateUserValidation, createUserValidation } = require('./validation');
-const { requireAdminAuth } = require('../auth/middleware');
+const { requireAdminAuth, requirePermission } = require('../auth/middleware');
+const { PERMISSIONS } = require('../auth/permissionsCatalog');
 
 const router = express.Router();
 
-router.get('/', requireAdminAuth, controller.listUsers);
-router.post('/', requireAdminAuth, createUserValidation, validateRequest, controller.createUser);
-router.get('/:id', requireAdminAuth, userIdValidation, validateRequest, controller.getUser);
-router.patch('/:id', requireAdminAuth, updateUserValidation, validateRequest, controller.updateUser);
-router.delete('/:id', requireAdminAuth, userIdValidation, validateRequest, controller.deleteUser);
+router.get('/', requireAdminAuth, requirePermission(PERMISSIONS.USERS_READ), controller.listUsers);
+router.post(
+  '/',
+  requireAdminAuth,
+  requirePermission(PERMISSIONS.USERS_WRITE),
+  createUserValidation,
+  validateRequest,
+  controller.createUser
+);
+router.get('/:id', requireAdminAuth, requirePermission(PERMISSIONS.USERS_READ), userIdValidation, validateRequest, controller.getUser);
+router.patch(
+  '/:id',
+  requireAdminAuth,
+  requirePermission(PERMISSIONS.USERS_WRITE),
+  updateUserValidation,
+  validateRequest,
+  controller.updateUser
+);
+router.delete(
+  '/:id',
+  requireAdminAuth,
+  requirePermission(PERMISSIONS.USERS_WRITE),
+  userIdValidation,
+  validateRequest,
+  controller.deleteUser
+);
 
 module.exports = router;

@@ -65,10 +65,15 @@ function deleteTemplate(token, id) {
   });
 }
 
+function previewTemplate(token, id) {
+  return request(`/${encodeURIComponent(id)}/preview`, token);
+}
+
 module.exports = {
   listTemplates,
   getTemplate,
   createTemplate,
   updateTemplate,
   deleteTemplate,
+  previewTemplate,
 };

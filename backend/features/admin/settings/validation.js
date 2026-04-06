@@ -1,6 +1,7 @@
 const { body } = require('express-validator');
 
 const mailSettingsValidation = [
+  body('smtpProvider').optional().isIn(['custom', 'gmail', 'office365']).withMessage('smtpProvider must be custom, gmail, or office365.'),
   body('smtpHost').optional({ checkFalsy: true }).isString().trim(),
   body('smtpPort').optional().isInt({ min: 1, max: 65535 }).withMessage('smtpPort must be a valid port number.'),
   body('smtpSecure').optional().isBoolean().withMessage('smtpSecure must be a boolean.'),
@@ -8,6 +9,22 @@ const mailSettingsValidation = [
   body('smtpPass').optional({ checkFalsy: true }).isString(),
   body('smtpFrom').optional({ checkFalsy: true }).isEmail().withMessage('smtpFrom must be a valid email.'),
   body('contactRecipientEmail').optional({ checkFalsy: true }).isEmail().withMessage('contactRecipientEmail must be a valid email.'),
+];
+
+const mailTestValidation = [
+  ...mailSettingsValidation,
+  body('testTo').optional({ checkFalsy: true }).isEmail().withMessage('testTo must be a valid email when provided.'),
+];
+
+const notificationsSettingsValidation = [
+  body('rideStatusEmailTemplateId')
+    .optional({ nullable: true })
+    .custom((value) => value === null || value === undefined || value === '' || /^[a-f\d]{24}$/i.test(String(value)))
+    .withMessage('rideStatusEmailTemplateId must be a Mongo id or empty.'),
+  body('sendOnStatusChange')
+    .optional()
+    .custom((value) => typeof value === 'boolean' || value === 'true' || value === 'false' || value === '1' || value === '0')
+    .withMessage('sendOnStatusChange must be a boolean or boolean-like string.'),
 ];
 
 const siteSettingsValidation = [
@@ -45,5 +62,7 @@ const siteSettingsValidation = [
 
 module.exports = {
   mailSettingsValidation,
+  mailTestValidation,
+  notificationsSettingsValidation,
   siteSettingsValidation,
 };

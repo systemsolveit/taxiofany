@@ -1,6 +1,7 @@
 const express = require('express');
 const controller = require('./controller');
 const validateRequest = require('../../../middlewares/validateRequest');
+const { requireClientAuth } = require('../auth/middleware');
 const { createBookingValidation, bookingIdValidation } = require('./validation');
 
 const router = express.Router();
@@ -28,6 +29,17 @@ router.get('/', controller.listBookings);
  *         description: Booking created
  */
 router.post('/', createBookingValidation, validateRequest, controller.createBooking);
+
+/**
+ * @openapi
+ * /api/v1/user/bookings/mine:
+ *   get:
+ *     tags: [Bookings]
+ *     summary: List bookings for the authenticated customer (matched by customer email)
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get('/mine', requireClientAuth, controller.listMyBookings);
 
 /**
  * @openapi

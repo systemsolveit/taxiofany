@@ -25,9 +25,9 @@
             <div class="service-item wow fade-in-bottom" data-wow-delay="200ms">
               <div class="service-content p-4">
                 <span class="badge badge-info mb-2"><%= item.category || 'General' %></span>
-                <h3><a href="/emails/<%= item.slug %>"><%= item.title %></a></h3>
+                <h3><a href="<%= withLocale('/emails/' + item.slug) %>"><%= item.title %></a></h3>
                 <p><%= item.previewText || item.summary || '' %></p>
-                <a class="read-more" href="/emails/<%= item.slug %>">Preview Template</a>
+                <a class="read-more" href="<%= withLocale('/emails/' + item.slug) %>">Preview Template</a>
               </div>
             </div>
           </div>

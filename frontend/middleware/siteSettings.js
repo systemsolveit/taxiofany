@@ -1,4 +1,5 @@
 const { getPublicSiteSettings } = require('../services/publicSettingsApi');
+const { isHiddenFromMainNav } = require('../utils/navFilters');
 
 const FALLBACK_SETTINGS = {
   primaryColor: '#f59e0b',
@@ -77,11 +78,16 @@ function pageEnabled(settings = {}, requestPath = '/') {
 }
 
 async function attachSiteSettings(req, res, next) {
+  res.locals.isHiddenFromMainNav = isHiddenFromMainNav;
   try {
     const settings = normalizeSettings(await getPublicSiteSettings());
     res.locals.siteSettings = settings;
 
     if (req.path.startsWith('/admin') || req.path.startsWith('/set-language/')) {
+      return next();
+    }
+
+    if (req.path.startsWith('/account') || req.path.startsWith('/profile')) {
       return next();
     }
 

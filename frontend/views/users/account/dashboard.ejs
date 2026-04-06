@@ -1,31 +1,67 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
 
-  <main class="container py-5" style="max-width: 860px; margin: 0 auto;">
-    <h1><%= t('account.myAccount') %></h1>
-    <p style="color:#666;"><%= t('account.overview') %></p>
+<main class="client-portal">
+  <div class="container">
+    <header class="client-portal__header">
+      <h1 class="client-portal__title"><%= t('account.myAccount') %></h1>
+      <p class="client-portal__subtitle"><%= t('account.overview') %></p>
+    </header>
 
-    <nav class="account-tabs" aria-label="Account tabs">
-      <a class="account-tab <%= activeAccountTab === 'account' ? 'active' : '' %>" href="/account"><%= t('account.tabs.account') %></a>
-      <a class="account-tab <%= activeAccountTab === 'trips' ? 'active' : '' %>" href="/account/trips"><%= t('account.tabs.trips') %></a>
-      <a class="account-tab <%= activeAccountTab === 'password' ? 'active' : '' %>" href="/account/password"><%= t('account.tabs.password') %></a>
-    </nav>
+    <div class="client-portal__layout">
+      <%- include('../../shared/partials/client-portal-sidebar') %>
+      <div class="client-portal-main">
+        <% if (typeof dashboardBookingsError !== 'undefined' && dashboardBookingsError) { %>
+          <div class="cp-alert cp-alert--error" role="alert"><%= dashboardBookingsError %></div>
+        <% } %>
 
-    <section class="card">
-      <h3 style="margin-top:0;"><%= t('account.profile') %></h3>
-      <p><strong><%= t('account.name') %>:</strong> <%= accountUser.fullName %></p>
-      <p><strong><%= t('account.email') %>:</strong> <%= accountUser.email %></p>
-      <p><strong><%= t('account.role') %>:</strong> <%= accountUser.role %></p>
-      <p><strong><%= t('account.status') %>:</strong> <%= accountUser.status %></p>
-    </section>
+        <% if (typeof recentBookings !== 'undefined' && recentBookings && recentBookings.length) { %>
+        <section class="client-portal-card">
+          <h2 class="client-portal-card__title"><%= t('account.recentRides', 'Recent ride requests') %></h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm mb-0">
+              <thead>
+                <tr>
+                  <th><%= t('account.tripId') %></th>
+                  <th><%= t('account.route') %></th>
+                  <th><%= t('account.date') %></th>
+                  <th><%= t('account.status') %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% recentBookings.forEach((trip) => { %>
+                  <tr>
+                    <td><%= trip.id %></td>
+                    <td><%= trip.from %> → <%= trip.to %></td>
+                    <td><%= trip.date %></td>
+                    <td><%= trip.status %></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 mt-3"><a href="<%= withLocale('/account/trips') %>"><%= t('account.viewAllTrips', 'View all trips') %></a></p>
+        </section>
+        <% } %>
 
-    <section style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
-      <a href="/book-taxi"><%= t('account.bookRide') %></a>
-      <a href="/contact"><%= t('account.support') %></a>
-      <form action="/account/logout" method="post" style="margin:0;">
-        <button type="submit"><%= t('account.logout') %></button>
-      </form>
-    </section>
-  </main>
+        <section class="client-portal-card">
+          <h2 class="client-portal-card__title"><%= t('account.profile') %></h2>
+          <p class="mb-1"><strong><%= t('account.name') %>:</strong> <%= accountUser.fullName %></p>
+          <p class="mb-1"><strong><%= t('account.email') %>:</strong> <%= accountUser.email %></p>
+          <p class="mb-1"><strong><%= t('account.role') %>:</strong> <%= accountUser.role %></p>
+          <p class="mb-0"><strong><%= t('account.status') %>:</strong> <%= accountUser.status %></p>
+        </section>
 
-  <%- include('../../shared/partials/legacy-footer') %>
+        <section class="d-flex flex-wrap align-items-center" style="gap: 0.75rem;">
+          <a class="btn btn-primary btn-sm" href="<%= withLocale('/book-taxi') %>"><%= t('account.bookRide') %></a>
+          <a class="btn btn-outline-secondary btn-sm" href="<%= withLocale('/contact') %>"><%= t('account.support') %></a>
+          <form action="<%= withLocale('/account/logout') %>" method="post" class="mb-0 d-lg-none">
+            <button type="submit" class="btn btn-outline-secondary btn-sm"><%= t('account.logout') %></button>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../shared/partials/legacy-footer') %>

@@ -16,6 +16,15 @@ async function listBookings() {
   return Booking.find().sort({ createdAt: -1 }).lean();
 }
 
+async function listBookingsForCustomerEmail(email) {
+  const normalized = String(email || '').trim().toLowerCase();
+  if (!normalized) {
+    return [];
+  }
+
+  return Booking.find({ customerEmail: normalized }).sort({ createdAt: -1 }).lean();
+}
+
 async function createBooking(payload) {
   const bookingCode = await generateBookingCode();
   const booking = await Booking.create({
@@ -42,6 +51,7 @@ async function getBookingById(id) {
 
 module.exports = {
   listBookings,
+  listBookingsForCustomerEmail,
   createBooking,
   getBookingById,
 };
