@@ -31,15 +31,18 @@ $(function() {
 			// Set the message text.
 			$(formMessages).text(response);
 
-			// Clear the form.
-			$('#full-name').val('');
-			$('#email').val('');
+			var authed = $(form).data('bookingAuthed') === 1 || $(form).data('bookingAuthed') === '1';
 			$('#package-type').val('');
+			$('#type').val('');
 			$('#passengers').val('');
 			$('#start-dest').val('');
 			$('#end-dest').val('');
 			$('#ride-date').val('');
 			$('#ride-time').val('');
+			if (!authed) {
+				$('#full-name').val('');
+				$('#email').val('');
+			}
 		})
 		.fail(function(data) {
 			// Make sure that the formMessages div has the 'error' class.

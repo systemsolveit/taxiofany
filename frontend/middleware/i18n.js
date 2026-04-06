@@ -139,7 +139,10 @@ async function attachI18n(req, res, next) {
       segments.shift();
     }
 
-    const targetPath = segments.length > 0 ? `/${segments.join('/')}` : '';
+    let targetPath = segments.length > 0 ? `/${segments.join('/')}` : '';
+    if (targetPath === '/bookings/submit') {
+      targetPath = '/book-taxi';
+    }
     return `/${normalized}${targetPath}${queryString}`;
   };
 

@@ -1,5 +1,6 @@
 const clientAuthApi = require('../../services/clientAuthApi');
 const bookingsApi = require('../../services/bookingsApi');
+const config = require('../../config');
 
 function formatBookingStatus(status) {
   const value = String(status || 'pending').trim().toLowerCase();
@@ -76,6 +77,13 @@ function loginPage(req, res) {
   });
 }
 
+function forgotPasswordPage(req, res) {
+  res.render('users/account/forgot-password', {
+    pageTitle: 'Forgot password',
+    supportWhatsapp: config.clientSupportWhatsapp,
+  });
+}
+
 async function register(req, res) {
   const { fullName, email, password, phone } = req.body;
 
@@ -149,7 +157,7 @@ async function accountPage(req, res, next) {
       accountUser: user,
       recentBookings,
       dashboardBookingsError,
-      activeAccountTab: 'account',
+      portalSection: 'dashboard',
     });
   } catch (error) {
     return next(error);
@@ -176,7 +184,7 @@ async function tripsPage(req, res, next) {
     accountUser: user,
     trips,
     tripsError,
-    activeAccountTab: 'trips',
+    portalSection: 'trips',
   });
 }
 
@@ -186,7 +194,7 @@ function passwordPage(req, res) {
   res.render('users/account/password', {
     pageTitle: 'Password Management',
     accountUser: req.session.client.user,
-    activeAccountTab: 'password',
+    portalSection: 'security',
     notice,
   });
 }
@@ -235,6 +243,7 @@ function logout(req, res, next) {
 module.exports = {
   registerPage,
   loginPage,
+  forgotPasswordPage,
   register,
   login,
   accountPage,

@@ -1,0 +1,33 @@
+<% const wl = typeof withLocale === 'function' ? withLocale : function(p) { return p; }; %>
+<% const ps = typeof portalSection !== 'undefined' ? portalSection : ''; %>
+<aside class="client-portal-sidebar" aria-label="<%= t('account.portalNav', 'Account navigation') %>">
+  <nav class="client-portal-nav">
+    <a class="client-portal-nav__link <%= ps === 'dashboard' ? 'is-active' : '' %>" href="<%= wl('/account') %>">
+      <i class="las la-home" aria-hidden="true"></i>
+      <%= t('account.portal.dashboard', 'Dashboard') %>
+    </a>
+    <a class="client-portal-nav__link <%= ps === 'book' ? 'is-active' : '' %>" href="<%= wl('/book-taxi') %>">
+      <i class="las la-plus-circle" aria-hidden="true"></i>
+      <%= t('account.portal.newBooking', 'New booking') %>
+    </a>
+    <a class="client-portal-nav__link <%= ps === 'trips' ? 'is-active' : '' %>" href="<%= wl('/account/trips') %>">
+      <i class="las la-route" aria-hidden="true"></i>
+      <%= t('account.portal.myTrips', 'My trips') %>
+    </a>
+    <a class="client-portal-nav__link <%= ps === 'profile' ? 'is-active' : '' %>" href="<%= wl('/profile') %>">
+      <i class="las la-user" aria-hidden="true"></i>
+      <%= t('account.portal.profile', 'Profile') %>
+    </a>
+    <a class="client-portal-nav__link <%= ps === 'security' ? 'is-active' : '' %>" href="<%= wl('/account/password') %>">
+      <i class="las la-shield-alt" aria-hidden="true"></i>
+      <%= t('account.portal.security', 'Security') %>
+    </a>
+  </nav>
+  <div class="client-portal-logout d-none d-lg-block">
+    <form method="post" action="<%= wl('/account/logout') %>" class="mb-0">
+      <button type="submit" class="btn btn-outline-secondary btn-sm btn-block">
+        <%= t('account.logout', 'Log out') %>
+      </button>
+    </form>
+  </div>
+</aside>

@@ -1,7 +1,42 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
-  <main>
-    <h1><%= t('pages.users.profile.profile', 'Profile') %></h1>
-    <%- include('../../shared/components/alerts', { message: message }) %>
-  </main>
-  <%- include('../../shared/partials/legacy-footer') %>
+
+<main class="client-portal">
+  <div class="container">
+    <header class="client-portal__header">
+      <h1 class="client-portal__title"><%= t('pages.users.profile.profile', 'Profile') %></h1>
+      <p class="client-portal__subtitle"><%= t('account.profileSubtitle', 'Your account details from your last sign-in.') %></p>
+    </header>
+
+    <div class="client-portal__layout">
+      <%- include('../../shared/partials/client-portal-sidebar') %>
+      <div class="client-portal-main">
+        <% if (typeof message !== 'undefined' && message) { %>
+          <div class="cp-alert cp-alert--info" role="status"><%= message %></div>
+        <% } %>
+
+        <section class="client-portal-card">
+          <h2 class="client-portal-card__title"><%= t('account.profileDetails', 'Account details') %></h2>
+          <% if (accountUser) { %>
+            <p class="mb-1"><strong><%= t('account.name') %>:</strong> <%= accountUser.fullName %></p>
+            <p class="mb-1"><strong><%= t('account.email') %>:</strong> <%= accountUser.email %></p>
+            <p class="mb-1"><strong><%= t('account.role') %>:</strong> <%= accountUser.role %></p>
+            <p class="mb-0"><strong><%= t('account.status') %>:</strong> <%= accountUser.status %></p>
+          <% } %>
+        </section>
+
+        <section class="client-portal-card">
+          <h2 class="client-portal-card__title"><%= t('account.profileSecurityBlurb', 'Security') %></h2>
+          <p class="text-muted mb-2"><%= t('account.profileSecurityText', 'To change your password, use the Security section.') %></p>
+          <a class="btn btn-outline-primary btn-sm" href="<%= withLocale('/account/password') %>"><%= t('account.portal.security', 'Security') %></a>
+        </section>
+
+        <form action="<%= withLocale('/account/logout') %>" method="post" class="d-lg-none">
+          <button type="submit" class="btn btn-outline-secondary btn-sm"><%= t('account.logout') %></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../shared/partials/legacy-footer') %>

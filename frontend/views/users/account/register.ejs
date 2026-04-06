@@ -1,23 +1,43 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
 
-  <main class="container py-5" style="max-width: 760px; margin: 0 auto;">
-    <h1><%= t('account.registerTitle') %></h1>
-    <p style="color:#666;"><%= t('account.registerSubtitle') %></p>
+<main class="client-auth-page">
+  <div class="container">
+    <div class="client-auth-card client-auth-card--wide">
+      <h1 class="client-auth-card__title"><%= t('account.registerTitle') %></h1>
+      <p class="client-auth-card__lead"><%= t('account.registerSubtitle') %></p>
 
-    <% if (errorMessage) { %>
-      <div style="background:#fdecea;color:#b42318;padding:12px;border-radius:8px;margin-bottom:16px;"><%= errorMessage %></div>
-    <% } %>
+      <% if (errorMessage) { %>
+        <div class="cp-alert cp-alert--error" role="alert"><%= errorMessage %></div>
+      <% } %>
 
-    <form action="<%= withLocale('/account/register') %>" method="post" style="display:grid;gap:12px;">
-      <input type="text" name="fullName" placeholder="<%= t('account.fullNamePlaceholder') %>" required />
-      <input type="email" name="email" placeholder="<%= t('account.emailPlaceholder') %>" required />
-      <input type="password" name="password" placeholder="<%= t('account.passwordPlaceholder') %>" required />
-      <input type="text" name="phone" placeholder="<%= t('account.phonePlaceholder') %>" />
-      <button type="submit"><%= t('account.createAccount') %></button>
-    </form>
+      <form action="<%= withLocale('/account/register') %>" method="post">
+        <div class="form-group">
+          <label for="reg-name"><%= t('account.fullNamePlaceholder') %></label>
+          <input id="reg-name" class="form-control" type="text" name="fullName" autocomplete="name" required placeholder="<%= t('account.fullNamePlaceholder') %>">
+        </div>
+        <div class="form-group">
+          <label for="reg-email"><%= t('account.emailPlaceholder') %></label>
+          <input id="reg-email" class="form-control" type="email" name="email" autocomplete="email" required placeholder="<%= t('account.emailPlaceholder') %>">
+        </div>
+        <div class="form-group">
+          <label for="reg-password"><%= t('account.passwordPlaceholder') %></label>
+          <input id="reg-password" class="form-control" type="password" name="password" autocomplete="new-password" required placeholder="<%= t('account.passwordPlaceholder') %>">
+          <small class="form-text text-muted"><%= t('account.passwordHint', 'Use at least 8 characters for a stronger account.') %></small>
+        </div>
+        <div class="form-group">
+          <label for="reg-phone"><%= t('account.phonePlaceholder') %></label>
+          <input id="reg-phone" class="form-control" type="text" name="phone" autocomplete="tel" placeholder="<%= t('account.phonePlaceholder') %>">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block"><%= t('account.createAccount') %></button>
+      </form>
 
-    <p style="margin-top:12px;"><%= t('account.haveAccount') %> <a href="<%= withLocale('/account/login') %>"><%= t('account.signIn') %></a></p>
-  </main>
+      <p class="client-auth-card__footer mb-0">
+        <%= t('account.haveAccount') %>
+        <a href="<%= withLocale('/account/login') %>"><%= t('account.signIn') %></a>
+      </p>
+    </div>
+  </div>
+</main>
 
-  <%- include('../../shared/partials/legacy-footer') %>
+<%- include('../../shared/partials/legacy-footer') %>

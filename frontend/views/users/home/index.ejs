@@ -234,6 +234,8 @@
     </section>
     <!--/.service-section-->
 
+    <% const bookingAuthed = typeof bookingPrefillEmail !== 'undefined' && bookingPrefillEmail; %>
+    <% const wl = typeof withLocale === 'function' ? withLocale : function (p) { return p; }; %>
     <section class="booking-section">
         <div class="container">
             <div class="row pos-relative padding">
@@ -246,18 +248,31 @@
                             <h4><span></span><%= t('home.booking.onlineBooking') %></h4>
                             <h2 class="white"><%= t('home.booking.bookTaxiRide') %></h2>
                         </div>
-                        <form action="/bookings/submit" id="book-taxi-ride">
+                        <form action="<%= wl('/book-taxi') %>" method="post" id="book-taxi-ride" data-booking-authed="<%= bookingAuthed ? '1' : '0' %>">
                             <div class="booking-form">
+                                <% if (bookingAuthed) { %>
+                                <div class="form-field booking-identity-field">
+                                    <i class="las la-user-tie"></i>
+                                    <input type="text" id="full-name" name="full-name" class="form-control booking-input-readonly"
+                                        placeholder="<%= t('home.booking.yourName') %>" value="<%= bookingPrefillName %>" autocomplete="name" readonly required aria-readonly="true">
+                                </div>
+                                <div class="form-field booking-identity-field">
+                                    <i class="las la-envelope-open"></i>
+                                    <input type="email" id="email" name="email" class="form-control booking-input-readonly" placeholder="<%= t('home.booking.email') %>"
+                                        value="<%= bookingPrefillEmail %>" autocomplete="email" readonly required aria-readonly="true">
+                                </div>
+                                <% } else { %>
                                 <div class="form-field">
                                     <i class="las la-user-tie"></i>
                                     <input type="text" id="full-name" name="full-name" class="form-control"
-                                        placeholder="<%= t('home.booking.yourName') %>" required>
+                                        placeholder="<%= t('home.booking.yourName') %>" value="<%= typeof bookingPrefillName !== 'undefined' ? bookingPrefillName : '' %>" autocomplete="name" required>
                                 </div>
                                 <div class="form-field">
                                     <i class="las la-envelope-open"></i>
                                     <input type="email" id="email" name="email" class="form-control" placeholder="<%= t('home.booking.email') %>"
-                                        required>
+                                        value="<%= typeof bookingPrefillEmail !== 'undefined' ? bookingPrefillEmail : '' %>" autocomplete="email" required>
                                 </div>
+                                <% } %>
                                 <div class="form-field">
                                     <i class="las la-tags"></i>
                                     <select name="package-type" id="type" class="niceSelect">

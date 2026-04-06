@@ -153,18 +153,12 @@
                                 <i class="las la-user-circle" aria-hidden="true"></i>
                             </summary>
                             <div class="nav-user-dropdown-menu" role="menu">
-                                <a class="dropdown-item" href="<%= wl('/bookings/create') %>"><%= t('header.userMenu.bookingCreate', 'Booking create') %></a>
-                                <a class="dropdown-item" href="<%= wl('/account/trips') %>"><%= t('header.userMenu.bookingDetails', 'Booking details') %></a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="<%= wl('/emails') %>"><%= t('header.userMenu.emails', 'Emails') %></a>
-                                <a class="dropdown-item" href="<%= wl('/emails') %>"><%= t('header.userMenu.emailDetails', 'Email details') %></a>
+                                <a class="dropdown-item" href="<%= wl('/account') %>"><%= t('header.userMenu.dashboard', 'Dashboard') %></a>
+                                <a class="dropdown-item" href="<%= wl('/book-taxi') %>"><%= t('header.userMenu.newBooking', 'New booking') %></a>
+                                <a class="dropdown-item" href="<%= wl('/account/trips') %>"><%= t('header.userMenu.myTrips', 'My trips') %></a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<%= wl('/profile') %>"><%= t('header.userMenu.profile', 'Profile') %></a>
-                                <a class="dropdown-item" href="<%= wl('/account') %>"><%= t('header.userMenu.dashboard', 'Account dashboard') %></a>
-                                <a class="dropdown-item" href="<%= wl('/account/trips') %>"><%= t('header.userMenu.trips', 'Account trips') %></a>
-                                <a class="dropdown-item" href="<%= wl('/account/password') %>"><%= t('header.userMenu.password', 'Account password') %></a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="<%= wl('/404') %>"><%= t('header.userMenu.error404', 'Error 404 (demo)') %></a>
+                                <a class="dropdown-item" href="<%= wl('/account/password') %>"><%= t('header.userMenu.security', 'Security') %></a>
                                 <div class="dropdown-divider"></div>
                                 <form method="post" action="<%= wl('/account/logout') %>" class="px-3 py-2 mb-0">
                                     <button type="submit" class="btn btn-sm btn-outline-secondary btn-block"><%= t('account.logout', 'Log out') %></button>
