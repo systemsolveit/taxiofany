@@ -13,9 +13,12 @@
 
     <section class="card">
       <h3 style="margin-top:0;"><%= t('account.tripsFor') %> <%= accountUser.fullName %></h3>
-      <% if (!trips || trips.length === 0) { %>
+      <% if (typeof tripsError !== 'undefined' && tripsError) { %>
+        <p style="color:#b91c1c;"><%= tripsError %></p>
+      <% } %>
+      <% if (!tripsError && (!trips || trips.length === 0)) { %>
         <p><%= t('account.noTrips') %></p>
-      <% } else { %>
+      <% } else if (trips && trips.length) { %>
         <table style="width:100%; border-collapse:collapse;">
           <thead>
             <tr>

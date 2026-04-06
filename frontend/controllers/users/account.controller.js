@@ -1,4 +1,37 @@
 const clientAuthApi = require('../../services/clientAuthApi');
+const bookingsApi = require('../../services/bookingsApi');
+
+function formatBookingStatus(status) {
+  const value = String(status || 'pending').trim().toLowerCase();
+  if (!value) {
+    return 'Pending';
+  }
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function formatBookingDate(booking) {
+  const parts = [booking.requestedDateText, booking.rideTime].filter((item) => String(item || '').trim());
+  if (parts.length) {
+    return parts.join(' ').trim();
+  }
+  if (booking.rideDate) {
+    const parsed = new Date(booking.rideDate);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toLocaleString();
+    }
+  }
+  return '—';
+}
+
+function mapBookingToTrip(booking) {
+  return {
+    id: booking.bookingCode || String(booking._id || ''),
+    from: booking.pickupLocation || '',
+    to: booking.destinationLocation || '',
+    date: formatBookingDate(booking),
+    status: formatBookingStatus(booking.status),
+  };
+}
 
 function consumeFlash(req, key) {
   const message = req.session ? req.session[key] : null;
@@ -92,29 +125,26 @@ function accountPage(req, res) {
   });
 }
 
-function tripsPage(req, res) {
+async function tripsPage(req, res, next) {
   const user = req.session.client.user;
-  const sampleTrips = [
-    {
-      id: 'TRIP-1001',
-      from: 'Nasr City',
-      to: 'Heliopolis',
-      date: '2026-04-01 09:00',
-      status: 'Completed',
-    },
-    {
-      id: 'TRIP-1002',
-      from: 'Dokki',
-      to: 'Zamalek',
-      date: '2026-04-02 14:30',
-      status: 'Scheduled',
-    },
-  ];
+  const token = req.session.client.token;
 
-  res.render('users/account/trips', {
+  let trips = [];
+  let tripsError = null;
+
+  try {
+    const bookings = await bookingsApi.listMyBookings(token);
+    const list = Array.isArray(bookings) ? bookings : [];
+    trips = list.map(mapBookingToTrip);
+  } catch (error) {
+    tripsError = error.message || 'Could not load your trips.';
+  }
+
+  return res.render('users/account/trips', {
     pageTitle: 'My Trips',
     accountUser: user,
-    trips: sampleTrips,
+    trips,
+    tripsError,
     activeAccountTab: 'trips',
   });
 }

@@ -31,8 +31,19 @@ async function getBooking(req, res, next) {
   }
 }
 
+async function listMyBookings(req, res, next) {
+  try {
+    const email = req.auth && req.auth.email;
+    const bookings = await service.listBookingsForCustomerEmail(email);
+    return res.json({ success: true, data: bookings });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   listBookings,
+  listMyBookings,
   createBooking,
   getBooking,
 };
