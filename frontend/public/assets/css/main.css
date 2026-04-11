@@ -2328,6 +2328,18 @@ textarea:-ms-input-placeholder {
     margin: 0;
 }
 
+.copyright-wrap .copyright-brand-link {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.copyright-wrap .copyright-brand-link:hover,
+.copyright-wrap .copyright-brand-link:focus {
+    color: #f8f8f8;
+    text-decoration: underline;
+}
+
 @media (max-width: 992px){
     .footer-top .footer-call:before{
         left: -200px;

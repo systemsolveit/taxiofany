@@ -6,8 +6,8 @@
         <div class="container">
             <div class="page-header-info">
                 <h4><%= t('pages.services.details.header.eyebrow') %></h4>
-                <h2><%= service && service.title ? service.title : (t('pages.services.details.header.titleLine1') + ' ' + t('pages.services.details.header.titleLine2')) %></h2>
-                <p><%= service && service.shortDescription ? service.shortDescription : t('pages.services.details.header.description') %></p>
+                <h2><%= service && service.title ? t('service.' + service.slug + '.title', service.title) : (t('pages.services.details.header.titleLine1') + ' ' + t('pages.services.details.header.titleLine2')) %></h2>
+                <p><%= service && service.shortDescription ? t('service.' + service.slug + '.shortDescription', service.shortDescription) : t('pages.services.details.header.description') %></p>
             </div>
         </div>
     </section>
@@ -19,18 +19,18 @@
                 <div class="col-lg-8 sm-padding">
                     <div class="service-details-info">
                         <img src="<%= service && service.featureImage ? service.featureImage : '/assets/img/post-2.jpg' %>" alt="img">
-                        <h2><%= service && service.title ? service.title : t('pages.services.details.title') %></h2>
-                        <p><%= service && service.description ? service.description : t('pages.services.details.paragraph1') %></p>
-                        <p><%= service && service.shortDescription ? service.shortDescription : t('pages.services.details.paragraph2') %></p>
+                        <h2><%= service && service.title ? t('service.' + service.slug + '.title', service.title) : t('pages.services.details.title') %></h2>
+                        <p><%= service && service.description ? t('service.' + service.slug + '.description', service.description) : t('pages.services.details.paragraph1') %></p>
+                        <p><%= service && service.shortDescription ? t('service.' + service.slug + '.shortDescription', service.shortDescription) : t('pages.services.details.paragraph2') %></p>
                         <ul class="service-features">
                             <% const detailsFeatures = service && Array.isArray(service.features) && service.features.length ? service.features : []; %>
                             <% if (detailsFeatures.length) { %>
-                                <% detailsFeatures.forEach(function(feature) { %>
+                                <% detailsFeatures.forEach(function(feature, fIdx) { %>
                                     <li>
                                         <div><i class="<%= feature.iconClass || 'las la-check' %>"></i></div>
                                         <div>
-                                            <h3><%= feature.title || '' %></h3>
-                                            <p><%= feature.description || '' %></p>
+                                            <h3><%= t('service.' + service.slug + '.feature.' + fIdx + '.title', feature.title || '') %></h3>
+                                            <p><%= t('service.' + service.slug + '.feature.' + fIdx + '.description', feature.description || '') %></p>
                                         </div>
                                     </li>
                                 <% }) %>
@@ -52,8 +52,8 @@
                                 <p><%= t('pages.services.details.benefits.description') %></p>
                                 <ul class="service-icon-list">
                                     <% const benefitPoints = service && Array.isArray(service.benefitPoints) && service.benefitPoints.length ? service.benefitPoints : [t('pages.services.details.benefits.item1'), t('pages.services.details.benefits.item2'), t('pages.services.details.benefits.item3')]; %>
-                                    <% benefitPoints.forEach(function(point) { %>
-                                        <li><i class="las la-hand-point-right"></i><%= point %></li>
+                                    <% benefitPoints.forEach(function(point, bpIdx) { %>
+                                        <li><i class="las la-hand-point-right"></i><%= (service && service.slug) ? t('service.' + service.slug + '.benefitPoint.' + bpIdx, point) : point %></li>
                                     <% }) %>
                                 </ul>
                             </div>
@@ -68,7 +68,7 @@
                         <ul>
                             <% if (Array.isArray(services) && services.length) { %>
                                 <% services.forEach(function(item) { %>
-                                    <li><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.title %></a><i class="las la-arrow-right"></i></li>
+                                    <li><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || '') : (item.title || '') %></a><i class="las la-arrow-right"></i></li>
                                 <% }) %>
                             <% } else { %>
                                 <li><a href="#"><%= t('home.services.regularTransport') %></a><i class="las la-arrow-right"></i></li>
@@ -91,7 +91,8 @@
                         <ul class="tags">
                             <% const tags = service && Array.isArray(service.tags) && service.tags.length ? service.tags : [t('pages.users.services.details.business', 'business'), t('pages.users.services.details.marketing', 'marketing'), t('pages.users.services.details.startup', 'startup')]; %>
                             <% tags.forEach(function(tag) { %>
-                                <li><a href="#"><%= tag %></a></li>
+                                <% var tagKey = String(tag || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); %>
+                                <li><a href="#"><%= tagKey ? t('tag.' + tagKey, tag) : tag %></a></li>
                             <% }) %>
                         </ul>
                     </div>

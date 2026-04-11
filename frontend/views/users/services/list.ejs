@@ -28,8 +28,8 @@
                                     <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
                                 </div>
                                 <div class="service-content">
-                                    <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.title || t('home.services.regularTransport') %></a></h3>
-                                    <p><%= item.shortDescription || item.description || t('home.services.itemDescription') %></p>
+                                    <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.regularTransport')) : (item.title || t('home.services.regularTransport')) %></a></h3>
+                                    <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || t('home.services.itemDescription')) : (item.shortDescription || item.description || t('home.services.itemDescription')) %></p>
                                     <a class="read-more" href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= t('home.services.readMore') %></a>
                                 </div>
                             </div>

@@ -16,6 +16,7 @@ This folder contains the full technical documentation for the current project an
 5. [Implementation Roadmap](./IMPLEMENTATION_ROADMAP.md)
 6. [Proposal Alignment Notes](./PROPOSAL_ALIGNMENT.md)
 7. [Architecture TODO Tracker](./TODO_ARCHITECTURE.md)
+8. [Client Content Collection Checklist](./CLIENT_CONTENT_CHECKLIST.md)
 
 ## Quick Technical Summary
 

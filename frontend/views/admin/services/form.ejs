@@ -116,6 +116,37 @@
 
                 <button type="submit" class="btn btn-primary"><%= mode === 'edit' ? 'Update Service' : 'Create Service' %></button>
               </form>
+
+              <% if (mode === 'edit' && service && service.slug) { %>
+              <div class="card card-warning card-outline mt-4">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="las la-language mr-1"></i> Translation Keys for this Service</h3>
+                </div>
+                <div class="card-body">
+                  <p class="text-muted small mb-2">
+                    Go to <a href="/admin/translations" target="_blank">Admin → Translations</a>, select a locale (e.g. <code>nl</code>), and add any of these keys to translate this service's content. Missing keys fall back to the English values above.
+                  </p>
+                  <table class="table table-sm table-bordered table-striped">
+                    <thead class="thead-light"><tr><th>Field</th><th>Translation Key</th></tr></thead>
+                    <tbody>
+                      <tr><td>Title</td><td><code>service.<%= service.slug %>.title</code></td></tr>
+                      <tr><td>Short Description</td><td><code>service.<%= service.slug %>.shortDescription</code></td></tr>
+                      <tr><td>Description</td><td><code>service.<%= service.slug %>.description</code></td></tr>
+                      <% if (Array.isArray(service.features)) { service.features.forEach(function(f, i) { %>
+                      <tr><td>Feature <%= i + 1 %> — Title</td><td><code>service.<%= service.slug %>.feature.<%= i %>.title</code></td></tr>
+                      <tr><td>Feature <%= i + 1 %> — Description</td><td><code>service.<%= service.slug %>.feature.<%= i %>.description</code></td></tr>
+                      <% }); } %>
+                      <% if (Array.isArray(service.benefitPoints)) { service.benefitPoints.forEach(function(bp, i) { %>
+                      <tr><td>Benefit Point <%= i + 1 %></td><td><code>service.<%= service.slug %>.benefitPoint.<%= i %></code></td></tr>
+                      <% }); } %>
+                      <% if (Array.isArray(service.tags)) { service.tags.forEach(function(tag) { var tk = String(tag || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); %>
+                      <tr><td>Tag: <em><%= tag %></em></td><td><code>tag.<%= tk %></code></td></tr>
+                      <% }); } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <% } %>
             </div>
           </div>
         </div>

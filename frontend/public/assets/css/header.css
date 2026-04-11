@@ -378,7 +378,7 @@
         margin: 0;
         padding: 0;
         list-style: none;
-        padding-left: 30px;
+        padding-left: -10px;
     }
 
     .header-menu-wrap ul li {

@@ -20,10 +20,11 @@
                     <div class="classic-post">
                         <% if (Array.isArray(blogPosts) && blogPosts.length) { %>
                         <% blogPosts.forEach(function(post) { %>
+                        <% var postCatKey = (post.category || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); %>
                         <div class="post-card">
                             <div class="post-thumb">
                                 <img src="<%= post.coverImage || '/assets/img/post-1.jpg' %>" alt="post">
-                                <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="post-category"><%= post.category || t('pages.users.blog.classic.business', 'Business') %></a>
+                                <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="post-category"><%= postCatKey ? t('blog.category.' + postCatKey, post.category || t('pages.users.blog.classic.business', 'Business')) : (post.category || t('pages.users.blog.classic.business', 'Business')) %></a>
                             </div>
                             <div class="post-content-wrap">
                                 <ul class="post-meta">
@@ -31,8 +32,8 @@
                                     <li><i class="las la-user"></i><%= post.authorName || t('pages.users.blog.classic.elliot_alderson', 'Elliot Alderson') %></li>
                                 </ul>
                                 <div class="post-content">
-                                    <h3><a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="hover"><%= post.title %></a></h3>
-                                    <p><%= post.excerpt || '' %></p>
+                                    <h3><a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="hover"><%= post.slug ? t('blog.' + post.slug + '.title', post.title || '') : (post.title || '') %></a></h3>
+                                    <p><%= post.slug ? t('blog.' + post.slug + '.excerpt', post.excerpt || '') : (post.excerpt || '') %></p>
                                     <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="read-more"><%= t('pages.users.blog.classic.read_more', 'Read More') %></a>
                                 </div>
                             </div>

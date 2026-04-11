@@ -12,7 +12,9 @@
                     <ul class="top-header-nav">
                         <% if (headerTopLinks.length) { %>
                             <% headerTopLinks.forEach(function(item) { %>
-                                <li><a href="<%= item.url %>"><%= item.label %></a></li>
+                                <% const translationKey = 'header.' + (item.key || ''); %>
+                                <% const translatedLabel = translationKey ? t(translationKey, item.label) : item.label; %>
+                                <li><a href="<%= item.url %>"><%= translatedLabel %></a></li>
                             <% }) %>
                         <% } else { %>
                             <li><a href="/faqs"><%= t('header.help') %></a></li>
@@ -112,7 +114,9 @@
                     <ul class="nav-menu">
                         <% if (configuredMenu.length) { %>
                             <% configuredMenu.forEach(function(item) { %>
-                                <li><a href="<%= item.url %>"><%= item.label %></a></li>
+                                <% const translationKey = 'header.nav.' + (item.key || ''); %>
+                                <% const translatedLabel = translationKey ? t(translationKey, item.label) : item.label; %>
+                                <li><a href="<%= item.url %>"><%= translatedLabel %></a></li>
                             <% }) %>
                         <% } else { %>
                             <li class="dropdown_menu">

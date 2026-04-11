@@ -299,8 +299,40 @@
 
                 <button type="submit" class="btn btn-primary"><%= mode === 'edit' ? 'Update Post' : 'Create Post' %></button>
               </form>
-            </div>
-          </div>
+
+              <% if (mode === 'edit' && post && post.slug) { %>
+              <div class="card card-warning card-outline mt-4">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="las la-language mr-1"></i> Translation Keys for this Blog Post</h3>
+                </div>
+                <div class="card-body">
+                  <p class="text-muted small mb-2">
+                    Go to <a href="/admin/translations" target="_blank">Admin → Translations</a>, select a locale (e.g. <code>nl</code>), and add any of these keys to translate this post's content. Missing keys fall back to the English values above.
+                  </p>
+                  <table class="table table-sm table-bordered table-striped">
+                    <thead class="thead-light"><tr><th>Field</th><th>Translation Key</th></tr></thead>
+                    <tbody>
+                      <tr><td>Title</td><td><code>blog.<%= post.slug %>.title</code></td></tr>
+                      <tr><td>Excerpt</td><td><code>blog.<%= post.slug %>.excerpt</code></td></tr>
+                      <% if (post.category) { var catKey = post.category.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); %>
+                      <tr><td>Category: <em><%= post.category %></em></td><td><code>blog.category.<%= catKey %></code></td></tr>
+                      <% } %>
+                      <tr><td>Content (main paragraph)</td><td><code>blog.<%= post.slug %>.content</code></td></tr>
+                      <tr><td>Secondary Paragraph</td><td><code>blog.<%= post.slug %>.contentSecondary</code></td></tr>
+                      <tr><td>Quote Text</td><td><code>blog.<%= post.slug %>.quoteText</code></td></tr>
+                      <tr><td>Quote Author</td><td><code>blog.<%= post.slug %>.quoteAuthor</code></td></tr>
+                      <tr><td>Tertiary Paragraph</td><td><code>blog.<%= post.slug %>.contentTertiary</code></td></tr>
+                      <tr><td>Section Heading</td><td><code>blog.<%= post.slug %>.sectionHeading</code></td></tr>
+                      <tr><td>Section Paragraph One</td><td><code>blog.<%= post.slug %>.sectionParagraphOne</code></td></tr>
+                      <tr><td>Section Paragraph Two</td><td><code>blog.<%= post.slug %>.sectionParagraphTwo</code></td></tr>
+                      <% if (Array.isArray(post.tags)) { post.tags.forEach(function(tag) { var tk = String(tag || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); %>
+                      <tr><td>Tag: <em><%= tag %></em></td><td><code>tag.<%= tk %></code></td></tr>
+                      <% }); } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <% } %>
         </div>
       </section>
     </div>

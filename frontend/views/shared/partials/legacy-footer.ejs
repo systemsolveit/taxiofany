@@ -88,7 +88,13 @@
     <!--/.footer-mid-wrap-->
     <div class="copyright-wrap">
         <div class="container">
-            <p>© <span id="currentYear"></span> <%= t('footer.copyrightSuffix') %></p>
+            <% const rawCopyrightUrl = t('footer.copyrightSiteUrl', 'https://systemsolveit.com'); %>
+            <% const safeCopyrightUrl = /^https?:\/\//i.test(rawCopyrightUrl) ? rawCopyrightUrl : 'https://systemsolveit.com'; %>
+            <p>
+                © <span id="currentYear"></span>
+                <a class="copyright-brand-link" href="<%= safeCopyrightUrl %>" target="_blank" rel="noopener noreferrer"><%= t('footer.copyrightSiteName', 'SystemSolveIT') %></a>
+                <span><%= t('footer.copyrightNotice', t('footer.copyrightSuffix', 'Alle rechten voorbehouden.')) %></span>
+            </p>
         </div>
     </div>
     <!--/.copyright-wrap-->
