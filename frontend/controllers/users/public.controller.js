@@ -1,4 +1,6 @@
 const { loadPublicFleetData, splitCarsForPricingTabs } = require('../../services/publicFleetData');
+const { listPublishedServicesForPublic } = require('../../services/publicServicesData');
+const { sortByLatestCreated, listPublishedBlogPostsForHome } = require('../../services/homeContentData');
 
 function getEnabledMenuItemByKey(navbarMenu = [], key) {
   return navbarMenu.find((item) => item && item.key === key && item.enabled);
@@ -29,12 +31,21 @@ exports.home = async (req, res, next) => {
       return res.redirect(toLocalizedPath(res, modernHome.url));
     }
 
-    const { cars, drivers } = await loadPublicFleetData();
+    const [fleetData, services, blogPosts] = await Promise.all([
+      loadPublicFleetData(),
+      listPublishedServicesForPublic(),
+      listPublishedBlogPostsForHome(3),
+    ]);
+    const cars = sortByLatestCreated(fleetData.cars);
+    const drivers = sortByLatestCreated(fleetData.drivers);
+    const servicesSorted = sortByLatestCreated(services);
     const pricingTabs = splitCarsForPricingTabs(cars, 3);
 
     return res.render('users/home/index', {
       cars,
       drivers,
+      services: servicesSorted,
+      blogPosts,
       pricingTabs,
     });
   } catch (error) {
@@ -44,11 +55,20 @@ exports.home = async (req, res, next) => {
 
 exports.modernHome = async (req, res, next) => {
   try {
-    const { cars, drivers } = await loadPublicFleetData();
+    const [fleetData, services, blogPosts] = await Promise.all([
+      loadPublicFleetData(),
+      listPublishedServicesForPublic(),
+      listPublishedBlogPostsForHome(3),
+    ]);
+    const cars = sortByLatestCreated(fleetData.cars);
+    const drivers = sortByLatestCreated(fleetData.drivers);
+    const servicesSorted = sortByLatestCreated(services);
     const pricingTabs = splitCarsForPricingTabs(cars, 3);
     return res.render('users/home/modern', {
       cars,
       drivers,
+      services: servicesSorted,
+      blogPosts,
       pricingTabs,
     });
   } catch (error) {

@@ -565,7 +565,7 @@ exports.newPage = async (req, res, next) => {
         authorSocialLinks: [],
         comments: [],
         tags: [],
-        isPublished: true,
+        isPublished: false,
         publishedAt: new Date().toISOString(),
       },
       publishedAtValue: formatDateTimeLocal(new Date()),
@@ -754,6 +754,34 @@ exports.deletePost = async (req, res) => {
     setNotice(req, 'success', 'Post deleted successfully.');
   } catch (error) {
     setNotice(req, 'danger', `Delete failed: ${error.message}`);
+  }
+
+  return res.redirect('/admin/blog');
+};
+
+exports.togglePublished = async (req, res) => {
+  const token = getAdminToken(req);
+  if (!token) {
+    return res.redirect('/admin/login');
+  }
+
+  try {
+    const post = await blogApi.getPost(token, req.params.id);
+    const nextPublished = !post.isPublished;
+    const payload = { isPublished: nextPublished };
+    if (nextPublished && !post.publishedAt) {
+      payload.publishedAt = new Date().toISOString();
+    }
+    await blogApi.updatePost(token, req.params.id, payload);
+    setNotice(
+      req,
+      'success',
+      nextPublished
+        ? `Post "${post.title}" is now shown on the public site.`
+        : `Post "${post.title}" is now a draft (hidden from the public site).`,
+    );
+  } catch (error) {
+    setNotice(req, 'danger', `Status update failed: ${error.message}`);
   }
 
   return res.redirect('/admin/blog');

@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/', controller.listPage);
 router.get('/new', controller.newPage);
 router.post('/new', controller.createCar);
+router.post('/:id/toggle-published', controller.togglePublished);
 router.get('/:id/edit', controller.editPage);
 router.post('/:id/update', controller.updateCar);
 router.post('/:id/delete', controller.deleteCar);

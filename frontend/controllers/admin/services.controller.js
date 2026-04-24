@@ -87,7 +87,7 @@ exports.newPage = async (req, res) => {
       benefitPoints: [],
       tags: [],
       displayOrder: 0,
-      isPublished: true,
+      isPublished: false,
     },
     notice: consumeNotice(req),
   });
@@ -140,6 +140,30 @@ exports.updateService = async (req, res) => {
     setNotice(req, 'success', `Service "${item.title}" updated successfully.`);
   } catch (error) {
     setNotice(req, 'danger', `Update failed: ${error.message}`);
+  }
+
+  return res.redirect('/admin/services');
+};
+
+exports.togglePublished = async (req, res) => {
+  const token = getAdminToken(req);
+  if (!token) {
+    return res.redirect('/admin/login');
+  }
+
+  try {
+    const current = await servicesApi.getService(token, req.params.id);
+    const nextPublished = !current.isPublished;
+    await servicesApi.updateService(token, req.params.id, { isPublished: nextPublished });
+    setNotice(
+      req,
+      'success',
+      nextPublished
+        ? `Service "${current.title}" is now shown on the public site.`
+        : `Service "${current.title}" is now a draft (hidden from the public site).`,
+    );
+  } catch (error) {
+    setNotice(req, 'danger', `Status update failed: ${error.message}`);
   }
 
   return res.redirect('/admin/services');

@@ -56,9 +56,16 @@
                           </span>
                         </td>
                         <td>
-                          <div class="d-flex" style="gap:0.35rem;">
+                          <div class="d-flex flex-wrap align-items-center" style="gap:0.35rem;">
+                            <form action="/admin/services/<%= item._id %>/toggle-published" method="post" class="d-inline">
+                              <button
+                                type="submit"
+                                class="btn btn-sm <%= item.isPublished ? 'btn-outline-warning' : 'btn-outline-success' %>"
+                                title="<%= item.isPublished ? 'Hide from public website' : 'Show on public website' %>"
+                              ><%= item.isPublished ? 'Unpublish' : 'Publish' %></button>
+                            </form>
                             <a href="/admin/services/<%= item._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
-                            <form action="/admin/services/<%= item._id %>/delete" method="post" onsubmit="return confirm('Delete this service?');">
+                            <form action="/admin/services/<%= item._id %>/delete" method="post" onsubmit="return confirm('Delete this service?');" class="d-inline">
                               <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                             </form>
                           </div>

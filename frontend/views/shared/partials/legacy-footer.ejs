@@ -88,13 +88,21 @@
     <!--/.footer-mid-wrap-->
     <div class="copyright-wrap">
         <div class="container">
-            <% const rawCopyrightUrl = t('footer.copyrightSiteUrl', 'https://systemsolveit.com'); %>
-            <% const safeCopyrightUrl = /^https?:\/\//i.test(rawCopyrightUrl) ? rawCopyrightUrl : 'https://systemsolveit.com'; %>
-            <p>
-                © <span id="currentYear"></span>
-                <a class="copyright-brand-link" href="<%= safeCopyrightUrl %>" target="_blank" rel="noopener noreferrer"><%= t('footer.copyrightSiteName', 'SystemSolveIT') %></a>
-                <span><%= t('footer.copyrightNotice', t('footer.copyrightSuffix', 'Alle rechten voorbehouden.')) %></span>
-            </p>
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-left mb-2 mb-md-0">
+                    <p>
+                        © <%= new Date().getFullYear() %>
+                        <strong>Taxiofany</strong>.
+                        <%= t('footer.rightsReserved', 'All rights reserved.') %>
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-right">
+                    <p>
+                        <%= t('footer.developedBy', 'Developed by') %>
+                        <a class="copyright-brand-link" href="https://systemsolveit.com" target="_blank" rel="noopener noreferrer">SystemSolve IT</a>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
     <!--/.copyright-wrap-->

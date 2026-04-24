@@ -90,6 +90,13 @@
                         </td>
                         <td>
                           <div class="d-flex flex-wrap" style="gap:0.35rem;">
+                            <form action="/admin/blog/<%= post._id %>/toggle-published" method="post" class="d-inline">
+                              <button
+                                type="submit"
+                                class="btn btn-sm <%= post.isPublished ? 'btn-outline-warning' : 'btn-outline-success' %>"
+                                title="<%= post.isPublished ? 'Hide from public website' : 'Show on public website' %>"
+                              ><%= post.isPublished ? 'Unpublish' : 'Publish' %></button>
+                            </form>
                             <a href="/admin/blog/<%= post._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
                             <% if (post.moderation && post.moderation.pendingTotal > 0) { %>
                               <form action="/admin/blog/<%= post._id %>/comments/approve-pending" method="post" onsubmit="return confirm('Approve all pending comments/replies for this post?');">

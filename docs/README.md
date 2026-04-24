@@ -9,14 +9,16 @@ This folder contains the full technical documentation for the current project an
 
 ## Documentation Index
 
-1. [Current State](./CURRENT_STATE.md)
-2. [Target Architecture](./TARGET_ARCHITECTURE.md)
-3. [Backend API and Contracts](./API_SPEC.md)
-4. [Docker Deployment Guide](./DOCKER_GUIDE.md)
-5. [Implementation Roadmap](./IMPLEMENTATION_ROADMAP.md)
-6. [Proposal Alignment Notes](./PROPOSAL_ALIGNMENT.md)
-7. [Architecture TODO Tracker](./TODO_ARCHITECTURE.md)
-8. [Client Content Collection Checklist](./CLIENT_CONTENT_CHECKLIST.md)
+1. [Local run (ports, env, Mongo)](./LOCAL_RUN.md)
+2. [Improvement pillar (follow-up focus)](./IMPROVEMENT_PILLAR.md)
+3. [Current State](./CURRENT_STATE.md)
+4. [Target Architecture](./TARGET_ARCHITECTURE.md)
+5. [Backend API and Contracts](./API_SPEC.md)
+6. [Docker Deployment Guide](./DOCKER_GUIDE.md)
+7. [Implementation Roadmap](./IMPLEMENTATION_ROADMAP.md)
+8. [Proposal Alignment Notes](./PROPOSAL_ALIGNMENT.md)
+9. [Architecture TODO Tracker](./TODO_ARCHITECTURE.md)
+10. [Client Content Collection Checklist](./CLIENT_CONTENT_CHECKLIST.md)
 
 ## Quick Technical Summary
 
@@ -24,7 +26,7 @@ This folder contains the full technical documentation for the current project an
 - Frontend target: Node.js + Express + EJS (`frontend` as independent server)
 - Frontend organization: modular by domain and feature (`routes`, `controllers`, and `views` split into `users` and `admin`)
 - Current state: backend still serves static template files from `frontend/views`
-- Default backend port: `3000`
+- Default backend port: `3000`; default frontend port: `3001` (see [LOCAL_RUN.md](./LOCAL_RUN.md))
 
 ## Important Note About Proposal Document
 

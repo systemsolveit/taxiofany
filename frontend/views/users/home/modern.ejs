@@ -150,6 +150,8 @@
     </section>
     <!--/.booking-section-->
 
+    <% const homeServices = typeof services !== 'undefined' && Array.isArray(services) ? services : []; %>
+    <% const homeFleetCars = typeof cars !== 'undefined' && Array.isArray(cars) ? cars : []; %>
     <section class="service-section bg-grey padding">
         <div class="bg-half"></div>
         <div class="container">
@@ -159,32 +161,31 @@
                 <p><%= t('home.services.description') %></p>
             </div>
             <!--/.section-heading-->
+            <% if (homeServices.length) { %>
             <div class="swiper-outside">
                 <div class="service-carousel">
                     <div class="swiper-wrapper">
-                        <% const fleetCars = typeof cars !== 'undefined' && Array.isArray(cars) ? cars : []; %>
-                        <% const serviceSlides = [
-                          { bg: '/assets/img/service-1.jpg', titleKey: 'home.services.regularTransport', delay: '200ms', wow: true },
-                          { bg: '/assets/img/service-2.jpg', titleKey: 'home.services.airportTransport', delay: '400ms', wow: true },
-                          { bg: '/assets/img/service-3.jpg', titleKey: 'home.services.luggageTransport', delay: '600ms', wow: true },
-                          { bg: '/assets/img/service-4.jpg', titleKey: 'home.services.cityTransport', delay: '', wow: false },
-                          { bg: '/assets/img/service-5.jpg', titleKey: 'home.services.businessTransport', delay: '', wow: false },
-                        ]; %>
-                        <% serviceSlides.forEach(function(slide, idx) { %>
-                        <% const carImg = fleetCars.length ? (fleetCars[idx % fleetCars.length].detailImage || fleetCars[idx % fleetCars.length].image || '/assets/img/car-1.png') : '/assets/img/car-1.png'; %>
+                        <% const delayMap = ['200ms', '400ms', '600ms']; %>
+                        <% homeServices.forEach(function(item, idx) { %>
+                        <% const slugOk = item.slug && String(item.slug).trim(); %>
+                        <% const detailPath = slugOk ? ('/services/details/' + encodeURIComponent(String(item.slug).trim())) : '/services'; %>
+                        <% const serviceHref = typeof withLocale === 'function' ? withLocale(detailPath) : detailPath; %>
+                        <% const cover = (item.coverImage && String(item.coverImage).trim()) || (item.featureImage && String(item.featureImage).trim()) || (item.benefitsImage && String(item.benefitsImage).trim()) || ''; %>
+                        <% const carImg = homeFleetCars.length ? (homeFleetCars[idx % homeFleetCars.length].detailImage || homeFleetCars[idx % homeFleetCars.length].image || '') : ''; %>
+                        <% const useWow = idx < 3; %>
                         <div class="swiper-slide">
-                            <div class="service-item<%= slide.wow ? ' wow fade-in-bottom' : '' %>"<% if (slide.delay) { %> data-wow-delay="<%= slide.delay %>"<% } %>>
+                            <div class="service-item<%= useWow ? ' wow fade-in-bottom' : '' %>"<% if (useWow) { %> data-wow-delay="<%= delayMap[idx] %>"<% } %>>
                                 <div class="service-thumb">
-                                    <img src="<%= slide.bg %>" alt="">
+                                    <img src="<%= cover || '/assets/img/service-1.jpg' %>" alt="">
                                     <div class="service-shape-wrap">
                                         <div class="service-shape"></div>
                                     </div>
-                                    <div class="service-car"><img src="<%= carImg %>" alt=""></div>
+                                    <% if (carImg) { %><div class="service-car"><img src="<%= carImg %>" alt=""></div><% } %>
                                 </div>
                                 <div class="service-content">
-                                    <h3><a href="<%= typeof withLocale === 'function' ? withLocale('/services/details') : '/services/details' %>"><%= t(slide.titleKey) %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="<%= typeof withLocale === 'function' ? withLocale('/services/details') : '/services/details' %>"><%= t('home.services.readMore') %></a>
+                                    <h3><a href="<%= serviceHref %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.regularTransport')) : (item.title || t('home.services.regularTransport')) %></a></h3>
+                                    <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || t('home.services.itemDescription')) : (item.shortDescription || item.description || t('home.services.itemDescription')) %></p>
+                                    <a class="read-more" href="<%= serviceHref %>"><%= t('home.services.readMore') %></a>
                                 </div>
                             </div>
                         </div>
@@ -196,6 +197,9 @@
                 <div class="swiper-nav swiper-next"><i class="las la-long-arrow-alt-right"></i></div>
                 <div class="swiper-nav swiper-prev"><i class="las la-long-arrow-alt-left"></i></div>
             </div>
+            <% } else { %>
+            <p class="text-center text-white-50 py-5 mb-0" style="opacity:0.9"><%= t('home.empty.noPublishedServices', 'No published services to show. Publish at least one service in the admin panel (Show on public website).') %></p>
+            <% } %>
         </div>
     </section>
     <!--/.service-section-->
@@ -280,29 +284,41 @@
     </section>
     <!--/.pricing-section-->
 
-    <section class="download-section-2 padding">
-        <div class="overlay"></div>
+    <% const ctaProPath = typeof withLocale === 'function' ? withLocale('/book-taxi') : '/book-taxi'; %>
+    <section class="service-section padding" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
         <div class="container">
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <div class="section-heading">
-                        <h4><span></span><%= t('home.download.eyebrow') %></h4>
-                        <h2><%= t('home.download.title') %></h2>
-                        <p><%= t('home.download.description') %></p>
-                        <div class="download-btn">
-                            <a href="#"><img src="/assets/img/google-play.svg" alt="PlayStore"></a>
-                            <a href="#"><img src="/assets/img/app-store.svg" alt="AppStore"></a>
+                    <div class="section-heading text-md-start mb-30">
+                        <h4 class="text-white-50" style="opacity:0.85"><span></span><%= t('home.professional.eyebrow', 'Service & reliability') %></h4>
+                        <h2 class="text-white"><%= t('home.professional.title', 'Built for safe, comfortable journeys') %></h2>
+                        <p class="text-white-50" style="opacity:0.9"><%= t('home.professional.description', 'We focus on professional drivers, clear communication, and transparent service. Book on the web when you are ready—no app required.') %></p>
+                        <ul class="app-feature list-unstyled mt-4" style="padding-left: 0;">
+                            <li class="d-flex align-items-start mb-3" style="gap: 0.75rem;">
+                                <i class="las la-shield-alt text-info" style="font-size: 1.75rem; margin-top: 0.15rem;"></i>
+                                <div><strong class="text-white d-block"><%= t('home.professional.point1', 'Punctual pickups & familiar routes') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point1sub', 'Plan your trip with confidence and reliable scheduling.') %></span></div>
+                            </li>
+                            <li class="d-flex align-items-start mb-3" style="gap: 0.75rem;">
+                                <i class="las la-user-tie text-info" style="font-size: 1.75rem; margin-top: 0.15rem;"></i>
+                                <div><strong class="text-white d-block"><%= t('home.professional.point2', 'Licensed drivers & maintained vehicles') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point2sub', 'Safety and comfort on every trip.') %></span></div>
+                            </li>
+                            <li class="d-flex align-items-start" style="gap: 0.75rem;">
+                                <i class="las la-file-invoice-dollar text-info" style="font-size: 1.75rem; margin-top: 0.15rem;"></i>
+                                <div><strong class="text-white d-block"><%= t('home.professional.point3', 'Clear pricing & straightforward booking') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point3sub', 'Request a ride in minutes on the web—no app download needed.') %></span></div>
+                            </li>
+                        </ul>
+                        <div class="mt-4">
+                            <a href="<%= ctaProPath %>" class="default-btn d-inline-block"><%= t('home.professional.ctaBook', 'Book your ride') %></a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 d-none d-lg-block">
-                    <div class="download-mockup wow fade-in-bottom" data-wow-delay="200ms"></div>
-                    <div class="app-screen wow fade-in-bottom" data-wow-delay="400ms"><img src="/assets/img/mockup-3.png" alt=""></div>
+                <div class="col-lg-6 d-none d-md-block text-center">
+                    <img class="img-fluid rounded shadow-lg wow fade-in-bottom" data-wow-delay="200ms" src="/assets/img/slider-bg.jpg" alt="" style="max-height: 380px; object-fit: cover; width: 100%; max-width: 520px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.08);">
                 </div>
             </div>
         </div>
     </section>
-    <!--/.download-section-->
+    <!--/.professional section (replaces app download)-->
 
     <section class="team-section padding">
         <div class="container">
@@ -420,6 +436,7 @@
     </section>
     <!--/.testimonial-section-->
 
+    <% const homeBlogPosts = typeof blogPosts !== 'undefined' && Array.isArray(blogPosts) ? blogPosts : []; %>
     <section class="blog-section bg-grey padding">
         <div class="container">
             <div class="section-heading text-center mb-40 wow fade-in-bottom" data-wow-delay="200ms">
@@ -427,72 +444,38 @@
                 <h2><%= t('home.blog.title') %></h2>
                 <p><%= t('home.blog.description') %></p>
             </div>
-            <!--/.section-heading-->
+            <% if (homeBlogPosts.length) { %>
             <div class="row grid-post">
+                <% homeBlogPosts.forEach(function(post) { %>
+                <% const postCatKey = (post.category || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); %>
+                <% const blogDetailPath = post.slug ? ('/blog/details/' + encodeURIComponent(String(post.slug).trim())) : '/blog'; %>
+                <% const blogHref = typeof withLocale === 'function' ? withLocale(blogDetailPath) : blogDetailPath; %>
                 <div class="col-lg-4 col-md-6 padding-15">
                     <div class="post-card">
                         <div class="post-thumb">
-                            <img src="/assets/img/post-1.jpg" alt="post">
-                            <a href="/blog/details" class="post-category"><%= t('home.blog.categoryBusiness') %></a>
+                            <img src="<%= (post.coverImage && String(post.coverImage).trim()) || '/assets/img/post-1.jpg' %>" alt="">
+                            <a href="<%= blogHref %>" class="post-category"><%= postCatKey ? t('blog.category.' + postCatKey, post.category || '') : (post.category || t('home.blog.categoryBusiness')) %></a>
                         </div>
                         <div class="post-content-wrap">
                             <ul class="post-meta">
-                                <li><i class="las la-calendar"></i><%= t('home.blog.postDate') %></li>
-                                <li><i class="las la-user"></i><%= t('home.blog.author') %></li>
+                                <li><i class="las la-calendar"></i><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-GB') : '—' %></li>
+                                <li><i class="las la-user"></i><%= post.authorName || '—' %></li>
                             </ul>
                             <div class="post-content">
                                 <h3>
-                                    <a href="/blog/details" class="hover"><%= t('home.blog.post1Title') %></a>
+                                    <a href="<%= blogHref %>" class="hover"><%= post.slug ? t('blog.' + post.slug + '.title', post.title || '') : (post.title || '') %></a>
                                 </h3>
-                                <p><%= t('home.blog.postExcerpt') %></p>
-                                <a href="/blog/details" class="read-more"><%= t('home.blog.readMore') %></a>
+                                <p><%= post.slug ? t('blog.' + post.slug + '.excerpt', post.excerpt || '') : (post.excerpt || '') %></p>
+                                <a href="<%= blogHref %>" class="read-more"><%= t('home.blog.readMore') %></a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 padding-15">
-                    <div class="post-card">
-                        <div class="post-thumb">
-                            <img src="/assets/img/post-2.jpg" alt="post">
-                            <a href="/blog/details" class="post-category"><%= t('home.blog.categoryStartup') %></a>
-                        </div>
-                        <div class="post-content-wrap">
-                            <ul class="post-meta">
-                                <li><i class="las la-calendar"></i><%= t('home.blog.postDate') %></li>
-                                <li><i class="las la-user"></i><%= t('home.blog.author') %></li>
-                            </ul>
-                            <div class="post-content">
-                                <h3>
-                                    <a href="/blog/details"><%= t('home.blog.post2Title') %></a>
-                                </h3>
-                                <p><%= t('home.blog.postExcerpt') %></p>
-                                <a href="/blog/details" class="read-more"><%= t('home.blog.readMore') %></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 padding-15">
-                    <div class="post-card">
-                        <div class="post-thumb">
-                            <img src="/assets/img/post-3.jpg" alt="post">
-                            <a href="/blog/details" class="post-category"><%= t('home.blog.categoryFinance') %></a>
-                        </div>
-                        <div class="post-content-wrap">
-                            <ul class="post-meta">
-                                <li><i class="las la-calendar"></i><%= t('home.blog.postDate') %></li>
-                                <li><i class="las la-user"></i><%= t('home.blog.author') %></li>
-                            </ul>
-                            <div class="post-content">
-                                <h3>
-                                    <a href="/blog/details"><%= t('home.blog.post3Title') %></a>
-                                </h3>
-                                <p><%= t('home.blog.postExcerpt') %></p>
-                                <a href="/blog/details" class="read-more"><%= t('home.blog.readMore') %></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <% }); %>
             </div>
+            <% } else { %>
+            <p class="text-center text-muted py-4 mb-0"><%= t('home.empty.noPublishedBlog', 'No published blog posts to show. Publish a post in the admin panel (Show on public website).') %></p>
+            <% } %>
         </div>
     </section>
     <!--/.blog-section-->

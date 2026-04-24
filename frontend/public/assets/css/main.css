@@ -2328,6 +2328,25 @@ textarea:-ms-input-placeholder {
     margin: 0;
 }
 
+.copyright-wrap .row .text-md-left,
+.copyright-wrap .row .text-md-left p {
+    text-align: left;
+}
+
+.copyright-wrap .row .text-md-right,
+.copyright-wrap .row .text-md-right p {
+    text-align: right;
+}
+
+@media (max-width: 767.98px) {
+    .copyright-wrap .row .text-md-left,
+    .copyright-wrap .row .text-md-left p,
+    .copyright-wrap .row .text-md-right,
+    .copyright-wrap .row .text-md-right p {
+        text-align: center;
+    }
+}
+
 .copyright-wrap .copyright-brand-link {
     color: #fff;
     font-weight: 600;

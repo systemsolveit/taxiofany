@@ -79,7 +79,7 @@ exports.newPage = async (req, res) => {
       bio: '',
       experienceYears: 5,
       displayOrder: 0,
-      isPublished: true,
+      isPublished: false,
       availability: 'available',
     },
     notice: consumeNotice(req),
@@ -133,6 +133,30 @@ exports.updateDriver = async (req, res) => {
     setNotice(req, 'success', `Driver "${driver.fullName}" updated successfully.`);
   } catch (error) {
     setNotice(req, 'danger', `Update failed: ${error.message}`);
+  }
+
+  return res.redirect('/admin/drivers');
+};
+
+exports.togglePublished = async (req, res) => {
+  const token = getAdminToken(req);
+  if (!token) {
+    return res.redirect('/admin/login');
+  }
+
+  try {
+    const current = await driversApi.getDriver(token, req.params.id);
+    const nextPublished = !current.isPublished;
+    await driversApi.updateDriver(token, req.params.id, { isPublished: nextPublished });
+    setNotice(
+      req,
+      'success',
+      nextPublished
+        ? `Driver "${current.fullName}" is now shown on the public site.`
+        : `Driver "${current.fullName}" is now a draft (hidden from the public site).`,
+    );
+  } catch (error) {
+    setNotice(req, 'danger', `Status update failed: ${error.message}`);
   }
 
   return res.redirect('/admin/drivers');

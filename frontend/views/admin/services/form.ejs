@@ -111,7 +111,8 @@
 
                 <div class="form-group form-check">
                   <input class="form-check-input" type="checkbox" name="isPublished" value="true" id="published-check" <%= service.isPublished ? 'checked' : '' %>>
-                  <label class="form-check-label" for="published-check">Published</label>
+                  <label class="form-check-label" for="published-check">Show on public website</label>
+                  <small class="form-text text-muted d-block">When unchecked, this service stays a draft and is hidden from the main site.</small>
                 </div>
 
                 <button type="submit" class="btn btn-primary"><%= mode === 'edit' ? 'Update Service' : 'Create Service' %></button>

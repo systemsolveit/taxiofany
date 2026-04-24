@@ -86,7 +86,7 @@ exports.newPage = async (req, res) => {
       luggageCarry: 4,
       description: '',
       displayOrder: 0,
-      isPublished: true,
+      isPublished: false,
     },
     notice: consumeNotice(req),
   });
@@ -139,6 +139,30 @@ exports.updateCar = async (req, res) => {
     setNotice(req, 'success', `Car "${car.title}" updated successfully.`);
   } catch (error) {
     setNotice(req, 'danger', `Update failed: ${error.message}`);
+  }
+
+  return res.redirect('/admin/cars');
+};
+
+exports.togglePublished = async (req, res) => {
+  const token = getAdminToken(req);
+  if (!token) {
+    return res.redirect('/admin/login');
+  }
+
+  try {
+    const current = await carsApi.getCar(token, req.params.id);
+    const nextPublished = !current.isPublished;
+    await carsApi.updateCar(token, req.params.id, { isPublished: nextPublished });
+    setNotice(
+      req,
+      'success',
+      nextPublished
+        ? `Car "${current.title}" is now shown on the public site.`
+        : `Car "${current.title}" is now a draft (hidden from the public site).`,
+    );
+  } catch (error) {
+    setNotice(req, 'danger', `Status update failed: ${error.message}`);
   }
 
   return res.redirect('/admin/cars');

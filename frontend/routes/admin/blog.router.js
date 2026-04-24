@@ -9,6 +9,7 @@ router.get('/actions/media-search', controller.searchMedia);
 router.get('/actions/keyword-suggestions', controller.keywordSuggestions);
 router.post('/actions/generate-draft', express.json(), controller.generateDraft);
 router.post('/new', controller.createPost);
+router.post('/:id/toggle-published', controller.togglePublished);
 router.get('/:id/edit', controller.editPage);
 router.post('/:id/update', controller.updatePost);
 router.post('/:id/comments/approve-pending', controller.approvePendingComments);
