@@ -2126,6 +2126,7 @@
 {"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/locales","responseTimeMs":5,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T11:40:08.621Z"}
 {"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/locales","responseTimeMs":5,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T11:40:08.624Z"}
 {"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/locales","responseTimeMs":4,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T11:40:08.626Z"}
+<<<<<<< HEAD
 {"consoleMethod":"log","level":"info","message":"Server listening on http://localhost:3000","service":"taxiofany-backend","source":"console","timestamp":"2026-04-25T12:19:34.543Z"}
 {"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/locales","responseTimeMs":22,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:25:19.956Z"}
 {"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/nl","responseTimeMs":61,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:25:20.224Z"}
@@ -2436,3 +2437,32 @@
 {"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/admin/settings/site","responseTimeMs":6,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:49:54.837Z"}
 {"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/nl","responseTimeMs":13,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:49:55.750Z"}
 {"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/admin/settings/site","responseTimeMs":3,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:49:55.755Z"}
+=======
+{"consoleMethod":"log","level":"info","message":"Auto-bootstrapped nl translations (206 semantic, 16 extracted).","service":"taxiofany-backend","source":"console","timestamp":"2026-04-25T12:50:18.527Z"}
+{"consoleMethod":"log","level":"info","message":"Auto-bootstrapped blog template posts (7 records).","service":"taxiofany-backend","source":"console","timestamp":"2026-04-25T12:50:18.544Z"}
+{"consoleMethod":"log","level":"info","message":"Auto-bootstrapped service template records (3 records).","service":"taxiofany-backend","source":"console","timestamp":"2026-04-25T12:50:18.553Z"}
+{"consoleMethod":"log","level":"info","message":"Auto-bootstrapped car template records (3 records).","service":"taxiofany-backend","source":"console","timestamp":"2026-04-25T12:50:18.559Z"}
+{"consoleMethod":"log","level":"info","message":"Auto-bootstrapped email template records (3 records).","service":"taxiofany-backend","source":"console","timestamp":"2026-04-25T12:50:18.566Z"}
+{"consoleMethod":"log","level":"info","message":"Default super admin created from environment variables.","service":"taxiofany-backend","source":"console","timestamp":"2026-04-25T12:50:18.650Z"}
+{"consoleMethod":"log","level":"info","message":"Server listening on http://localhost:3000","service":"taxiofany-backend","source":"console","timestamp":"2026-04-25T12:50:18.652Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/locales","responseTimeMs":7,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:19.462Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/nl","responseTimeMs":1280,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:20.752Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/settings/site","responseTimeMs":4,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:20.760Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"POST","path":"/api/v1/admin/auth/login","responseTimeMs":72,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:20.842Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/nl","responseTimeMs":23,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:20.877Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/admin/bookings","responseTimeMs":9,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:20.892Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/nl","responseTimeMs":12,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:26.671Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/admin/settings/mail","responseTimeMs":5,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:26.681Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/nl","responseTimeMs":13,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:28.511Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/admin/settings/site","responseTimeMs":3,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:28.519Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/nl","responseTimeMs":18,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:40.044Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"PATCH","path":"/api/v1/admin/settings/site","responseTimeMs":22,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:40.074Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/nl","responseTimeMs":10,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:40.095Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/settings/site","responseTimeMs":3,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:40.100Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/admin/settings/site","responseTimeMs":3,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:40.105Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/i18n/nl","responseTimeMs":15,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:48.411Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/cars","responseTimeMs":5,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:48.424Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/drivers","responseTimeMs":6,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:48.427Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/services","responseTimeMs":6,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:48.431Z"}
+{"ip":"::ffff:172.18.0.4","level":"info","message":"http_request","method":"GET","path":"/api/v1/user/blog?page=1&limit=50","responseTimeMs":5,"service":"taxiofany-backend","statusCode":200,"timestamp":"2026-04-25T12:50:48.434Z"}
+>>>>>>> 15a853a6eec0e4fbc6d28ba3a832dc8a83a2649f

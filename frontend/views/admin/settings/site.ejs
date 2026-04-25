@@ -420,6 +420,48 @@
             </div>
 
             <div class="card settings-card mb-2">
+              <div class="card-header p-0 border-bottom-0" id="siteAccHStickyIcons">
+                <h3 class="mb-0">
+                  <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" style="white-space: normal;" data-toggle="collapse" data-target="#siteAccCStickyIcons" aria-expanded="false" aria-controls="siteAccCStickyIcons">
+                    <span class="pr-2">
+                      <span class="card-title d-block mb-0">Sticky WhatsApp button</span>
+                      <span class="card-subtitle">Control the floating WhatsApp button shown on public pages: visibility, color, phone number, and default message.</span>
+                    </span>
+                    <i class="fas fa-chevron-down site-acc-chevron mt-1 flex-shrink-0 text-muted" aria-hidden="true"></i>
+                  </button>
+                </h3>
+              </div>
+              <div id="siteAccCStickyIcons" class="collapse" data-parent="#siteSettingsAccordion" aria-labelledby="siteAccHStickyIcons">
+              <div class="card-body border-top">
+                <% const stickyWhatsapp = (siteSettings && siteSettings.effective && siteSettings.effective.stickyIcons && siteSettings.effective.stickyIcons.whatsapp) || {}; %>
+                <div class="form-row align-items-end">
+                  <div class="form-group col-md-3">
+                    <label class="d-block">Show WhatsApp button</label>
+                    <input type="hidden" name="stickyIcons[whatsapp][enabled]" value="false">
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="stickyWhatsappEnabled" name="stickyIcons[whatsapp][enabled]" value="true" <%= stickyWhatsapp.enabled !== false ? 'checked' : '' %>>
+                      <label class="custom-control-label" for="stickyWhatsappEnabled">Enabled on public site</label>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="stickyWhatsappColor">Icon color</label>
+                    <input id="stickyWhatsappColor" class="form-control" name="stickyIcons[whatsapp][color]" value="<%= stickyWhatsapp.color || '#25d366' %>" placeholder="#25d366" autocomplete="off">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="stickyWhatsappPhone">WhatsApp phone number</label>
+                    <input id="stickyWhatsappPhone" class="form-control" name="stickyIcons[whatsapp][phone]" value="<%= stickyWhatsapp.phone || '' %>" placeholder="+15551234567" autocomplete="tel">
+                    <small class="form-text text-muted">Use international format. Example: +15551234567.</small>
+                  </div>
+                </div>
+                <div class="form-group mb-0">
+                  <label for="stickyWhatsappMessage">Default WhatsApp message</label>
+                  <textarea id="stickyWhatsappMessage" class="form-control" name="stickyIcons[whatsapp][message]" rows="3" maxlength="300" placeholder="Hello Taxiofany, I would like to book a taxi."><%= stickyWhatsapp.message || 'Hello Taxiofany, I would like to book a taxi.' %></textarea>
+                </div>
+              </div>
+              </div>
+            </div>
+
+            <div class="card settings-card mb-2">
               <div class="card-header p-0 border-bottom-0" id="siteAccHPages">
                 <h3 class="mb-0">
                   <button type="button" class="btn btn-link btn-block text-left d-flex align-items-start justify-content-between collapsed rounded-0 py-3 px-3" style="white-space: normal;" data-toggle="collapse" data-target="#siteAccCPages" aria-expanded="false" aria-controls="siteAccCPages">

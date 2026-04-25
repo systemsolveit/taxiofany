@@ -68,6 +68,15 @@ const DEFAULT_HEADER = {
   navButtonUrl: '/book-taxi',
 };
 
+const DEFAULT_STICKY_ICONS = {
+  whatsapp: {
+    enabled: true,
+    color: '#25d366',
+    phone: '',
+    message: 'Hello Taxiofany, I would like to book a taxi.',
+  },
+};
+
 function toBool(value, fallback = false) {
   if (typeof value === 'boolean') {
     return value;
@@ -164,6 +173,19 @@ function normalizeHexColor(value, fallback = '#f59e0b') {
     return text;
   }
   return fallback;
+}
+
+function normalizeStickyWhatsapp(value = {}) {
+  const fallback = DEFAULT_STICKY_ICONS.whatsapp;
+  const phone = String(value.phone || fallback.phone || '').replace(/[^\d+]/g, '').trim();
+  const message = String(value.message || fallback.message || '').trim().slice(0, 300) || fallback.message;
+
+  return {
+    enabled: toBool(value.enabled, fallback.enabled),
+    color: normalizeHexColor(value.color, fallback.color),
+    phone,
+    message,
+  };
 }
 
 function normalizeMenuItem(item = {}, index = 0) {
@@ -378,6 +400,9 @@ function normalizeSiteSettings(payload = {}) {
       socialLinks,
       navButtonLabel: String((payload.header && payload.header.navButtonLabel) || DEFAULT_HEADER.navButtonLabel).trim() || DEFAULT_HEADER.navButtonLabel,
       navButtonUrl: String((payload.header && payload.header.navButtonUrl) || DEFAULT_HEADER.navButtonUrl).trim() || DEFAULT_HEADER.navButtonUrl,
+    },
+    stickyIcons: {
+      whatsapp: normalizeStickyWhatsapp(payload.stickyIcons && payload.stickyIcons.whatsapp),
     },
   };
 }

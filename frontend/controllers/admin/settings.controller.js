@@ -108,6 +108,14 @@ function mapSitePayload(body = {}) {
       navButtonLabel: String((body.header && body.header.navButtonLabel) || '').trim(),
       navButtonUrl: String((body.header && body.header.navButtonUrl) || '').trim(),
     },
+    stickyIcons: {
+      whatsapp: {
+        enabled: parseBoolInput(body.stickyIcons && body.stickyIcons.whatsapp && body.stickyIcons.whatsapp.enabled),
+        color: String((body.stickyIcons && body.stickyIcons.whatsapp && body.stickyIcons.whatsapp.color) || '').trim(),
+        phone: String((body.stickyIcons && body.stickyIcons.whatsapp && body.stickyIcons.whatsapp.phone) || '').trim(),
+        message: String((body.stickyIcons && body.stickyIcons.whatsapp && body.stickyIcons.whatsapp.message) || '').trim(),
+      },
+    },
   };
 }
 
