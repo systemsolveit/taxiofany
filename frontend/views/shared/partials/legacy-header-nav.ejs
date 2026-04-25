@@ -2,11 +2,16 @@
     <div class="top-header">
         <div class="container">
             <div class="top-header-wrap">
+                <% const headerConfig = (siteSettings && siteSettings.header) ? siteSettings.header : {}; %>
+                <% const topTagline = headerConfig.topTagline || t('header.topTagline'); %>
+                <% const mobileTopTagline = topTagline.length > 20 ? topTagline.slice(0, 20) + '...' : topTagline; %>
                 <div class="top-left">
-                    <p><%= t('header.topTagline') %></p>
+                    <p>
+                        <span class="top-tagline-full"><%= topTagline %></span>
+                        <span class="top-tagline-mobile"><%= mobileTopTagline %></span>
+                    </p>
                 </div>
                 <div class="top-right">
-                    <% const headerConfig = (siteSettings && siteSettings.header) ? siteSettings.header : {}; %>
                     <% const headerTopLinks = Array.isArray(headerConfig.topLinks) ? headerConfig.topLinks.filter(function(item){ return item && item.enabled; }) : []; %>
                     <% const headerSocialLinks = Array.isArray(headerConfig.socialLinks) ? headerConfig.socialLinks.filter(function(item){ return item && item.enabled; }) : []; %>
                     <ul class="top-header-nav">

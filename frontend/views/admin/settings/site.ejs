@@ -308,6 +308,16 @@
               <div id="siteAccCContact" class="collapse" data-parent="#siteSettingsAccordion" aria-labelledby="siteAccHContact">
               <div class="card-body border-top">
                 <% const headerInfo = (siteSettings && siteSettings.effective && siteSettings.effective.header) || {}; %>
+                <div class="form-group">
+                  <label class="d-flex align-items-center" for="headerTopTagline">Top bar welcome text
+                    <button type="button" class="btn btn-sm site-help-btn ml-2" tabindex="0"
+                      data-toggle="popover" data-trigger="hover focus" data-placement="top" data-container="body"
+                      title="Top bar welcome text"
+                      data-content="Displayed in the public site's top header. On mobile, long text is shortened automatically."
+                      aria-label="Help: top bar welcome text">?</button>
+                  </label>
+                  <input id="headerTopTagline" class="form-control" name="header[topTagline]" value="<%= headerInfo.topTagline || '' %>" maxlength="160" placeholder="Reliable taxi service and transport solutions!">
+                </div>
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label class="d-flex align-items-center">Phone

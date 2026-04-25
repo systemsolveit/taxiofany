@@ -50,6 +50,7 @@ const DEFAULT_PAGES = [
 ];
 
 const DEFAULT_HEADER = {
+  topTagline: 'Reliable taxi service and transport solutions!',
   topLinks: [
     { key: 'help', label: 'Help', url: '/faqs', enabled: true },
     { key: 'support', label: 'Support', url: '/contact', enabled: true },
@@ -393,6 +394,7 @@ function normalizeSiteSettings(payload = {}) {
     navbarMenu,
     pages: normalizedPages,
     header: {
+      topTagline: String((payload.header && payload.header.topTagline) || DEFAULT_HEADER.topTagline).trim() || DEFAULT_HEADER.topTagline,
       topLinks,
       phone: String((payload.header && payload.header.phone) || DEFAULT_HEADER.phone).trim() || DEFAULT_HEADER.phone,
       email: String((payload.header && payload.header.email) || DEFAULT_HEADER.email).trim() || DEFAULT_HEADER.email,

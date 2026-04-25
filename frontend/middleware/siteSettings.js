@@ -6,6 +6,7 @@ const FALLBACK_SETTINGS = {
   navbarMenu: [],
   pages: [],
   header: {
+    topTagline: 'Reliable taxi service and transport solutions!',
     topLinks: [],
     phone: '5267-214-392',
     email: 'Info.ridek@mail.com',
@@ -34,6 +35,7 @@ function normalizeSettings(raw = {}) {
     navbarMenu: Array.isArray(raw.navbarMenu) ? raw.navbarMenu : [],
     pages: Array.isArray(raw.pages) ? raw.pages : [],
     header: {
+      topTagline: String(header.topTagline || FALLBACK_SETTINGS.header.topTagline).trim() || FALLBACK_SETTINGS.header.topTagline,
       topLinks: Array.isArray(header.topLinks) ? header.topLinks : [],
       phone: String(header.phone || FALLBACK_SETTINGS.header.phone).trim() || FALLBACK_SETTINGS.header.phone,
       email: String(header.email || FALLBACK_SETTINGS.header.email).trim() || FALLBACK_SETTINGS.header.email,

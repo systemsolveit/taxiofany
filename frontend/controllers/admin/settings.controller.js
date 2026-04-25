@@ -90,6 +90,7 @@ function mapSitePayload(body = {}) {
       enabled: parseBoolInput(item.enabled),
     })),
     header: {
+      topTagline: String((body.header && body.header.topTagline) || '').trim(),
       topLinks: parseCollection(body.header && body.header.topLinks).map((item = {}) => ({
         key: String(item.key || '').trim().toLowerCase(),
         label: String(item.label || '').trim(),
