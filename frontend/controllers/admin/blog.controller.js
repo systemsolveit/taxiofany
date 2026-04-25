@@ -42,6 +42,7 @@ function buildMediaPreviewUrl(filename) {
 }
 
 function mapMediaItem(item = {}) {
+  const publicUrl = item.url || `/mediahub/uploads/${encodeURIComponent(item.filename)}`;
   return {
     filename: item.filename,
     title: item.title || item.originalname || item.filename || 'Untitled',
@@ -49,6 +50,7 @@ function mapMediaItem(item = {}) {
     tags: Array.isArray(item.tags) ? item.tags : [],
     kind: item.kind || 'file',
     previewUrl: buildMediaPreviewUrl(item.filename),
+    publicUrl,
     size: item.size || 0,
   };
 }

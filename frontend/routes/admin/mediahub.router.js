@@ -13,6 +13,7 @@ const upload = multer({ dest: tempUploadDirectory });
 
 router.get('/', mediahubController.page);
 router.get('/upload', (req, res) => res.redirect('/admin/mediahub'));
+router.get('/actions/images', mediahubController.imageChoices);
 router.get('/assets/:filename', mediahubController.proxyAsset);
 router.post('/upload', upload.single('file'), mediahubController.handleUpload);
 router.post('/:filename/update', mediahubController.updateAsset);

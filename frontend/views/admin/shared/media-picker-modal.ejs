@@ -1,0 +1,65 @@
+<style>
+  .admin-media-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .admin-media-picker-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    background: #fff;
+  }
+
+  .admin-media-picker-card img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 0.4rem;
+    border: 1px solid #edf2f7;
+  }
+
+  .admin-media-picker-preview {
+    width: 100%;
+    max-width: 180px;
+    height: 110px;
+    object-fit: cover;
+    border: 1px solid #dee2e6;
+    border-radius: 0.45rem;
+    background: #f8fafc;
+  }
+</style>
+
+<div class="modal fade" id="adminMediaPickerModal" tabindex="-1" role="dialog" aria-labelledby="adminMediaPickerTitle" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="adminMediaPickerTitle">Choose image from Media Hub</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row align-items-end mb-3">
+          <div class="form-group col-md-9 mb-md-0">
+            <label for="adminMediaPickerSearch">Search images</label>
+            <input class="form-control" id="adminMediaPickerSearch" placeholder="Search by title, filename, tags, or description">
+          </div>
+          <div class="form-group col-md-3 mb-0">
+            <button type="button" class="btn btn-primary btn-block" id="adminMediaPickerSearchBtn">Search Media Hub</button>
+          </div>
+        </div>
+        <div class="text-muted small mb-2" id="adminMediaPickerStatus">Select an image to fill the active field.</div>
+        <div class="admin-media-picker-grid" id="adminMediaPickerGrid"></div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <small class="text-muted" id="adminMediaPickerPagination">Page 1</small>
+        <div>
+          <button type="button" class="btn btn-outline-primary" id="adminMediaPickerLoadMore">Load more</button>
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

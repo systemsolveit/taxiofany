@@ -69,6 +69,7 @@ function decorateItems(items = []) {
     sizeLabel: formatBytes(item.size),
     uploadedAtLabel: formatDate(item.uploadedAt),
     previewUrl: `/admin/mediahub/assets/${encodeURIComponent(item.filename)}`,
+    publicUrl: item.url || `/mediahub/uploads/${encodeURIComponent(item.filename)}`,
     kindIcon: getKindIcon(item.kind),
     titleLabel: item.title || item.originalname,
   }));
@@ -111,6 +112,50 @@ exports.page = async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
+  }
+};
+
+exports.imageChoices = async (req, res) => {
+  const token = getAdminToken(req);
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      error: { message: 'Admin session required.' },
+    });
+  }
+
+  try {
+    const page = Math.max(1, Number(req.query.page) || 1);
+    const pageSize = Math.min(48, Math.max(1, Number(req.query.pageSize) || 24));
+    const result = await mediaHubApi.listMedia(token, {
+      q: req.query.q || '',
+      type: 'image',
+      page,
+      pageSize,
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        items: decorateItems(result.items || []).map((item) => ({
+          title: item.title || item.originalname || item.filename || 'Untitled',
+          filename: item.filename,
+          previewUrl: item.previewUrl,
+          publicUrl: item.publicUrl,
+        })),
+        pagination: result.pagination || {
+          page,
+          pageSize,
+          hasMore: false,
+          totalItems: Array.isArray(result.items) ? result.items.length : 0,
+        },
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: { message: error.message || 'Media Hub image search failed.' },
+    });
   }
 };
 

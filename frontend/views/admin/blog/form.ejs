@@ -216,9 +216,16 @@
                     <small class="form-text text-muted">Use media buttons below to add or remove gallery images.</small>
                     <div class="d-flex flex-wrap mt-2" id="gallery-chips" style="gap:0.4rem;"></div>
                   </div>
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-4" data-media-picker-field>
                     <label>Author Avatar</label>
-                    <input class="form-control" name="authorAvatar" value="<%= post.authorAvatar || '/assets/img/auhtor.png' %>">
+                    <input class="form-control" name="authorAvatar" value="<%= post.authorAvatar || '/assets/img/auhtor.png' %>" readonly data-media-picker-value>
+                    <div class="mt-2">
+                      <img class="admin-media-picker-preview <%= post.authorAvatar ? '' : 'd-none' %>" src="<%= post.authorAvatar || '' %>" alt="Author avatar preview" data-media-picker-preview-image>
+                    </div>
+                    <div class="btn-group btn-group-sm mt-2">
+                      <button type="button" class="btn btn-outline-primary" data-media-picker-open>Choose from Media Hub</button>
+                      <button type="button" class="btn btn-outline-secondary" data-media-picker-clear>Clear</button>
+                    </div>
                   </div>
                 </div>
 
@@ -269,17 +276,17 @@
                             <button
                               type="button"
                               class="btn btn-sm btn-outline-primary mt-2 media-select-btn"
-                              data-url="<%= item.previewUrl %>"
+                              data-url="<%= item.publicUrl || item.previewUrl %>"
                             >Use this image</button>
                             <button
                               type="button"
                               class="btn btn-sm btn-outline-secondary mt-2 media-insert-btn"
-                              data-url="<%= item.previewUrl %>"
+                              data-url="<%= item.publicUrl || item.previewUrl %>"
                             >Insert to content</button>
                             <button
                               type="button"
                               class="btn btn-sm btn-outline-info mt-2 media-gallery-btn"
-                              data-url="<%= item.previewUrl %>"
+                              data-url="<%= item.publicUrl || item.previewUrl %>"
                             >Toggle gallery</button>
                           </div>
                         </div>
@@ -343,7 +350,9 @@
     </footer>
   </div>
 
+  <%- include('../shared/media-picker-modal') %>
   <%- include('../../shared/partials/admin-scripts') %>
+  <script src="/admin/js/media-picker.js"></script>
   <script>
     (function () {
       const generateButton = document.getElementById('generate-draft-btn');
@@ -530,7 +539,7 @@
             + '  <div class="form-group col-md-2 mb-2"><input class="form-control comment-name" placeholder="Name" value="' + escAttr(comment.name || '') + '"></div>'
             + '  <div class="form-group col-md-2 mb-2"><input class="form-control comment-email" placeholder="Email" value="' + escAttr(comment.email || '') + '"></div>'
             + '  <div class="form-group col-md-2 mb-2"><input class="form-control comment-date" placeholder="Date label" value="' + escAttr(comment.dateLabel || '') + '"></div>'
-            + '  <div class="form-group col-md-2 mb-2"><input class="form-control comment-avatar" placeholder="Avatar URL" value="' + escAttr(comment.avatar || '') + '"></div>'
+            + '  <div class="form-group col-md-2 mb-2" data-media-picker-field><input class="form-control comment-avatar" placeholder="Avatar" value="' + escAttr(comment.avatar || '') + '" readonly data-media-picker-value><button type="button" class="btn btn-xs btn-outline-primary btn-block mt-1" data-media-picker-open>Choose image</button><button type="button" class="btn btn-xs btn-outline-secondary btn-block mt-1" data-media-picker-clear>Clear</button></div>'
             + '  <div class="form-group col-md-1 mb-2 d-flex align-items-center"><div class="form-check mt-2"><input class="form-check-input comment-approved" type="checkbox" ' + (comment.approved !== false ? 'checked' : '') + '><label class="form-check-label">Approve</label></div></div>'
             + '  <div class="form-group col-md-3 mb-2"><button type="button" class="btn btn-sm btn-outline-danger w-100 comment-remove">Remove</button></div>'
             + '</div>'
@@ -560,7 +569,7 @@
                 + '  <div class="form-group col-md-2 mb-2"><input class="form-control reply-name" placeholder="Reply name" value="' + escAttr(reply.name || '') + '"></div>'
                 + '  <div class="form-group col-md-2 mb-2"><input class="form-control reply-email" placeholder="Reply email" value="' + escAttr(reply.email || '') + '"></div>'
                 + '  <div class="form-group col-md-2 mb-2"><input class="form-control reply-date" placeholder="Reply date" value="' + escAttr(reply.dateLabel || '') + '"></div>'
-                + '  <div class="form-group col-md-2 mb-2"><input class="form-control reply-avatar" placeholder="Reply avatar" value="' + escAttr(reply.avatar || '') + '"></div>'
+                + '  <div class="form-group col-md-2 mb-2" data-media-picker-field><input class="form-control reply-avatar" placeholder="Reply avatar" value="' + escAttr(reply.avatar || '') + '" readonly data-media-picker-value><button type="button" class="btn btn-xs btn-outline-primary btn-block mt-1" data-media-picker-open>Choose image</button><button type="button" class="btn btn-xs btn-outline-secondary btn-block mt-1" data-media-picker-clear>Clear</button></div>'
                 + '  <div class="form-group col-md-1 mb-2 d-flex align-items-center"><div class="form-check mt-2"><input class="form-check-input reply-approved" type="checkbox" ' + (reply.approved !== false ? 'checked' : '') + '><label class="form-check-label">Approve</label></div></div>'
                 + '  <div class="form-group col-md-3 mb-2"><button type="button" class="btn btn-sm btn-outline-danger w-100 reply-remove">Remove</button></div>'
                 + '</div>'
@@ -755,14 +764,15 @@
             var title = escapeHtml(item.title || 'Untitled');
             var filename = escapeHtml(item.filename || '');
             var previewUrl = escapeHtml(item.previewUrl || '');
+            var publicUrl = escapeHtml(item.publicUrl || item.previewUrl || '');
             return '<div class="col-md-3 mb-3">'
               + '<div class="border rounded p-2 h-100 d-flex flex-column">'
               + '<img src="' + previewUrl + '" alt="' + title + '" style="height:120px;object-fit:cover;width:100%;border-radius:6px;">'
               + '<strong class="mt-2" style="font-size:0.9rem;">' + title + '</strong>'
               + '<small class="text-muted">' + filename + '</small>'
-              + '<button type="button" class="btn btn-sm btn-outline-primary mt-2 media-select-btn" data-url="' + previewUrl + '">Use this image</button>'
-              + '<button type="button" class="btn btn-sm btn-outline-secondary mt-2 media-insert-btn" data-url="' + previewUrl + '">Insert to content</button>'
-              + '<button type="button" class="btn btn-sm btn-outline-info mt-2 media-gallery-btn" data-url="' + previewUrl + '">Toggle gallery</button>'
+              + '<button type="button" class="btn btn-sm btn-outline-primary mt-2 media-select-btn" data-url="' + publicUrl + '">Use this image</button>'
+              + '<button type="button" class="btn btn-sm btn-outline-secondary mt-2 media-insert-btn" data-url="' + publicUrl + '">Insert to content</button>'
+              + '<button type="button" class="btn btn-sm btn-outline-info mt-2 media-gallery-btn" data-url="' + publicUrl + '">Toggle gallery</button>'
               + '</div>'
               + '</div>';
           })
