@@ -9,6 +9,7 @@ async function connectDatabase() {
   return mongoose.connection;
 }
 
+
 module.exports = {
   connectDatabase,
   connection: mongoose.connection,
