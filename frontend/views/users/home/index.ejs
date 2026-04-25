@@ -4,8 +4,10 @@
 <div class="slider-section">
         <div class="main-slider">
             <div class="swiper-wrapper">
+                <% const homeBannerImages = ['/assets/img/banner-1.jpg', '/assets/img/banner-2.jpg', '/assets/img/banner-3.jpg', '/assets/img/slider-bg.jpg']; %>
+                <% homeBannerImages.forEach(function(bannerImage) { %>
                 <div class="swiper-slide">
-                    <div class="slider-img"><img src="/assets/img/slider-bg.jpg" alt="img" class="kenburns"
+                    <div class="slider-img"><img src="<%= bannerImage %>" alt="Taxiofany banner" class="kenburns"
                             style="animation-duration: 12000ms; "></div>
                     <div class="car-holder">
                         <img src="/assets/img/car-1.png" alt="car" data-animation="car-animation" data-duration="1.5s">
@@ -43,45 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="swiper-slide">
-                    <div class="slider-img"><img src="/assets/img/slider-bg.jpg" alt="img" class="kenburns"
-                            style="animation-duration: 12000ms; "></div>
-                    <div class="car-holder">
-                        <img src="/assets/img/car-1.png" alt="car" data-animation="car-animation" data-duration="1.5s">
-                        <div class="shape">
-                            <div data-animation="slide-in-bottom" data-duration="1.5s" data-delay="0.3s"></div>
-                            <div data-animation="fade-in" data-duration="1.5s" data-delay="0.2s"></div>
-                            <div data-animation="slide-in-top" data-duration="1.5s" data-delay="0.5s"></div>
-                        </div>
-                    </div>
-                    <div class="slider-content-wrap d-flex align-items-center text-left">
-                        <div class="container">
-                            <div class="slider-content">
-                                <div class="slider-caption medium">
-                                    <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.3s"><%= t('home.hero.tagline', 'Travel securely with us!') %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider-caption big">
-                                    <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.5s"><%= t('home.hero.title', 'Book your taxi from anywhare today!') %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider-caption small">
-                                    <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.7s" data-duration="1s"><%= t('home.hero.description', 'Everything your taxi business needs is already here! Ridek made for taxi service companies!') %></div>
-                                    </div>
-                                </div>
-                                <div class="slider-btn">
-                                    <a href="/book-taxi" class="default-btn" data-animation="fade-in-bottom"
-                                        data-delay="0.9s"><%= t('home.hero.ctaBookNow', 'Book Now') %></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <% }); %>
             </div>
             <!-- Slider navigation buttons -->
             <div class="slider-controls">

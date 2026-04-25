@@ -302,7 +302,7 @@
 }
 
 .bg-half {
-    background-image: url(../img/bg-1.jpg);
+    background-image: url(../img/slider-bg.jpg);
     background-repeat: no-repeat;
     background-position: top center;
     background-size: cover;
@@ -1271,7 +1271,7 @@
 
 /*=== 6.1 Download Section 2 ===*/
 .download-section-2 {
-    background-image: url(../img/bg-1.jpg);
+    background-image: url(../img/slider-bg.jpg);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
