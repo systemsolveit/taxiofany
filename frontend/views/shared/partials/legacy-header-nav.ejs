@@ -50,18 +50,13 @@
                             </div>
                         </details>
                     </div>
-                    <ul class="header-social-share">
-                        <% if (headerSocialLinks.length) { %>
+                    <% if (headerSocialLinks.length) { %>
+                        <ul class="header-social-share">
                             <% headerSocialLinks.forEach(function(item){ %>
                                 <li><a href="<%= item.url %>"><i class="<%= item.iconClass %>"></i></a></li>
                             <% }) %>
-                        <% } else { %>
-                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                        <% } %>
-                    </ul>
+                        </ul>
+                    <% } %>
                 </div>
             </div>
         </div>
