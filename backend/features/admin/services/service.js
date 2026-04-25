@@ -50,6 +50,7 @@ function mapPayload(payload = {}) {
     coverImage: payload.coverImage,
     featureImage: payload.featureImage,
     benefitsImage: payload.benefitsImage,
+    serviceCarImage: payload.serviceCarImage,
     features: normalizeFeatures(payload.features),
     benefitPoints: parseStringList(payload.benefitPoints),
     tags: parseStringList(payload.tags),

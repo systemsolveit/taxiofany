@@ -147,7 +147,7 @@
                         <% const detailPath = slugOk ? ('/services/details/' + encodeURIComponent(String(item.slug).trim())) : '/services'; %>
                         <% const serviceHref = typeof withLocale === 'function' ? withLocale(detailPath) : detailPath; %>
                         <% const cover = (item.coverImage && String(item.coverImage).trim()) || (item.featureImage && String(item.featureImage).trim()) || (item.benefitsImage && String(item.benefitsImage).trim()) || ''; %>
-                        <% const carImg = homeFleetCars.length ? (homeFleetCars[idx % homeFleetCars.length].detailImage || homeFleetCars[idx % homeFleetCars.length].image || '') : ''; %>
+                        <% const carImg = (item.serviceCarImage && String(item.serviceCarImage).trim()) || (homeFleetCars.length ? (homeFleetCars[idx % homeFleetCars.length].detailImage || homeFleetCars[idx % homeFleetCars.length].image || '') : ''); %>
                         <% const useWow = idx < 3; %>
                         <div class="swiper-slide">
                             <div class="service-item<%= useWow ? ' wow fade-in-bottom' : '' %>"<% if (useWow) { %> data-wow-delay="<%= delayMap[idx] %>"<% } %>>

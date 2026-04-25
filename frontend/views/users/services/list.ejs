@@ -25,7 +25,7 @@
                                     <div class="service-shape-wrap">
                                         <div class="service-shape"></div>
                                     </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
+                                    <div class="service-car"><img src="<%= item.serviceCarImage || '/assets/img/car-1.png' %>" alt="car"></div>
                                 </div>
                                 <div class="service-content">
                                     <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.regularTransport')) : (item.title || t('home.services.regularTransport')) %></a></h3>

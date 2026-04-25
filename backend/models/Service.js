@@ -58,6 +58,11 @@ const serviceSchema = new Schema(
       default: '/assets/img/post-1.jpg',
       trim: true,
     },
+    serviceCarImage: {
+      type: String,
+      default: '/assets/img/car-1.png',
+      trim: true,
+    },
     features: {
       type: [
         {
