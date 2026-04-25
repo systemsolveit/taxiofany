@@ -109,6 +109,22 @@
 </footer>
 <!--/.footer-section-->
 
+<% const stickyWhatsapp = (siteSettings && siteSettings.stickyIcons && siteSettings.stickyIcons.whatsapp) || {}; %>
+<% const stickyWhatsappDigits = String(stickyWhatsapp.phone || (siteSettings && siteSettings.header && siteSettings.header.phone) || '').replace(/\D/g, ''); %>
+<% const stickyWhatsappMessage = stickyWhatsapp.message || 'Hello Taxiofany, I would like to book a taxi.'; %>
+<% if (stickyWhatsapp.enabled !== false && stickyWhatsappDigits) { %>
+    <a
+        class="sticky-whatsapp-button"
+        href="https://wa.me/<%= stickyWhatsappDigits %>?text=<%= encodeURIComponent(stickyWhatsappMessage) %>"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with Taxiofany on WhatsApp"
+        style="--sticky-whatsapp-color: <%= stickyWhatsapp.color || '#25d366' %>;"
+    >
+        <i class="lab la-whatsapp" aria-hidden="true"></i>
+    </a>
+<% } %>
+
 <div id="scrollup">
     <button id="scroll-top" class="scroll-to-top">
         <i class="las la-arrow-up"></i>

@@ -14,10 +14,20 @@ const FALLBACK_SETTINGS = {
     navButtonLabel: 'Book Taxi',
     navButtonUrl: '/book-taxi',
   },
+  stickyIcons: {
+    whatsapp: {
+      enabled: true,
+      color: '#25d366',
+      phone: '',
+      message: 'Hello Taxiofany, I would like to book a taxi.',
+    },
+  },
 };
 
 function normalizeSettings(raw = {}) {
   const header = raw && raw.header ? raw.header : {};
+  const stickyIcons = raw && raw.stickyIcons ? raw.stickyIcons : {};
+  const whatsapp = stickyIcons && stickyIcons.whatsapp ? stickyIcons.whatsapp : {};
 
   return {
     primaryColor: String(raw.primaryColor || FALLBACK_SETTINGS.primaryColor).trim() || FALLBACK_SETTINGS.primaryColor,
@@ -31,6 +41,14 @@ function normalizeSettings(raw = {}) {
       socialLinks: Array.isArray(header.socialLinks) ? header.socialLinks : [],
       navButtonLabel: String(header.navButtonLabel || FALLBACK_SETTINGS.header.navButtonLabel).trim() || FALLBACK_SETTINGS.header.navButtonLabel,
       navButtonUrl: String(header.navButtonUrl || FALLBACK_SETTINGS.header.navButtonUrl).trim() || FALLBACK_SETTINGS.header.navButtonUrl,
+    },
+    stickyIcons: {
+      whatsapp: {
+        enabled: typeof whatsapp.enabled === 'boolean' ? whatsapp.enabled : FALLBACK_SETTINGS.stickyIcons.whatsapp.enabled,
+        color: String(whatsapp.color || FALLBACK_SETTINGS.stickyIcons.whatsapp.color).trim() || FALLBACK_SETTINGS.stickyIcons.whatsapp.color,
+        phone: String(whatsapp.phone || FALLBACK_SETTINGS.stickyIcons.whatsapp.phone).trim(),
+        message: String(whatsapp.message || FALLBACK_SETTINGS.stickyIcons.whatsapp.message).trim() || FALLBACK_SETTINGS.stickyIcons.whatsapp.message,
+      },
     },
   };
 }
