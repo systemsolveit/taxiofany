@@ -43,14 +43,9 @@
                             <div class="form-field">
                                 <i class="las la-tags"></i>
                                 <select name="package-type" id="package-type" class="niceSelect">
-                                    <% const bookingPackages = typeof packages !== 'undefined' && Array.isArray(packages) ? packages : []; %>
-                                    <% if (bookingPackages.length) { %>
-                                        <% bookingPackages.forEach(function(item) { %>
-                                            <option value="<%= item.slug %>"><%= item.slug ? t('booking.package.' + item.slug, item.title || item.slug) : (item.title || '') %></option>
-                                        <% }) %>
-                                    <% } else { %>
-                                        <option value="standard"><%= t('pages.users.bookings.book-taxi.standard', 'Standard') %></option>
-                                    <% } %>
+                                    <option value="regular" selected><%= t('booking.package.regular', 'Regular Transport') %></option>
+                                    <option value="business"><%= t('booking.package.business', 'Business Transport') %></option>
+                                    <option value="handicap"><%= t('booking.package.handicap', 'Handicap Transport') %></option>
                                 </select>
                             </div>
                             <div class="form-field">

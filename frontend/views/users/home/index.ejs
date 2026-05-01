@@ -192,11 +192,9 @@
                                 <div class="form-field">
                                     <i class="las la-tags"></i>
                                     <select name="package-type" id="type" class="niceSelect">
-                                        <option value="standard"><%= t('home.booking.packageStandard') %></option>
-                                        <option value="business"><%= t('home.booking.packageBusiness') %></option>
-                                        <option value="economy"><%= t('home.booking.packageEconomy') %></option>
-                                        <option value="vip-spacial"><%= t('home.booking.packageVip') %></option>
-                                        <option value="comfort"><%= t('home.booking.packageComfort') %></option>
+                                        <option value="regular" selected><%= t('booking.package.regular', 'Regular Transport') %></option>
+                                        <option value="business"><%= t('booking.package.business', 'Business Transport') %></option>
+                                        <option value="handicap"><%= t('booking.package.handicap', 'Handicap Transport') %></option>
                                     </select>
                                 </div>
                                 <div class="form-field">

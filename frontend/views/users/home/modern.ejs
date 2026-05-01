@@ -81,11 +81,9 @@
                             <div class="form-field">
                                 <i class="las la-tags"></i>
                                 <select name="package-type" id="package-type" class="niceSelect">
-                                    <option value="standard"><%= t('pages.users.home.modern.standard', 'Standard') %></option>
-                                    <option value="business"><%= t('pages.users.home.modern.business', 'Business') %></option>
-                                    <option value="economy"><%= t('pages.users.home.modern.economy', 'Economy') %></option>
-                                    <option value="vip-spacial"><%= t('pages.users.home.modern.vip_spacial', 'VIP Spacial') %></option>
-                                    <option value="comfort"><%= t('pages.users.home.modern.comfort', 'Comfort') %></option>
+                                    <option value="regular" selected><%= t('booking.package.regular', 'Regular Transport') %></option>
+                                    <option value="business"><%= t('booking.package.business', 'Business Transport') %></option>
+                                    <option value="handicap"><%= t('booking.package.handicap', 'Handicap Transport') %></option>
                                 </select>
                             </div>
                             <div class="form-field">
