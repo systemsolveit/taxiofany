@@ -6,7 +6,7 @@
         <div class="container">
             <div class="page-header-info">
                 <h4><%= t('pages.users.taxi.list.our_taxi_lists', 'Our Taxi Lists') %></h4>
-                <h2><%= t('pages.users.taxi.list.feel_your_journey', 'Feel your journey') %> <br> <%= t('pages.users.taxi.list.with', 'with') %> <span><%= t('pages.users.taxi.list.ridek', 'Ridek!') %></span></h2>
+                <h2><%= t('pages.users.taxi.list.feel_your_journey', 'Feel your journey') %> <br> <%= t('pages.users.taxi.list.with', 'with') %> <span><%= t('pages.users.taxi.list.taxiofany', 'taxiOfany!') %></span></h2>
                 <p><%= t('pages.users.taxi.list.everything_your_taxi_business', 'Everything your taxi business') %> <br><%= t('pages.users.taxi.list.needs_is_already_here', 'needs is already here!') %> </p>
             </div>
         </div>
@@ -22,7 +22,7 @@
                             <div class="pricing-item">
                                 <div class="pricing-head-wrap">
                                     <div class="pricing-car">
-                                        <img src="<%= car.image || '/assets/img/pricing-car.png' %>" alt="car">
+                                        <img src="<%= car.image || '/assets/img/pricing-car.png' %>" alt="<%= t('taxi.carImageAlt', 'car') %>">
                                         <div class="price">$<%= Number(car.pricePerKm || 0).toFixed(2) %>/km</div>
                                     </div>
                                 </div>

@@ -5,9 +5,9 @@
   <div class="page-header-shape"></div>
   <div class="container">
     <div class="page-header-info">
-      <h4><%= template ? (template.category || 'Email') : 'Email' %></h4>
-      <h2><%= template ? template.title : 'Template not found' %></h2>
-      <p><%= template ? (template.previewText || template.summary || '') : ('No published email template is available for slug: ' + (requestedSlug || 'unknown')) %></p>
+      <h4><%= template ? (template.category || t('emails.category.email', 'Email')) : t('emails.category.email', 'Email') %></h4>
+      <h2><%= template ? template.title : t('emails.details.notFoundTitle', 'Template not found') %></h2>
+      <p><%= template ? (template.previewText || template.summary || '') : t('emails.details.notFoundForSlug', 'No published email template is available for this slug.') %></p>
     </div>
   </div>
 </section>
@@ -25,7 +25,7 @@
             <p><%= template.heroDescription || template.summary || '' %></p>
           </div>
           <div class="p-4 bg-grey rounded">
-            <h3><%= template.bodyTitle || 'Message Content' %></h3>
+            <h3><%= template.bodyTitle || t('emails.template.bodyTitle', 'Message Content') %></h3>
             <p style="white-space: pre-line;"><%= template.bodyContent || template.summary || '' %></p>
             <% if (template.ctaLabel && template.ctaUrl) { %>
               <a href="<%= template.ctaUrl %>" class="default-btn"><%= template.ctaLabel %></a>
@@ -39,7 +39,7 @@
               <li><strong><%= t('pages.users.emails.details.audience', 'Audience:') %></strong> <%= template.audience || '-' %></li>
               <li><strong><%= t('pages.users.emails.details.category', 'Category:') %></strong> <%= template.category || '-' %></li>
               <li><strong><%= t('pages.users.emails.details.tone', 'Tone:') %></strong> <%= template.tone || '-' %></li>
-              <li><strong><%= t('pages.users.emails.details.status', 'Status:') %></strong> <%= template.isPublished ? 'Published' : 'Draft' %></li>
+              <li><strong><%= t('pages.users.emails.details.status', 'Status:') %></strong> <%= template.isPublished ? t('emails.status.published', 'Published') : t('emails.status.draft', 'Draft') %></li>
             </ul>
           </div>
         </div>

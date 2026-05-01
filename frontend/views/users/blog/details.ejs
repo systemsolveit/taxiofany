@@ -9,7 +9,7 @@
                 <p><%= blogPost && blogPost.excerpt ? (blogPost.slug ? t('blog.' + blogPost.slug + '.excerpt', blogPost.excerpt) : blogPost.excerpt) : (t('pages.users.blog.details.our_versatile_team_is_built_of_designers_develop', 'Our versatile team is built of designers, developers and') + ' ' + t('pages.users.blog.details.digital_marketers_who_all_bring_unique_experienc', 'digital marketers who all bring unique experience.')) %></p>
                 <ul class="post-meta">
                     <li><i class="las la-user"></i><%= blogPost && blogPost.authorName ? blogPost.authorName : t('pages.users.blog.details.elliot_alderson', 'Elliot Alderson') %></li>
-                    <li><i class="las la-calendar"></i><%= blogPost && blogPost.publishedAt ? new Date(blogPost.publishedAt).toLocaleDateString('en-GB') : t('pages.users.blog.details.jan_01_2022', 'Jan 01 2022') %></li>
+                    <li><i class="las la-calendar"></i><%= blogPost && blogPost.publishedAt ? new Date(blogPost.publishedAt).toLocaleDateString(locale || 'en') : t('common.dateUnavailable', 'Date unavailable') %></li>
                     <% const approvedCommentsCount = blogPost && Array.isArray(blogPost.comments) ? blogPost.comments.filter(function(comment) { return comment.approved !== false; }).length : 0; %>
                     <li><i class="las la-comments"></i><%= approvedCommentsCount > 0 ? ('Comments ' + approvedCommentsCount) : t('pages.users.blog.details.comments_0', 'Comments 0') %></li>
                 </ul>
@@ -48,7 +48,7 @@
                         <!--Gallary-->
 
                         <h3><%= blogPost && blogPost.sectionHeading ? (blogPost.slug ? t('blog.' + blogPost.slug + '.sectionHeading', blogPost.sectionHeading) : blogPost.sectionHeading) : t('pages.users.blog.details.creative_approach_to_every_project', 'Creative approach to every project') %></h3>
-                        <p><%= blogPost && blogPost.sectionParagraphOne ? (blogPost.slug ? t('blog.' + blogPost.slug + '.sectionParagraphOne', blogPost.sectionParagraphOne) : blogPost.sectionParagraphOne) : 'Financial experts support or help you to to find out which way you can raise your funds more. Arkit a trusted name for providing assistants. Initially their main objective was to ensure the service they provide these people are loyal to their industry, experienced and professional.' %></p>
+                        <p><%= blogPost && blogPost.sectionParagraphOne ? (blogPost.slug ? t('blog.' + blogPost.slug + '.sectionParagraphOne', blogPost.sectionParagraphOne) : blogPost.sectionParagraphOne) : t('pages.users.blog.details.sectionParagraphOneFallback', 'Financial experts support or help you to to find out which way you can raise your funds more. Arkit a trusted name for providing assistants. Initially their main objective was to ensure the service they provide these people are loyal to their industry, experienced and professional.') %></p>
                         <p><%= blogPost && blogPost.sectionParagraphTwo ? (blogPost.slug ? t('blog.' + blogPost.slug + '.sectionParagraphTwo', blogPost.sectionParagraphTwo) : blogPost.sectionParagraphTwo) : t('pages.users.blog.details.another_speaker_john_meuse_senior_director_of_he', 'Another speaker, John Meuse, senior director of heavy equipment at Waste Management Inc., echoed this, citing a cost-saving of $17,000 for the company when it cut idling time of a single Caterpillar 966 wheel loader.') %></p>
 
                         <ul class="tags">
@@ -87,7 +87,7 @@
                                 <img src="<%= blogPost && blogPost.authorAvatar ? blogPost.authorAvatar : '/assets/img/auhtor.png' %>" alt="img">
                             </div>
                             <div class="author-info">
-                                <h3><%= blogPost && blogPost.authorName ? blogPost.authorName : 'Elliot Alderson' %></h3>
+                                <h3><%= blogPost && blogPost.authorName ? blogPost.authorName : t('blog.authorFallbackName', 'Elliot Alderson') %></h3>
                                 <p><%= blogPost && blogPost.authorBio ? blogPost.authorBio : 'Our versatile team is built of designers, developers and digital marketers who all bring unique experience.' %></p>
                                 <ul class="social-icon">
                                     <% if (blogPost && Array.isArray(blogPost.authorSocialLinks) && blogPost.authorSocialLinks.length) { %>

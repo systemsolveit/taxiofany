@@ -20,6 +20,28 @@ async function seedSemanticEntries() {
   return operations.length;
 }
 
+async function replaceStaleBrandTranslations() {
+  const staleBrandPattern = new RegExp('r' + 'idek', 'ig');
+  const staleEntries = await Translation.find({ value: staleBrandPattern }).lean();
+  if (!staleEntries.length) {
+    return 0;
+  }
+
+  const operations = staleEntries.map((entry) => ({
+    updateOne: {
+      filter: { _id: entry._id },
+      update: {
+        $set: {
+          value: String(entry.value || '').replace(staleBrandPattern, 'taxiOfany'),
+        },
+      },
+    },
+  }));
+
+  await Translation.bulkWrite(operations, { ordered: false });
+  return operations.length;
+}
+
 async function seedExtractedEntries() {
   const extracted = adminI18nService.extractKeywords(50000);
   const existing = await Translation.find({ locale: 'nl' }).lean();
@@ -99,17 +121,27 @@ async function shouldBootstrapNl() {
     return true;
   }
 
+  const staleBrandTranslation = await Translation.exists({
+    value: new RegExp('r' + 'idek', 'i'),
+  });
+
+  if (staleBrandTranslation) {
+    return true;
+  }
+
   return false;
 }
 
 async function bootstrapNlTranslations() {
   await ensureLocale();
 
+  const replacedBrandCount = await replaceStaleBrandTranslations();
   const semanticCount = await seedSemanticEntries();
   const extractedResult = await seedExtractedEntries();
 
   return {
     locale: 'nl',
+    replacedBrandCount,
     semanticCount,
     extractedCount: extractedResult.extractedCount,
     translatedCount: extractedResult.translatedCount,
@@ -122,6 +154,7 @@ async function run() {
   const result = await bootstrapNlTranslations();
 
   console.log(`Locale ${result.locale} ensured.`);
+  console.log(`Stale brand translations replaced: ${result.replacedBrandCount}`);
   console.log(`Semantic keys seeded: ${result.semanticCount}`);
   console.log(`Extracted page keys found: ${result.extractedCount}`);
   console.log(`Extracted page keys translated and saved: ${result.translatedCount}`);

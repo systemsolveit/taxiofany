@@ -1,6 +1,7 @@
 const { loadPublicFleetData, splitCarsForPricingTabs } = require('../../services/publicFleetData');
 const { listPublishedServicesForPublic } = require('../../services/publicServicesData');
 const { sortByLatestCreated, listPublishedBlogPostsForHome } = require('../../services/homeContentData');
+const publicContentApi = require('../../services/publicContentApi');
 
 function getEnabledMenuItemByKey(navbarMenu = [], key) {
   return navbarMenu.find((item) => item && item.key === key && item.enabled);
@@ -31,10 +32,11 @@ exports.home = async (req, res, next) => {
       return res.redirect(toLocalizedPath(res, modernHome.url));
     }
 
-    const [fleetData, services, blogPosts] = await Promise.all([
+    const [fleetData, services, blogPosts, testimonials] = await Promise.all([
       loadPublicFleetData(),
       listPublishedServicesForPublic(),
       listPublishedBlogPostsForHome(3),
+      publicContentApi.listTestimonials(6),
     ]);
     const cars = sortByLatestCreated(fleetData.cars);
     const drivers = sortByLatestCreated(fleetData.drivers);
@@ -46,6 +48,7 @@ exports.home = async (req, res, next) => {
       drivers,
       services: servicesSorted,
       blogPosts,
+      testimonials,
       pricingTabs,
     });
   } catch (error) {
@@ -55,10 +58,11 @@ exports.home = async (req, res, next) => {
 
 exports.modernHome = async (req, res, next) => {
   try {
-    const [fleetData, services, blogPosts] = await Promise.all([
+    const [fleetData, services, blogPosts, testimonials] = await Promise.all([
       loadPublicFleetData(),
       listPublishedServicesForPublic(),
       listPublishedBlogPostsForHome(3),
+      publicContentApi.listTestimonials(6),
     ]);
     const cars = sortByLatestCreated(fleetData.cars);
     const drivers = sortByLatestCreated(fleetData.drivers);
@@ -69,6 +73,7 @@ exports.modernHome = async (req, res, next) => {
       drivers,
       services: servicesSorted,
       blogPosts,
+      testimonials,
       pricingTabs,
     });
   } catch (error) {
@@ -76,16 +81,30 @@ exports.modernHome = async (req, res, next) => {
   }
 };
 
-exports.packages = (req, res) => {
-  res.render('users/packages/index', {
-    pageTitle: 'Packages',
-    message: 'Packages page placeholder.',
-  });
+exports.packages = async (req, res, next) => {
+  try {
+    const packages = await publicContentApi.listPackages(20);
+    return res.render('users/packages/index', {
+      pageTitle: res.locals.t ? res.locals.t('pages.users.packages.packages', 'Packages') : 'Packages',
+      packages,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
-exports.solutions = (req, res) => {
-  res.render('users/solutions/index', {
-    pageTitle: 'Solutions',
-    message: 'Solutions page placeholder.',
-  });
+exports.solutions = async (req, res, next) => {
+  try {
+    const [services, packages] = await Promise.all([
+      listPublishedServicesForPublic(),
+      publicContentApi.listPackages(6),
+    ]);
+    return res.render('users/solutions/index', {
+      pageTitle: res.locals.t ? res.locals.t('pages.users.solutions.solutions', 'Solutions') : 'Solutions',
+      services: sortByLatestCreated(services),
+      packages,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };

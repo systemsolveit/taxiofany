@@ -9,10 +9,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Ridek Online Taxi Booking HTML5 Template">
-    <meta name="author" content="DynamicLayers">
+    <meta name="description" content="<%= t('meta.description', 'Taxiofany online taxi booking and transport service') %>">
+    <meta name="author" content="<%= t('meta.author', 'Taxiofany') %>">
 
-    <title><%= (typeof pageTitle !== 'undefined' && pageTitle) ? pageTitle : t('meta.title', 'Ridek - Online Taxi Booking Service') %></title>
+    <title><%= (typeof pageTitle !== 'undefined' && pageTitle) ? pageTitle : t('meta.title', 'taxiOfany - Online Taxi Booking Service') %></title>
 
     <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.png">
 
@@ -62,9 +62,9 @@
 <body>
     <!--[if lt IE 8]>
     <p class="browserupgrade">
-        You are using an <strong>outdated</strong> browser. Please
-        <a href="http://browsehappy.com/">upgrade your browser</a> to improve
-        your experience.
+        <%= t('meta.browserUpgrade.before', 'You are using an outdated browser. Please') %>
+        <a href="http://browsehappy.com/"><%= t('meta.browserUpgrade.link', 'upgrade your browser') %></a>
+        <%= t('meta.browserUpgrade.after', 'to improve your experience.') %>
     </p><![endif]-->
 
     <div class="site-preloader">

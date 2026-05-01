@@ -5,14 +5,16 @@
                 <div class="row align-items-end">
                     <div class="col-lg-8">
                         <div class="brand">
-                            <a class="footer-logo" href="/"><img src="/assets/img/logo-light.png" alt="logo"></a>
+                            <a class="footer-logo" href="/"><img src="/assets/img/logo-light.png" alt="<%= t('footer.logoAlt', 'Taxiofany logo') %>"></a>
                             <p><%= t('footer.description') %></p>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="footer-call">
                             <i class="las la-phone-volume"></i>
-                            <p><span><%= t('footer.callForTaxi') %></span><a href="tel:5267214392">5267-214-392</a></p>
+                            <% const footerHeaderConfig = (siteSettings && siteSettings.header) ? siteSettings.header : {}; %>
+                            <% const footerPhone = footerHeaderConfig.phone || t('footer.fallbackPhone', '+32484262105'); %>
+                            <p><span><%= t('footer.callForTaxi') %></span><a href="tel:<%= String(footerPhone).replace(/[^\d+]/g, '') %>"><%= footerPhone %></a></p>
                         </div>
                     </div>
                 </div>
@@ -29,9 +31,7 @@
                             <h3><%= t('footer.workingHours') %></h3>
                         </div>
                         <ul class="footer-contact">
-                            <li><span><%= t('footer.mondayFriday') %></span>9.00am To 8.00pm</li>
-                            <li><span><%= t('footer.saturday') %></span>10.00am To 7.30pm</li>
-                            <li><span><%= t('footer.sunday') %></span><%= t('footer.closeDay') %></li>
+                            <li><span><%= t('footer.openEveryDay', 'Every day:') %></span><%= t('footer.hours.alwaysOpen', '24/7') %></li>
                         </ul>
                     </div>
                 </div>
@@ -55,8 +55,8 @@
                             <h3><%= t('footer.headOffice') %></h3>
                         </div>
                         <ul class="footer-contact">
-                            <li><span><%= t('footer.location') %></span>153 Williamson Plaza, Maggieberg, MT 09514</li>
-                            <li><span><%= t('footer.joinUs') %></span>Info@YourGmail24.com</li>
+                            <li><span><%= t('footer.location') %></span><%= footerHeaderConfig.location || t('footer.fallbackAddress', 'Wemmel Brussels Belgium') %></li>
+                            <li><span><%= t('footer.joinUs') %></span><%= footerHeaderConfig.email || t('footer.fallbackEmail', 'info@taxiofany.com') %></li>
                         </ul>
                     </div>
                 </div>
@@ -110,15 +110,25 @@
 <!--/.footer-section-->
 
 <% const stickyWhatsapp = (siteSettings && siteSettings.stickyIcons && siteSettings.stickyIcons.whatsapp) || {}; %>
-<% const stickyWhatsappDigits = String(stickyWhatsapp.phone || (siteSettings && siteSettings.header && siteSettings.header.phone) || '').replace(/\D/g, ''); %>
-<% const stickyWhatsappMessage = stickyWhatsapp.message || 'Hello Taxiofany, I would like to book a taxi.'; %>
+<%
+    function normalizeWhatsappDigits(value) {
+        const raw = String(value || '').trim();
+        const sanitized = raw.replace(/[^\d+]/g, '');
+        if (!sanitized) return '';
+        if (sanitized.startsWith('+')) return sanitized.slice(1).replace(/\D/g, '');
+        const digits = sanitized.replace(/\D/g, '').replace(/^0+/, '');
+        return digits.startsWith('32') ? digits : '32' + digits;
+    }
+    const stickyWhatsappDigits = normalizeWhatsappDigits(stickyWhatsapp.phone || (siteSettings && siteSettings.header && siteSettings.header.phone) || '+32484262105');
+%>
+<% const stickyWhatsappMessage = stickyWhatsapp.message || t('footer.whatsapp.defaultMessage', 'Hello Taxiofany, I would like to book a taxi.'); %>
 <% if (stickyWhatsapp.enabled !== false && stickyWhatsappDigits) { %>
     <a
         class="sticky-whatsapp-button"
         href="https://wa.me/<%= stickyWhatsappDigits %>?text=<%= encodeURIComponent(stickyWhatsappMessage) %>"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat with Taxiofany on WhatsApp"
+        aria-label="<%= t('footer.whatsapp.ariaLabel', 'Chat with Taxiofany on WhatsApp') %>"
         style="--sticky-whatsapp-color: <%= stickyWhatsapp.color || '#25d366' %>;"
     >
         <i class="lab la-whatsapp" aria-hidden="true"></i>

@@ -1,4 +1,5 @@
 const bookingsApi = require('../../services/bookingsApi');
+const publicContentApi = require('../../services/publicContentApi');
 
 function combineRideDate(dateValue, timeValue) {
   const dateText = String(dateValue || '').trim();
@@ -42,10 +43,12 @@ exports.redirectBookingsSubmitGet = (req, res) => {
   return res.redirect(`/${loc}/book-taxi`);
 };
 
-exports.bookTaxiPage = (req, res) => {
+exports.bookTaxiPage = async (req, res) => {
   const loggedIn = !!(req.session && req.session.client && req.session.client.user);
+  const packages = await publicContentApi.listPackages(20);
   res.render('users/bookings/book-taxi', {
     portalSection: loggedIn ? 'book' : undefined,
+    packages,
   });
 };
 

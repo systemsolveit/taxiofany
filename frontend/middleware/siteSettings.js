@@ -8,9 +8,9 @@ const FALLBACK_SETTINGS = {
   header: {
     topTagline: 'Reliable taxi service and transport solutions!',
     topLinks: [],
-    phone: '5267-214-392',
-    email: 'Info.ridek@mail.com',
-    location: 'New York, USA - 2386',
+    phone: '+32484262105',
+    email: 'info@taxiofany.com',
+    location: 'Wemmel Brussels Belgium',
     socialLinks: [],
     navButtonLabel: 'Book Taxi',
     navButtonUrl: '/book-taxi',
@@ -19,11 +19,59 @@ const FALLBACK_SETTINGS = {
     whatsapp: {
       enabled: true,
       color: '#25d366',
-      phone: '',
+      phone: '+32484262105',
       message: 'Hello Taxiofany, I would like to book a taxi.',
     },
   },
 };
+
+const DEFAULT_WHATSAPP_COUNTRY_CODE = '32';
+
+function normalizePublicPhone(value, fallback = FALLBACK_SETTINGS.header.phone) {
+  const raw = String(value || '').trim();
+  if (!raw) {
+    return fallback;
+  }
+  const digits = raw.replace(/\D/g, '');
+  if (!digits) {
+    return fallback;
+  }
+  if (raw.startsWith('+')) {
+    return `+${digits}`;
+  }
+  return digits;
+}
+
+function normalizePublicLocation(value, fallback = FALLBACK_SETTINGS.header.location) {
+  const text = String(value || '').trim();
+  if (!text || ['New York, USA - 2386', 'Halk Street New York, USA - 2386', '153 Williamson Plaza, Maggieberg, MT 09514'].includes(text)) {
+    return fallback;
+  }
+  return text;
+}
+
+function normalizeWhatsappPhone(value, fallback = FALLBACK_SETTINGS.header.phone) {
+  const raw = String(value || fallback || '').trim();
+  if (!raw) {
+    return '';
+  }
+
+  const sanitized = raw.replace(/[^\d+]/g, '');
+  if (sanitized.startsWith('+')) {
+    return `+${sanitized.slice(1).replace(/\D/g, '')}`;
+  }
+
+  const digits = sanitized.replace(/\D/g, '').replace(/^0+/, '');
+  if (!digits) {
+    return '';
+  }
+
+  if (digits.startsWith(DEFAULT_WHATSAPP_COUNTRY_CODE)) {
+    return `+${digits}`;
+  }
+
+  return `+${DEFAULT_WHATSAPP_COUNTRY_CODE}${digits}`;
+}
 
 function normalizeSettings(raw = {}) {
   const header = raw && raw.header ? raw.header : {};
@@ -37,9 +85,9 @@ function normalizeSettings(raw = {}) {
     header: {
       topTagline: String(header.topTagline || FALLBACK_SETTINGS.header.topTagline).trim() || FALLBACK_SETTINGS.header.topTagline,
       topLinks: Array.isArray(header.topLinks) ? header.topLinks : [],
-      phone: String(header.phone || FALLBACK_SETTINGS.header.phone).trim() || FALLBACK_SETTINGS.header.phone,
+      phone: normalizePublicPhone(header.phone),
       email: String(header.email || FALLBACK_SETTINGS.header.email).trim() || FALLBACK_SETTINGS.header.email,
-      location: String(header.location || FALLBACK_SETTINGS.header.location).trim() || FALLBACK_SETTINGS.header.location,
+      location: normalizePublicLocation(header.location),
       socialLinks: Array.isArray(header.socialLinks) ? header.socialLinks : [],
       navButtonLabel: String(header.navButtonLabel || FALLBACK_SETTINGS.header.navButtonLabel).trim() || FALLBACK_SETTINGS.header.navButtonLabel,
       navButtonUrl: String(header.navButtonUrl || FALLBACK_SETTINGS.header.navButtonUrl).trim() || FALLBACK_SETTINGS.header.navButtonUrl,
@@ -48,7 +96,7 @@ function normalizeSettings(raw = {}) {
       whatsapp: {
         enabled: typeof whatsapp.enabled === 'boolean' ? whatsapp.enabled : FALLBACK_SETTINGS.stickyIcons.whatsapp.enabled,
         color: String(whatsapp.color || FALLBACK_SETTINGS.stickyIcons.whatsapp.color).trim() || FALLBACK_SETTINGS.stickyIcons.whatsapp.color,
-        phone: String(whatsapp.phone || FALLBACK_SETTINGS.stickyIcons.whatsapp.phone).trim(),
+        phone: normalizeWhatsappPhone(whatsapp.phone, header.phone || FALLBACK_SETTINGS.stickyIcons.whatsapp.phone),
         message: String(whatsapp.message || FALLBACK_SETTINGS.stickyIcons.whatsapp.message).trim() || FALLBACK_SETTINGS.stickyIcons.whatsapp.message,
       },
     },

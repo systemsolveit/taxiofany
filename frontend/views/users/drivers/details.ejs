@@ -24,27 +24,28 @@
                     </div>
                     <ul class="about-info">
                         <li>
-                            <img class="owner-thumb" src="/assets/img/comment-1.png" alt="thumb">
+                            <img class="owner-thumb" src="<%= driver && driver.image ? driver.image : '/assets/img/profile-avatar.svg' %>" alt="<%= t('drivers.card.alt', 'driver') %>">
                             <div class="owner">
                                     <h4><%= driver && driver.roleTitle ? driver.roleTitle : t('pages.users.drivers.details.founder_ceo', 'Professional Driver') %></h4>
-                                <img class="signature" src="/assets/img/signature.png" alt="signature">
+                                <span class="signature"><%= t('drivers.signatureText', 'Taxiofany') %></span>
                             </div>
                         </li>
                         <li>
-                                <h2><span><%= t('pages.users.drivers.details.call_for_taxi', 'Call For Taxi') %></span><a href="tel:<%= driver && driver.phone ? driver.phone.replace(/[^\d+]/g, '') : '5267214392' %>"><%= driver && driver.phone ? driver.phone : '5267-214-392' %></a></h2>
+                                <h2><span><%= t('pages.users.drivers.details.call_for_taxi', 'Call For Taxi') %></span><a href="tel:<%= driver && driver.phone ? driver.phone.replace(/[^\d+]/g, '') : '+32484262105'.replace(/[^\d+]/g, '') %>"><%= driver && driver.phone ? driver.phone : t('header.fallbackPhone', '+32484262105') %></a></h2>
                         </li>
                     </ul>
                         <ul class="taxi-features mt-30">
-                            <li><span><i class="las la-taxi"></i><%= t('pages.users.drivers.details.vehicle', 'Vehicle:') %></span> <%= driver && driver.carType ? driver.carType : 'Executive Taxi' %></li>
-                            <li><span><i class="las la-id-card"></i><%= t('pages.users.drivers.details.plate', 'Plate:') %></span> <%= driver && driver.plateNumber ? driver.plateNumber : 'Assigned on dispatch' %></li>
-                            <li><span><i class="las la-language"></i><%= t('pages.users.drivers.details.languages', 'Languages:') %></span> <%= driver && driver.languages ? driver.languages : 'English' %></li>
+                            <li><span><i class="las la-taxi"></i><%= t('pages.users.drivers.details.vehicle', 'Vehicle:') %></span> <%= driver && driver.carType ? driver.carType : t('drivers.fallback.vehicle', 'Executive Taxi') %></li>
+                            <li><span><i class="las la-id-card"></i><%= t('pages.users.drivers.details.plate', 'Plate:') %></span> <%= driver && driver.plateNumber ? driver.plateNumber : t('drivers.fallback.plate', 'Assigned on dispatch') %></li>
+                            <li><span><i class="las la-language"></i><%= t('pages.users.drivers.details.languages', 'Languages:') %></span> <%= driver && driver.languages ? driver.languages : t('drivers.fallback.languages', 'English') %></li>
                             <li><span><i class="las la-user-clock"></i><%= t('pages.users.drivers.details.experience', 'Experience:') %></span> <%= driver ? Number(driver.experienceYears || 0) : 0 %> <%= t('pages.users.drivers.details.years', 'years') %></li>
-                            <li><span><i class="las la-signal"></i><%= t('pages.users.drivers.details.status', 'Status:') %></span> <%= driver && driver.availability ? driver.availability : 'available' %></li>
+                            <% const availabilityCode = driver && driver.availability ? String(driver.availability) : 'available'; %>
+                            <li><span><i class="las la-signal"></i><%= t('pages.users.drivers.details.status', 'Status:') %></span> <%= t('driver.availability.' + availabilityCode, availabilityCode) %></li>
                         </ul>
                 </div>
                 <div class="col-lg-6">
                     <div class="driver-details">
-                            <img src="<%= driver && driver.detailImage ? driver.detailImage : '/assets/img/team-details.jpg' %>" alt="driver">
+                            <img src="<%= driver && driver.detailImage ? driver.detailImage : '/assets/img/professional-driver.svg' %>" alt="<%= t('drivers.card.alt', 'driver') %>">
                         <div class="experience-box">
                                 <h3><span><%= driver ? Number(driver.experienceYears || 0) : 0 %>+</span><%= t('pages.users.drivers.details.years_of', 'Years Of') %> <br> <%= t('pages.users.drivers.details.experiences', 'Experiences!') %></h3>
                         </div>
@@ -67,11 +68,11 @@
                     <div class="col-lg-4 col-md-6 padding-15">
                         <div class="team-item">
                             <div class="team-thumb">
-                                <img src="<%= item.image || '/assets/img/team-1.jpg' %>" alt="driver">
+                                <img src="<%= item.image || '/assets/img/professional-driver.svg' %>" alt="<%= t('drivers.card.alt', 'driver') %>">
                             </div>
                             <div class="team-content">
                                 <h3><a href="/drivers/details/<%= encodeURIComponent(item.slug) %>"><%= item.fullName || '' %></a></h3>
-                                <h4><%= item.carType || (item.roleTitle || 'Professional Driver') %></h4>
+                                <h4><%= item.carType || (item.roleTitle || t('drivers.fallback.roleTitle', 'Professional Driver')) %></h4>
                             </div>
                         </div>
                     </div>
@@ -85,48 +86,13 @@
         <div class="container">
             <div class="section-heading text-center mb-40">
                 <h4><span></span><%= t('pages.users.drivers.details.clients_testimonial', 'Clients Testimonial') %></h4>
-                <h2><%= t('pages.users.drivers.details.ridek_passenger_reviews', 'Ridek Passenger Reviews...') %></h2>
+                <h2><%= t('pages.users.drivers.details.taxiofany_passenger_reviews', 'taxiOfany Passenger Reviews...') %></h2>
                 <p><%= t('pages.users.company.about-company.we_successfully_cope_with_tasks_of_varying_compl', 'We successfully cope with tasks of varying complexity, provide long-term') %> <br> <%= t('pages.users.drivers.details.guarantees_and_regularly_master_technologies', 'guarantees and regularly master technologies.') %></p>
             </div>
             <div class="swiper-outside testi-pagination">
                 <div class="testimonial-carousel-2 swiper-container">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="testi-item">
-                                <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                <p><%= t('pages.users.drivers.details.good_to_have_transportation_available_in_places_', 'Good to have transportation available in places and times it is otherwise hard to find, but the app has always been a bit difficult to use especially how it works or doesnt with large font phone settings.') %></p>
-                                <div class="testi-author">
-                                    <div class="author-thumb"><img src="/assets/img/comment-1.png" alt="author"></div>
-                                    <div class="author-info">
-                                        <h3><%= t('pages.users.drivers.details.eredrik_johanson', 'Eredrik Johanson') %> <span><%= t('pages.users.drivers.details.financial_inc', 'Financial .INC') %></span></h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="testi-item">
-                                <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                <p>Good to have transportation available in places and times it is otherwise hard to find, but the app has always been a bit difficult to use especially how it works or doesnt with large font phone settings.</p>
-                                <div class="testi-author">
-                                    <div class="author-thumb"><img src="/assets/img/comment-2.png" alt="author"></div>
-                                    <div class="author-info">
-                                        <h3><%= t('pages.users.testimonials.mauricio_fern_ndez', 'Mauricio FernÃ¡ndez') %> <span>Financial .INC</span></h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="testi-item">
-                                <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                <p>Good to have transportation available in places and times it is otherwise hard to find, but the app has always been a bit difficult to use especially how it works or doesnt with large font phone settings.</p>
-                                <div class="testi-author">
-                                    <div class="author-thumb"><img src="/assets/img/comment-3.png" alt="author"></div>
-                                    <div class="author-info">
-                                        <h3><%= t('pages.users.drivers.details.javier_f_ar_balo', 'Javier F. ArÃ©balo') %> <span>Financial .INC</span></h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <%- include('../partials/testimonial-slides', { testimonials: testimonials, t: t }) %>
                     </div>
                 </div>
                 <div class="swiper-pagination text-center"></div><!-- Carousel Dots -->

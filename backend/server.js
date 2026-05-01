@@ -8,6 +8,7 @@ const { shouldBootstrapBlogTemplate, bootstrapBlogTemplate } = require('./script
 const { shouldBootstrapServicesTemplate, bootstrapServicesTemplate } = require('./scripts/bootstrap-services-template');
 const { shouldBootstrapCarsTemplate, bootstrapCarsTemplate } = require('./scripts/bootstrap-cars-template');
 const { shouldBootstrapEmailTemplates, bootstrapEmailTemplates } = require('./scripts/bootstrap-email-templates');
+const { shouldBootstrapPublicContent, bootstrapPublicContent } = require('./scripts/bootstrap-public-content');
 
 const server = http.createServer(app);
 
@@ -40,6 +41,11 @@ async function startServer() {
     if (await shouldBootstrapEmailTemplates()) {
       const emailsBootstrapResult = await bootstrapEmailTemplates();
       console.log(`Auto-bootstrapped email template records (${emailsBootstrapResult.count} records).`);
+    }
+
+    if (await shouldBootstrapPublicContent()) {
+      const contentBootstrapResult = await bootstrapPublicContent();
+      console.log(`Auto-bootstrapped public content (${contentBootstrapResult.testimonials} testimonials, ${contentBootstrapResult.packages} packages).`);
     }
 
     const seedResult = await ensureSuperAdmin(config);

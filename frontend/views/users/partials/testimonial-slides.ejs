@@ -1,0 +1,19 @@
+<% const testimonialItems = typeof testimonials !== 'undefined' && Array.isArray(testimonials) ? testimonials : []; %>
+<% if (testimonialItems.length) { testimonialItems.forEach(function(item) { %>
+    <div class="swiper-slide">
+        <div class="testi-item">
+            <div class="quote-icon"><i class="las la-quote-right"></i></div>
+            <p><%= item._id ? t('testimonial.' + item._id + '.quote', item.quote || '') : (item.quote || '') %></p>
+            <div class="testi-author">
+                <div class="author-thumb"><img src="<%= item.avatar || '/assets/img/profile-avatar.svg' %>" alt="<%= t('testimonials.authorAlt', 'author') %>"></div>
+                <div class="author-info">
+                    <h3><%= item._id ? t('testimonial.' + item._id + '.name', item.name || '') : (item.name || '') %> <span><%= item._id ? t('testimonial.' + item._id + '.company', item.company || item.role || '') : (item.company || item.role || '') %></span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+<% }); } else { %>
+    <div class="swiper-slide">
+        <div class="alert alert-light border text-center mb-0"><%= t('testimonials.empty', 'No testimonials are published yet.') %></div>
+    </div>
+<% } %>

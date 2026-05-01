@@ -5,6 +5,9 @@ const { getRecentLogs } = require('../../../middlewares/logger');
 const MAIL_KEY = 'mail';
 const SITE_KEY = 'site';
 const NOTIFICATIONS_KEY = 'notifications';
+const DEFAULT_PUBLIC_PHONE = '+32484262105';
+const DEFAULT_PUBLIC_LOCATION = 'Wemmel Brussels Belgium';
+const DEFAULT_WHATSAPP_COUNTRY_CODE = '32';
 
 const DEFAULT_NAVBAR_MENU = [
   { key: 'home', label: 'Home', url: '/', enabled: true },
@@ -56,9 +59,9 @@ const DEFAULT_HEADER = {
     { key: 'support', label: 'Support', url: '/contact', enabled: true },
     { key: 'faq', label: 'FAQ', url: '/faqs', enabled: true },
   ],
-  phone: '5267-214-392',
-  email: 'Info.ridek@mail.com',
-  location: 'New York, USA - 2386',
+  phone: DEFAULT_PUBLIC_PHONE,
+  email: 'info@taxiofany.com',
+  location: DEFAULT_PUBLIC_LOCATION,
   socialLinks: [
     { key: 'facebook', iconClass: 'fab fa-facebook-f', url: '#', enabled: true },
     { key: 'twitter', iconClass: 'fab fa-twitter', url: '#', enabled: true },
@@ -73,7 +76,7 @@ const DEFAULT_STICKY_ICONS = {
   whatsapp: {
     enabled: true,
     color: '#25d366',
-    phone: '',
+    phone: DEFAULT_PUBLIC_PHONE,
     message: 'Hello Taxiofany, I would like to book a taxi.',
   },
 };
@@ -176,9 +179,55 @@ function normalizeHexColor(value, fallback = '#f59e0b') {
   return fallback;
 }
 
+function normalizePublicPhone(value, fallback = DEFAULT_PUBLIC_PHONE) {
+  const raw = String(value || '').trim();
+  if (!raw) {
+    return fallback;
+  }
+  const digits = raw.replace(/\D/g, '');
+  if (!digits) {
+    return fallback;
+  }
+  if (raw.startsWith('+')) {
+    return `+${digits}`;
+  }
+  return digits;
+}
+
+function normalizePublicLocation(value, fallback = DEFAULT_PUBLIC_LOCATION) {
+  const text = String(value || '').trim();
+  if (!text || ['New York, USA - 2386', 'Halk Street New York, USA - 2386', '153 Williamson Plaza, Maggieberg, MT 09514'].includes(text)) {
+    return fallback;
+  }
+  return text;
+}
+
+function normalizeWhatsappPhone(value, fallback = DEFAULT_PUBLIC_PHONE) {
+  const raw = String(value || fallback || '').trim();
+  if (!raw) {
+    return '';
+  }
+
+  const sanitized = raw.replace(/[^\d+]/g, '');
+  if (sanitized.startsWith('+')) {
+    return `+${sanitized.slice(1).replace(/\D/g, '')}`;
+  }
+
+  const digits = sanitized.replace(/\D/g, '').replace(/^0+/, '');
+  if (!digits) {
+    return '';
+  }
+
+  if (digits.startsWith(DEFAULT_WHATSAPP_COUNTRY_CODE)) {
+    return `+${digits}`;
+  }
+
+  return `+${DEFAULT_WHATSAPP_COUNTRY_CODE}${digits}`;
+}
+
 function normalizeStickyWhatsapp(value = {}) {
   const fallback = DEFAULT_STICKY_ICONS.whatsapp;
-  const phone = String(value.phone || fallback.phone || '').replace(/[^\d+]/g, '').trim();
+  const phone = normalizeWhatsappPhone(value.phone, fallback.phone);
   const message = String(value.message || fallback.message || '').trim().slice(0, 300) || fallback.message;
 
   return {
@@ -396,9 +445,9 @@ function normalizeSiteSettings(payload = {}) {
     header: {
       topTagline: String((payload.header && payload.header.topTagline) || DEFAULT_HEADER.topTagline).trim() || DEFAULT_HEADER.topTagline,
       topLinks,
-      phone: String((payload.header && payload.header.phone) || DEFAULT_HEADER.phone).trim() || DEFAULT_HEADER.phone,
+      phone: normalizePublicPhone(payload.header && payload.header.phone),
       email: String((payload.header && payload.header.email) || DEFAULT_HEADER.email).trim() || DEFAULT_HEADER.email,
-      location: String((payload.header && payload.header.location) || DEFAULT_HEADER.location).trim() || DEFAULT_HEADER.location,
+      location: normalizePublicLocation(payload.header && payload.header.location),
       socialLinks,
       navButtonLabel: String((payload.header && payload.header.navButtonLabel) || DEFAULT_HEADER.navButtonLabel).trim() || DEFAULT_HEADER.navButtonLabel,
       navButtonUrl: String((payload.header && payload.header.navButtonUrl) || DEFAULT_HEADER.navButtonUrl).trim() || DEFAULT_HEADER.navButtonUrl,

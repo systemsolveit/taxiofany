@@ -21,11 +21,11 @@
                             <div class="col-lg-3 col-md-6 padding-15">
                                 <div class="team-item">
                                     <div class="team-thumb">
-                                        <img src="<%= driver.image || '/assets/img/team-1.jpg' %>" alt="driver">
+                                        <img src="<%= driver.image || '/assets/img/team-1.jpg' %>" alt="<%= t('drivers.card.alt', 'driver') %>">
                                     </div>
                                     <div class="team-content">
                                         <h3><a href="/drivers/details/<%= encodeURIComponent(driver.slug) %>"><%= driver.fullName || '' %></a></h3>
-                                        <h4><%= driver.carType || (driver.roleTitle || 'Professional Driver') %></h4>
+                                        <h4><%= driver.carType || (driver.roleTitle || t('drivers.fallback.roleTitle', 'Professional Driver')) %></h4>
                                     </div>
                                 </div>
                             </div>

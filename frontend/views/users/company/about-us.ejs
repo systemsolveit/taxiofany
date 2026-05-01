@@ -1,5 +1,6 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
+<% const publicPhone = (siteSettings && siteSettings.header && siteSettings.header.phone) || t('footer.fallbackPhone', '+32484262105'); %>
 
 <section class="page-header">
         <div class="page-header-shape"></div>
@@ -39,7 +40,7 @@
                             </div>
                         </li>
                         <li>
-                            <h2><span><%= t('home.about.callForTaxi') %></span><a href="tel:5267214392">5267-214-392</a></h2>
+                            <h2><span><%= t('home.about.callForTaxi') %></span><a href="tel:<%= String(publicPhone).replace(/[^\d+]/g, '') %>"><%= publicPhone %></a></h2>
                         </li>
                     </ul>
                 </div>
@@ -60,86 +61,29 @@
             <div class="swiper-outside">
                 <div class="service-carousel">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="service-item">
-                                <div class="service-thumb">
-                                    <img src="/assets/img/service-1.jpg" alt="img">
-                                    <div class="service-shape-wrap">
-                                        <div class="service-shape"></div>
+                        <% const companyServices = typeof services !== 'undefined' && Array.isArray(services) ? services : []; %>
+                        <% if (companyServices.length) { companyServices.forEach(function(item) { %>
+                            <div class="swiper-slide">
+                                <div class="service-item">
+                                    <div class="service-thumb">
+                                        <img src="<%= item.coverImage || '/assets/img/banner-1.jpg' %>" alt="<%= t('service.imageAlt', 'service') %>">
+                                        <div class="service-shape-wrap">
+                                            <div class="service-shape"></div>
+                                        </div>
+                                        <div class="service-car"><img src="<%= item.serviceCarImage || '/assets/img/car-1.png' %>" alt="<%= t('taxi.carImageAlt', 'car') %>"></div>
                                     </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                                </div>
-                                <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.regularTransport') %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
+                                    <div class="service-content">
+                                        <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || '') : (item.title || '') %></a></h3>
+                                        <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || '') : (item.shortDescription || item.description || '') %></p>
+                                        <a class="read-more" href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= t('home.services.readMore') %></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="service-item">
-                                <div class="service-thumb">
-                                    <img src="/assets/img/service-2.jpg" alt="img">
-                                    <div class="service-shape-wrap">
-                                        <div class="service-shape"></div>
-                                    </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                                </div>
-                                <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.airportTransport') %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                                </div>
+                        <% }); } else { %>
+                            <div class="swiper-slide">
+                                <div class="alert alert-light border text-center mb-0"><%= t('pages.services.list.noServices', 'No services available right now.') %></div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="service-item">
-                                <div class="service-thumb">
-                                    <img src="/assets/img/service-3.jpg" alt="img">
-                                    <div class="service-shape-wrap">
-                                        <div class="service-shape"></div>
-                                    </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                                </div>
-                                <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.luggageTransport') %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="service-item">
-                                <div class="service-thumb">
-                                    <img src="/assets/img/service-4.jpg" alt="img">
-                                    <div class="service-shape-wrap">
-                                        <div class="service-shape"></div>
-                                    </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                                </div>
-                                <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.cityTransport') %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="service-item">
-                                <div class="service-thumb">
-                                    <img src="/assets/img/service-5.jpg" alt="img">
-                                    <div class="service-shape-wrap">
-                                        <div class="service-shape"></div>
-                                    </div>
-                                    <div class="service-car"><img src="/assets/img/car-1.png" alt="car"></div>
-                                </div>
-                                <div class="service-content">
-                                    <h3><a href="/services/details"><%= t('home.services.businessTransport') %></a></h3>
-                                    <p><%= t('home.services.itemDescription') %></p>
-                                    <a class="read-more" href="/services/details"><%= t('home.services.readMore') %></a>
-                                </div>
-                            </div>
-                        </div>
+                        <% } %>
                     </div>
                     <div class="swiper-pagination"></div><!-- Carousel Dots -->
                 </div>
@@ -163,42 +107,7 @@
                     <div class="swiper-outside testi-pagination">
                         <div class="testimonial-carousel">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="testi-item">
-                                        <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                        <p><%= t('home.testimonial.reviewText') %></p>
-                                        <div class="testi-author">
-                                            <div class="author-thumb"><img src="/assets/img/comment-1.png" alt="author"></div>
-                                            <div class="author-info">
-                                                <h3><%= t('home.testimonial.reviewerName') %> <span><%= t('home.testimonial.reviewerCompany') %></span></h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testi-item">
-                                        <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                        <p><%= t('home.testimonial.reviewText') %></p>
-                                        <div class="testi-author">
-                                            <div class="author-thumb"><img src="/assets/img/comment-1.png" alt="author"></div>
-                                            <div class="author-info">
-                                                <h3><%= t('home.testimonial.reviewerName') %> <span><%= t('home.testimonial.reviewerCompany') %></span></h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testi-item">
-                                        <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                        <p><%= t('home.testimonial.reviewText') %></p>
-                                        <div class="testi-author">
-                                            <div class="author-thumb"><img src="/assets/img/comment-1.png" alt="author"></div>
-                                            <div class="author-info">
-                                                <h3><%= t('home.testimonial.reviewerName') %> <span><%= t('home.testimonial.reviewerCompany') %></span></h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%- include('../partials/testimonial-slides', { testimonials: testimonials, t: t }) %>
                             </div>
                         </div>
                         <div class="swiper-pagination"></div><!-- Carousel Dots -->
@@ -212,7 +121,7 @@
                             <p class="white"><%= t('home.features.description') %></p>
                         </div>
                         <!--/.section-heading-->
-                        <ul class="ridek-features">
+                        <ul class="taxiofany-features">
                             <li>
                                 <div class="feature-icon">
                                     <i class="las la-gem"></i>
@@ -275,7 +184,7 @@
                 <p><%= t('home.cta.description') %></p>
                 <div class="cta-call">
                     <i class="las la-phone-volume"></i>
-                    <p><span><%= t('home.cta.callForTaxi') %></span><a href="tel:5267214392">5267-214-392</a></p>
+                    <p><span><%= t('home.cta.callForTaxi') %></span><a href="tel:<%= String(publicPhone).replace(/[^\d+]/g, '') %>"><%= publicPhone %></a></p>
                 </div>
             </div>
         </div>
@@ -291,69 +200,35 @@
             </div>
             <!--/.section-heading-->
             <div class="row grid-post">
-                <div class="col-lg-4 col-md-6 padding-15">
-                    <div class="post-card">
-                        <div class="post-thumb">
-                            <img src="/assets/img/post-1.jpg" alt="post" />
-                            <a href="/blog/details" class="post-category"><%= t('pages.users.company.about-us.business', 'Business') %></a>
-                        </div>
-                        <div class="post-content-wrap">
-                            <ul class="post-meta">
-                                <li><i class="las la-calendar"></i><%= t('pages.users.company.about-us.jan_01_2022', 'Jan 01 2022') %></li>
-                                <li><i class="las la-user"></i><%= t('pages.users.company.about-us.elliot_alderson', 'Elliot Alderson') %></li>
-                            </ul>
-                            <div class="post-content">
-                                <h3>
-                                    <a href="/blog/details" class="hover"><%= t('pages.users.company.about-us.how_to_start_initiating_an_startup_in_few_days', 'How to start initiating an startup in few days.') %></a>
-                                </h3>
-                                <p><%= t('pages.users.company.about-us.financial_experts_support_or_help_you_to_to_find', 'Financial experts support or help you to to find out which way you can raise your funds more...') %></p>
-                                <a href="/blog/details" class="read-more"><%= t('pages.users.company.about-us.read_more', 'Read More') %></a>
+                <% const companyBlogPosts = typeof latestBlogPosts !== 'undefined' && Array.isArray(latestBlogPosts) ? latestBlogPosts : []; %>
+                <% if (companyBlogPosts.length) { companyBlogPosts.forEach(function(post) { %>
+                    <% const postCatKey = (post.category || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); %>
+                    <div class="col-lg-4 col-md-6 padding-15">
+                        <div class="post-card">
+                            <div class="post-thumb">
+                                <img src="<%= post.coverImage || '/assets/img/banner-1.jpg' %>" alt="<%= t('blog.postImageAlt', 'post') %>" />
+                                <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="post-category"><%= postCatKey ? t('blog.category.' + postCatKey, post.category || t('pages.users.company.about-us.business', 'Business')) : (post.category || t('pages.users.company.about-us.business', 'Business')) %></a>
+                            </div>
+                            <div class="post-content-wrap">
+                                <ul class="post-meta">
+                                    <li><i class="las la-calendar"></i><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(locale || 'en') : t('common.dateUnavailable', 'Date unavailable') %></li>
+                                    <li><i class="las la-user"></i><%= post.authorName || t('blog.authorFallbackName', 'Taxiofany') %></li>
+                                </ul>
+                                <div class="post-content">
+                                    <h3>
+                                        <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="hover"><%= post.slug ? t('blog.' + post.slug + '.title', post.title || '') : (post.title || '') %></a>
+                                    </h3>
+                                    <p><%= post.slug ? t('blog.' + post.slug + '.excerpt', post.excerpt || post.summary || '') : (post.excerpt || post.summary || '') %></p>
+                                    <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="read-more"><%= t('pages.users.company.about-us.read_more', 'Read More') %></a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 padding-15">
-                    <div class="post-card">
-                        <div class="post-thumb">
-                            <img src="/assets/img/post-2.jpg" alt="post" />
-                            <a href="/blog/details" class="post-category"><%= t('pages.users.company.about-us.startup', 'Startup') %></a>
-                        </div>
-                        <div class="post-content-wrap">
-                            <ul class="post-meta">
-                                <li><i class="las la-calendar"></i>Jan 01 2022</li>
-                                <li><i class="las la-user"></i>Elliot Alderson</li>
-                            </ul>
-                            <div class="post-content">
-                                <h3>
-                                    <a href="/blog/details"><%= t('pages.users.company.about-us.financial_experts_support_help_you_to_find_out', 'Financial experts support help you to find out.') %></a>
-                                </h3>
-                                <p>Financial experts support or help you to to find out which way you can raise your funds more...</p>
-                                <a href="/blog/details" class="read-more">Read More</a>
-                            </div>
-                        </div>
+                <% }); } else { %>
+                    <div class="col-12">
+                        <div class="alert alert-light border text-center mb-0"><%= t('blog.empty', 'No published blog posts are available right now.') %></div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 padding-15">
-                    <div class="post-card">
-                        <div class="post-thumb">
-                            <img src="/assets/img/post-3.jpg" alt="post" />
-                            <a href="/blog/details" class="post-category"><%= t('pages.users.company.about-us.finance', 'Finance') %></a>
-                        </div>
-                        <div class="post-content-wrap">
-                            <ul class="post-meta">
-                                <li><i class="las la-calendar"></i>Jan 01 2022</li>
-                                <li><i class="las la-user"></i>Elliot Alderson</li>
-                            </ul>
-                            <div class="post-content">
-                                <h3>
-                                    <a href="/blog/details"><%= t('pages.users.company.about-us.innovative_business_all_over_the_world', 'Innovative business all over the world.') %></a>
-                                </h3>
-                                <p>Financial experts support or help you to to find out which way you can raise your funds more...</p>
-                                <a href="/blog/details" class="read-more">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <% } %>
             </div>
         </div>
     </section>

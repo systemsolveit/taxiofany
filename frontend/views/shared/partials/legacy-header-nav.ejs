@@ -28,12 +28,12 @@
                         <% } %>
                     </ul>
                     <% var currentLocaleItem = (availableLocales || []).find(function(localeItem) { return localeItem.code === locale; }) || { code: locale || 'en', label: (locale || 'en').toUpperCase() }; %>
-                    <div class="lang-switch" aria-label="Language switcher">
+                    <div class="lang-switch" aria-label="<%= t('header.langSwitcherAria', 'Language switcher') %>">
                         <details class="lang-picker">
                             <summary class="lang-picker-toggle">
                                 <span class="lang-picker-icon" aria-hidden="true"><i class="las la-globe"></i></span>
                                 <span class="lang-picker-meta">
-                                    <small>Language</small>
+                                    <small><%= t('header.langPickerLabel', 'Language') %></small>
                                     <strong><%= currentLocaleItem.label %> (<%= currentLocaleItem.code.toUpperCase() %>)</strong>
                                 </span>
                                 <span class="lang-picker-caret" aria-hidden="true"><i class="las la-angle-down"></i></span>
@@ -70,7 +70,7 @@
         <div class="container">
             <div class="mid-header-wrap">
                 <div class="site-logo">
-                    <a href="/"><img src="/assets/img/logo-dark.png" alt="Logo"></a>
+                    <a href="/"><img src="/assets/img/logo-dark.png" alt="<%= t('header.logoAlt', 'Taxiofany logo') %>"></a>
                 </div><!--/.site-logo-->
                 <ul class="header-info">
                     <li>
@@ -78,7 +78,7 @@
                             <i class="las la-phone-volume"></i>
                         </div>
                         <div class="header-info-text">
-                            <h3><span><%= t('header.callNow') %></span><a href="tel:<%= String((headerConfig.phone || '5267-214-392')).replace(/\D/g, '') %>"><%= headerConfig.phone || '5267-214-392' %></a></h3>
+                            <h3><span><%= t('header.callNow') %></span><a href="tel:<%= String((headerConfig.phone || t('header.fallbackPhone', '+32484262105'))).replace(/[^\d+]/g, '') %>"><%= headerConfig.phone || t('header.fallbackPhone', '+32484262105') %></a></h3>
                         </div>
                     </li>
                     <li>
@@ -86,7 +86,7 @@
                             <i class="las la-envelope-open"></i>
                         </div>
                         <div class="header-info-text">
-                            <h3><span><%= t('header.emailNow') %></span><%= headerConfig.email || 'Info.ridek@mail.com' %></h3>
+                            <h3><span><%= t('header.emailNow') %></span><%= headerConfig.email || t('header.fallbackEmail', 'info@taxiofany.com') %></h3>
                         </div>
                     </li>
                     <li>
@@ -94,7 +94,7 @@
                             <i class="las la-map-marked-alt"></i>
                         </div>
                         <div class="header-info-text">
-                            <h3><span><%= t('header.locationLabel') %></span><%= headerConfig.location || 'New York, USA - 2386' %></h3>
+                            <h3><span><%= t('header.locationLabel') %></span><%= headerConfig.location || t('header.fallbackLocation', 'Wemmel Brussels Belgium') %></h3>
                         </div>
                     </li>
                 </ul>
@@ -105,7 +105,7 @@
         <div class="container">
             <div class="nav-menu-inner">
                 <div class="site-logo">
-                    <a href="/"><img src="/assets/img/logo-dark.png" alt="Logo"></a>
+                    <a href="/"><img src="/assets/img/logo-dark.png" alt="<%= t('header.logoAlt', 'Taxiofany logo') %>"></a>
                 </div><!--/.site-logo-->
                 <div class="header-menu-wrap">
                     <% const hideNav = typeof isHiddenFromMainNav === 'function' ? isHiddenFromMainNav : function(){ return false; }; %>
@@ -149,7 +149,7 @@
                         <% } %>
                     </ul>
                 </div>
-                <div class="nav-client-login nav-user-dropdown" aria-label="Account">
+                <div class="nav-client-login nav-user-dropdown" aria-label="<%= t('header.accountRegionAria', 'Account') %>">
                     <% if (clientSession && clientSession.user) { %>
                         <% const wl = typeof withLocale === 'function' ? withLocale : function(p) { return p; }; %>
                         <details class="nav-user-details nav-user-dropdown">
@@ -215,15 +215,15 @@
 <div id="popup-sidebox" class="popup-sidebox">
     <div class="sidebox-content">
         <div class="site-logo">
-            <a href="/"><img src="/assets/img/logo-light.png" alt="logo"></a>
+            <a href="/"><img src="/assets/img/logo-light.png" alt="<%= t('header.logoAlt', 'Taxiofany logo') %>"></a>
         </div>
         <p><%= t('header.sidebox.description') %></p>
         <ul class="sidebox-list">
-            <li class="call"><span><%= t('header.sidebox.callForRide') %></span>5267-214-392</li>
+            <li class="call"><span><%= t('header.sidebox.callForRide') %></span><%= headerConfig.phone || t('header.sidebox.fallbackPhone', '+32484262105') %></li>
             <li>
-                <span><%= t('header.sidebox.findUs') %></span>Halk Street New York, USA - 2386
+                <span><%= t('header.sidebox.findUs') %></span><%= headerConfig.location || t('header.sidebox.fallbackAddress', 'Wemmel Brussels Belgium') %>
             </li>
-            <li><span><%= t('header.sidebox.emailNow') %></span>Info.ridek@mail.com</li>
+            <li><span><%= t('header.sidebox.emailNow') %></span><%= headerConfig.email || t('header.sidebox.fallbackEmail', 'info@taxiofany.com') %></li>
         </ul>
     </div>
 </div>

@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="slider-caption small">
                                     <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.7s" data-duration="1s"><%= t('home.hero.description', 'Everything your taxi business needs is already here! Ridek made for taxi service companies!') %></div>
+                                        <div data-animation="fade-in-bottom" data-delay="0.7s" data-duration="1s"><%= t('home.hero.description', 'Everything your taxi business needs is already here! taxiOfany made for taxi service companies!') %></div>
                                     </div>
                                 </div>
                                 <div class="slider-btn">
@@ -327,42 +327,7 @@
                     <div class="swiper-outside testi-pagination">
                         <div class="testimonial-carousel">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="testi-item">
-                                        <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                        <p><%= t('home.testimonial.reviewText') %></p>
-                                        <div class="testi-author">
-                                            <div class="author-thumb"><img src="/assets/img/comment-1.png" alt="author"></div>
-                                            <div class="author-info">
-                                                <h3><%= t('home.testimonial.reviewerName') %> <span><%= t('home.testimonial.reviewerCompany') %></span></h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testi-item">
-                                        <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                        <p><%= t('home.testimonial.reviewText') %></p>
-                                        <div class="testi-author">
-                                            <div class="author-thumb"><img src="/assets/img/comment-1.png" alt="author"></div>
-                                            <div class="author-info">
-                                                <h3><%= t('home.testimonial.reviewerName') %> <span><%= t('home.testimonial.reviewerCompany') %></span></h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testi-item">
-                                        <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                        <p><%= t('home.testimonial.reviewText') %></p>
-                                        <div class="testi-author">
-                                            <div class="author-thumb"><img src="/assets/img/comment-1.png" alt="author"></div>
-                                            <div class="author-info">
-                                                <h3><%= t('home.testimonial.reviewerName') %> <span><%= t('home.testimonial.reviewerCompany') %></span></h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%- include('../partials/testimonial-slides', { testimonials: testimonials, t: t }) %>
                             </div>
                         </div>
                         <div class="swiper-pagination"></div><!-- Carousel Dots -->
@@ -376,7 +341,7 @@
                             <p class="white"><%= t('home.features.description') %></p>
                         </div>
                         <!--/.section-heading-->
-                        <ul class="ridek-features">
+                        <ul class="taxiofany-features">
                             <li class="wow fade-in-right" data-wow-delay="300ms">
                                 <div class="feature-icon">
                                     <i class="las la-gem"></i>
@@ -434,7 +399,7 @@
                         </div>
                         <div class="post-content-wrap">
                             <ul class="post-meta">
-                                <li><i class="las la-calendar"></i><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-GB') : '—' %></li>
+                                <li><i class="las la-calendar"></i><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(locale || 'en') : t('common.emDash', '—') %></li>
                                 <li><i class="las la-user"></i><%= post.authorName || '—' %></li>
                             </ul>
                             <div class="post-content">
