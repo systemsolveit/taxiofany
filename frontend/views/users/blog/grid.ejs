@@ -5,9 +5,9 @@
         <div class="page-header-shape"></div>
         <div class="container">
             <div class="page-header-info">
-                <h4><%= t('pages.users.blog.grid.blog_grid', 'Blog Grid!') %></h4>
-                <h2><%= t('pages.users.blog.grid.feel_your_journey', 'Feel your journey') %> <br> <%= t('pages.users.blog.grid.with', 'with') %> <span><%= t('pages.users.blog.grid.taxiofany', 'taxiOfany!') %></span></h2>
-                <p><%= t('pages.users.blog.grid.everything_your_taxi_business', 'Everything your taxi business') %> <br><%= t('pages.users.blog.grid.needs_is_already_here', 'needs is already here!') %> </p>
+                <h4><%= t('pages.users.blog.grid.blog_grid', 'Blog') %></h4>
+                <h2><%= t('pages.users.blog.grid.feel_your_journey', 'Mobility stories') %> <br> <%= t('pages.users.blog.grid.with', 'with') %> <span><%= t('pages.users.blog.grid.taxiofany', 'Taxiofany') %></span></h2>
+                <p><%= t('pages.users.blog.grid.everything_your_taxi_business', 'Accessible transport news, caregiver guidance') %> <br><%= t('pages.users.blog.grid.needs_is_already_here', 'and safe travel tips for Belgium.') %> </p>
             </div>
         </div>
     </section>
@@ -24,13 +24,13 @@
                         <div class="col-md-6 padding-15">
                             <div class="post-card">
                                 <div class="post-thumb">
-                                    <img src="<%= post.coverImage || '/assets/img/post-1.jpg' %>" alt="post">
+                                    <img src="<%= post.coverImage || '/assets/img/post-1.jpg' %>" alt="<%= t('blog.postImageAlt', 'Blog post') %>">
                                     <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="post-category"><%= postCatKey ? t('blog.category.' + postCatKey, post.category || t('pages.users.blog.grid.business', 'Business')) : (post.category || t('pages.users.blog.grid.business', 'Business')) %></a>
                                 </div>
                                 <div class="post-content-wrap">
                                     <ul class="post-meta">
-                                        <li><i class="las la-calendar"></i><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(locale || 'en') : t('common.dateUnavailable', 'Date unavailable') %></li>
-                                        <li><i class="las la-user"></i><%= post.authorName || t('pages.users.blog.grid.elliot_alderson', 'Elliot Alderson') %></li>
+                                        <li><i class="las la-calendar"></i><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(locale || 'nl') : t('common.dateUnavailable', 'Date unavailable') %></li>
+                                        <li><i class="las la-user"></i><%= post.authorName || t('pages.users.blog.grid.elliot_alderson', 'Taxiofany editorial') %></li>
                                     </ul>
                                     <div class="post-content">
                                         <h3><a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="hover"><%= post.slug ? t('blog.' + post.slug + '.title', post.title || '') : (post.title || '') %></a></h3>
@@ -99,7 +99,7 @@
                                         </div>
                                         <div class="thumb-post-info">
                                             <h3><a href="/blog/details/<%= encodeURIComponent(article.slug) %>"><%= article.title %></a></h3>
-                                            <a href="#" class="date"><%= article.publishedAt ? new Date(article.publishedAt).toLocaleDateString(locale || 'en') : t('common.dateUnavailable', 'Date unavailable') %></a>
+                                            <a href="#" class="date"><%= article.publishedAt ? new Date(article.publishedAt).toLocaleDateString(locale || 'nl') : t('common.dateUnavailable', 'Date unavailable') %></a>
                                         </div>
                                     </li>
                                 <% }) %>

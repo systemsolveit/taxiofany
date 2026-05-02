@@ -19,7 +19,7 @@ async function startServer() {
     if (await shouldBootstrapNl()) {
       const bootstrapResult = await bootstrapNlTranslations();
       console.log(
-        `Auto-bootstrapped ${bootstrapResult.locale} translations (${bootstrapResult.semanticCount} semantic, ${bootstrapResult.translatedCount} extracted).`
+        `Auto-bootstrapped UI locales (nl: ${bootstrapResult.semanticCount} semantic keys, ${bootstrapResult.translatedCount} extracted NL strings; en+fr dictionary upserts: ${bootstrapResult.enFrSeeded}).`
       );
     }
 

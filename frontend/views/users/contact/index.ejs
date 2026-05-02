@@ -16,8 +16,8 @@
                 <div class="col-md-6">
                     <div class="contact-details-wrap">
                         <div class="contact-title">
-                            <h2><%= t('pages.users.contact.have_any', 'Have Any') %> <span><%= t('pages.users.contact.questions', 'Questions?') %></span></h2>
-                            <p><%= t('pages.users.contact.get_in_touch_to_discuss_your_employee_wellbeing_', 'Get in touch to discuss your employee wellbeing needs today. Please give us a call, drop us an email or fill out the contact form.') %></p>
+                            <h2><%= t('pages.users.contact.have_any', 'Plan an') %> <span><%= t('pages.users.contact.questions', 'accessible ride?') %></span></h2>
+                            <p><%= t('pages.users.contact.get_in_touch_to_discuss_your_employee_wellbeing_', 'Contact us for handicap transport, wheelchair-accessible vans, TFlex/Mutuelle questions, or business and regular taxi bookings. Call, email or use the form—we reply quickly.') %></p>
                         </div>
                         <ul class="contact-details">
                             <li><i class="fas fa-map-marker-alt"></i><%= contactAddress %></li>
@@ -30,7 +30,7 @@
                     <div class="contact-form">
                         <form action="/contact/send" method="post" id="ajax_contact" class="form-horizontal">
                             <div class="contact-title">
-                                <h2><%= t('pages.users.contact.contact_with_us', 'Contact With Us!') %> <span></span></h2>
+                                <h2><%= t('pages.users.contact.contact_with_us', 'Message Taxiofany') %> <span></span></h2>
                             </div>
                             <div class="contact-form-group">
                                 <div class="form-field">
@@ -46,10 +46,10 @@
                                     <input type="text" id="phone" name="phone" class="form-control" placeholder="<%= t('contact.form.phone', 'Phone Number') %>" required>
                                 </div>
                                 <div class="form-field message">
-                                    <textarea id="message" name="message" cols="30" rows="4" class="form-control" placeholder="<%= t('contact.form.message', 'Message') %>" required></textarea>
+                                    <textarea id="message" name="message" cols="30" rows="4" class="form-control" placeholder="<%= t('contact.form.message', 'Tell us about pickup, mobility needs, wheelchair size, caregiver…') %>" required></textarea>
                                 </div>
                                 <div class="form-field">
-                                    <button id="submit" class="default-btn" type="submit"><%= t('pages.users.contact.send_massage', 'Send Massage') %></button>
+                                    <button id="submit" class="default-btn" type="submit"><%= t('pages.users.contact.send_massage', 'Send message') %></button>
                                 </div>
                             </div>
                             <div id="form-messages" class="alert" role="alert"></div>

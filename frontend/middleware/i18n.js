@@ -1,7 +1,33 @@
 const i18nApi = require('../services/i18nApi');
 
-const DEFAULT_SUPPORTED = ['nl', 'en'];
+const DEFAULT_SUPPORTED = ['nl', 'fr', 'en'];
 const FALLBACK_LOCALE = 'nl';
+
+/** Public site: Dutch first, then French and English. */
+const PUBLIC_LOCALE_ORDER = ['nl', 'fr', 'en'];
+
+const NATIVE_LOCALE_LABELS = {
+  nl: 'Nederlands',
+  fr: 'Français',
+  en: 'English',
+};
+
+function orderPublicLocales(locales) {
+  const normalized = (locales || []).map((item) => String(item || '').toLowerCase()).filter(Boolean);
+  const set = new Set(normalized);
+  const out = [];
+  PUBLIC_LOCALE_ORDER.forEach((code) => {
+    if (set.has(code)) {
+      out.push(code);
+    }
+  });
+  normalized.forEach((code) => {
+    if (!out.includes(code)) {
+      out.push(code);
+    }
+  });
+  return out;
+}
 
 function shouldSkipLocalePrefix(pathname) {
   const path = String(pathname || '/').toLowerCase();
@@ -91,7 +117,7 @@ async function attachI18n(req, res, next) {
     return next();
   }
 
-  const supportedLocales = await getSupportedLocales();
+  const supportedLocales = orderPublicLocales(await getSupportedLocales());
   const supportedLocaleSet = new Set(supportedLocales.map((item) => item.toLowerCase()));
   const locale = await resolveLocale(req, supportedLocales);
   let dict = {};
@@ -111,7 +137,7 @@ async function attachI18n(req, res, next) {
   res.locals.locale = locale;
   res.locals.availableLocales = supportedLocales.map((code) => ({
     code,
-    label: code.toUpperCase(),
+    label: NATIVE_LOCALE_LABELS[code] || String(code).toUpperCase(),
   }));
   res.locals.t = (key, fallback = '') => {
     const value = getNestedValue(dict, key);
@@ -160,7 +186,7 @@ async function attachI18n(req, res, next) {
 }
 
 async function setLanguage(req, res) {
-  const supportedLocales = await getSupportedLocales();
+  const supportedLocales = orderPublicLocales(await getSupportedLocales());
   const supported = new Set(supportedLocales.map((item) => item.toLowerCase()));
   const lang = (req.params.lang || '').toLowerCase();
   const redirectTo = typeof req.query.redirect === 'string' ? req.query.redirect : '/';
@@ -173,7 +199,7 @@ async function setLanguage(req, res) {
 }
 
 async function handleLocalePrefix(req, res, next) {
-  const supportedLocales = await getSupportedLocales();
+  const supportedLocales = orderPublicLocales(await getSupportedLocales());
   const supported = new Set(supportedLocales.map((item) => item.toLowerCase()));
   const path = req.path || '/';
   const segments = path.split('/').filter(Boolean);

@@ -6,7 +6,7 @@
                     <div class="col-lg-8">
                         <div class="brand">
                             <a class="footer-logo" href="/"><img src="/assets/img/logo-dark.png" alt="<%= t('footer.logoAlt', 'Taxiofany logo') %>"></a>
-                            <p><%= t('footer.description') %></p>
+                            <p><%= t('footer.description', 'Taxiofany — reliable handicap and wheelchair-accessible transport in Belgium. Our adapted vehicles offer ramps, lifts, 4-point restraints and trained drivers. 24/7 for hospital, care and daily rides. Business and regular taxi also available.') %></p>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -121,7 +121,7 @@
     }
     const stickyWhatsappDigits = normalizeWhatsappDigits(stickyWhatsapp.phone || (siteSettings && siteSettings.header && siteSettings.header.phone) || '+32484262105');
 %>
-<% const stickyWhatsappMessage = stickyWhatsapp.message || t('footer.whatsapp.defaultMessage', 'Hello Taxiofany, I would like to book a taxi.'); %>
+<% const stickyWhatsappMessage = stickyWhatsapp.message || t('footer.whatsapp.defaultMessage', 'Hello Taxiofany, I need wheelchair-accessible or handicap transport.'); %>
 <% if (stickyWhatsapp.enabled !== false && stickyWhatsappDigits) { %>
     <a
         class="sticky-whatsapp-button"

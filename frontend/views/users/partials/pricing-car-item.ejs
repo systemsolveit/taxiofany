@@ -28,7 +28,7 @@
       <li><%= t('home.pricing.perMile', 'Per mile/km') %> <span><%= Number.isFinite(perMile) ? ('$' + perMile.toFixed(2)) : '-' %></span></li>
       <li><%= t('home.pricing.perStoppedTraffic', 'Per stopped traffic') %> <span><%= Number.isFinite(perStop) ? ('$' + perStop.toFixed(2)) : '-' %></span></li>
       <li><%= t('home.pricing.passengers', 'Passengers') %> <span><%= pass %></span></li>
-      <li><a href="<%=(typeof withLocale === 'function' ? withLocale('/book-taxi') : '/book-taxi')%>" class="default-btn"><%= t('home.pricing.bookTaxiNow', 'Book taxi now') %></a></li>
+      <li><a href="<%=(typeof withLocale === 'function' ? withLocale('/book-taxi') : '/book-taxi')%>" class="default-btn"><%= t('home.pricing.bookTaxiNow', 'Book accessible ride') %></a></li>
     </ul>
   </div>
 </div>

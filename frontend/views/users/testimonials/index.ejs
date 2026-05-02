@@ -5,9 +5,9 @@
         <div class="page-header-shape"></div>
         <div class="container">
             <div class="page-header-info">
-                <h4><%= t('pages.users.testimonials.testimonials', 'Testimonials!') %></h4>
-                <h2><%= t('pages.users.testimonials.our_passengers', 'Our passengers') %> <span><%= t('pages.users.testimonials.reviews', 'reviews') %></span></h2>
-                <p><%= t('pages.users.testimonials.everything_your_taxi_business', 'Everything your taxi business') %> <br><%= t('pages.users.testimonials.needs_is_already_here', 'needs is already here!') %> </p>
+                <h4><%= t('pages.users.testimonials.testimonials', 'Testimonials') %></h4>
+                <h2><%= t('pages.users.testimonials.our_passengers', 'Passengers & caregivers') %> <span><%= t('pages.users.testimonials.reviews', 'reviews') %></span></h2>
+                <p><%= t('pages.users.testimonials.everything_your_taxi_business', 'Real feedback on handicap transport, punctuality') %> <br><%= t('pages.users.testimonials.needs_is_already_here', 'and caring drivers across Belgium.') %> </p>
             </div>
         </div>
     </section>
@@ -25,7 +25,7 @@
                                     <div class="quote-icon"><i class="las la-quote-right"></i></div>
                                     <p><%= item._id ? t('testimonial.' + item._id + '.quote', item.quote || '') : (item.quote || '') %></p>
                                     <div class="testi-author">
-                                        <div class="author-thumb"><img src="<%= item.avatar || '/assets/img/profile-avatar.svg' %>" alt="<%= t('testimonials.authorAlt', 'author') %>"></div>
+                                        <div class="author-thumb"><img src="<%= item.avatar || '/assets/img/profile-avatar.svg' %>" alt="<%= t('testimonials.authorAlt', 'Passenger') %>"></div>
                                         <div class="author-info">
                                             <h3><%= item._id ? t('testimonial.' + item._id + '.name', item.name || '') : (item.name || '') %> <span><%= item._id ? t('testimonial.' + item._id + '.company', item.company || item.role || '') : (item.company || item.role || '') %></span></h3>
                                         </div>
@@ -34,7 +34,7 @@
                             </div>
                         <% }); } else { %>
                             <div class="swiper-slide">
-                                <div class="alert alert-light border text-center mb-0"><%= t('testimonials.empty', 'No testimonials are published yet.') %></div>
+                                <div class="alert alert-light border text-center mb-0"><%= t('testimonials.empty', 'No testimonials published yet—add passenger stories from the admin panel.') %></div>
                             </div>
                         <% } %>
                     </div>

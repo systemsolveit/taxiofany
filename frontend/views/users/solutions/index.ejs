@@ -5,8 +5,8 @@
   <div class="container">
     <div class="page-header-info">
       <h4><%= t('pages.users.solutions.solutions', 'Solutions') %></h4>
-      <h2><%= t('solutions.header.title', 'Transport') %> <span><%= t('solutions.header.highlight', 'Solutions') %></span></h2>
-      <p><%= t('solutions.header.description', 'Explore published services and package options from the database.') %></p>
+      <h2><%= t('solutions.header.title', 'Accessible') %> <span><%= t('solutions.header.highlight', 'transport') %></span></h2>
+      <p><%= t('solutions.header.description', 'Handicap and wheelchair-accessible transport leads our solutions—followed by business shuttles and everyday taxi, all bookable the same way.') %></p>
     </div>
   </div>
 </section>
@@ -14,8 +14,8 @@
 <section class="service-section bg-grey bd-bottom padding">
   <div class="container">
     <div class="section-heading text-center mb-40">
-      <h4><span></span><%= t('home.services.eyebrow') %></h4>
-      <h2><%= t('home.services.titleStart') %> <%= t('home.services.titleEnd') %></h2>
+      <h4><span></span><%= t('home.services.eyebrow', 'What we offer') %></h4>
+      <h2><%= t('home.services.titleStart', 'Handicap transport first') %> <%= t('home.services.titleEnd', '—then business & regular taxi') %></h2>
     </div>
     <div class="row">
       <% const solutionServices = typeof services !== 'undefined' && Array.isArray(services) ? services : []; %>
@@ -23,20 +23,20 @@
         <div class="col-lg-4 col-sm-6 padding-15">
           <div class="service-item">
             <div class="service-thumb">
-              <img src="<%= item.coverImage || '/assets/img/banner-1.jpg' %>" alt="<%= t('service.imageAlt', 'service') %>">
+              <img src="<%= item.coverImage || '/assets/img/banner-1.jpg' %>" alt="<%= t('service.imageAlt', 'Accessible transport service') %>">
               <div class="service-shape-wrap"><div class="service-shape"></div></div>
-              <div class="service-car"><img src="<%= item.serviceCarImage || '/assets/img/car-1.png' %>" alt="<%= t('taxi.carImageAlt', 'car') %>"></div>
+              <div class="service-car"><img src="<%= item.serviceCarImage || '/assets/img/car-1.png' %>" alt="<%= t('taxi.carImageAlt', 'Wheelchair-accessible taxi van') %>"></div>
             </div>
             <div class="service-content">
               <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || '') : (item.title || '') %></a></h3>
               <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || '') : (item.shortDescription || item.description || '') %></p>
-              <a class="read-more" href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= t('home.services.readMore') %></a>
+              <a class="read-more" href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= t('home.services.readMore', 'Read more') %></a>
             </div>
           </div>
         </div>
       <% }); } else { %>
         <div class="col-12">
-          <div class="alert alert-light border text-center mb-0"><%= t('pages.services.list.noServices', 'No services available right now.') %></div>
+          <div class="alert alert-light border text-center mb-0"><%= t('pages.services.list.noServices', 'No services published yet—add handicap, business or regular services in the admin panel.') %></div>
         </div>
       <% } %>
     </div>
@@ -60,7 +60,7 @@
         </div>
       <% }); } else { %>
         <div class="col-12">
-          <div class="alert alert-light border text-center mb-0"><%= t('packages.empty', 'No packages are published yet.') %></div>
+          <div class="alert alert-light border text-center mb-0"><%= t('packages.empty', 'No packages published yet—create handicap, business or regular bundles in the admin panel.') %></div>
         </div>
       <% } %>
     </div>

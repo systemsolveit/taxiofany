@@ -5,9 +5,9 @@
         <div class="page-header-shape"></div>
         <div class="container">
             <div class="page-header-info">
-                <h4><%= t('pages.users.drivers.list.service_details', 'Service Details!') %></h4>
-                <h2><%= t('pages.users.drivers.list.our_expert_drivers_will', 'Our expert drivers will') %> <br><%= t('pages.users.drivers.list.make_your', 'make your') %> <span><%= t('pages.users.drivers.list.ride_safe', 'Ride Safe!') %></span></h2>
-                <p><%= t('pages.users.drivers.list.everything_your_taxi_business', 'Everything your taxi business') %> <br><%= t('pages.users.drivers.list.needs_is_already_here', 'needs is already here!') %> </p>
+                <h4><%= t('pages.users.drivers.list.service_details', 'Our drivers') %></h4>
+                <h2><%= t('pages.users.drivers.list.our_expert_drivers_will', 'Trained for') %> <br><%= t('pages.users.drivers.list.make_your', 'safe wheelchair') %> <span><%= t('pages.users.drivers.list.ride_safe', 'transfers') %></span></h2>
+                <p><%= t('pages.users.drivers.list.everything_your_taxi_business', 'Meet the Taxiofany team—focused on handicap transport, respectful assistance') %> <br><%= t('pages.users.drivers.list.needs_is_already_here', 'and reliable dispatch across Belgium.') %> </p>
             </div>
         </div>
     </section>
@@ -21,18 +21,18 @@
                             <div class="col-lg-3 col-md-6 padding-15">
                                 <div class="team-item">
                                     <div class="team-thumb">
-                                        <img src="<%= driver.image || '/assets/img/team-1.jpg' %>" alt="<%= t('drivers.card.alt', 'driver') %>">
+                                        <img src="<%= driver.image || '/assets/img/team-1.jpg' %>" alt="<%= t('drivers.card.alt', 'Accessibility-trained driver') %>">
                                     </div>
                                     <div class="team-content">
                                         <h3><a href="/drivers/details/<%= encodeURIComponent(driver.slug) %>"><%= driver.fullName || '' %></a></h3>
-                                        <h4><%= driver.carType || (driver.roleTitle || t('drivers.fallback.roleTitle', 'Professional Driver')) %></h4>
+                                        <h4><%= driver.carType || (driver.roleTitle || t('drivers.fallback.roleTitle', 'Accessibility-trained driver')) %></h4>
                                     </div>
                                 </div>
                             </div>
                         <% }) %>
                     <% } else { %>
                         <div class="col-12">
-                            <div class="alert alert-light border text-center mb-0"><%= t('pages.users.drivers.list.no_driver_profiles_are_published_yet', 'No driver profiles are published yet.') %></div>
+                            <div class="alert alert-light border text-center mb-0"><%= t('pages.users.drivers.list.no_driver_profiles_are_published_yet', 'No driver profiles published yet—add your accessibility-trained crew in the admin panel.') %></div>
                         </div>
                     <% } %>
             </div>

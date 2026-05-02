@@ -5,9 +5,9 @@
         <div class="page-header-shape"></div>
         <div class="container">
             <div class="page-header-info">
-                <h4><%= t('pages.services.details.header.eyebrow') %></h4>
-                <h2><%= service && service.title ? t('service.' + service.slug + '.title', service.title) : (t('pages.services.details.header.titleLine1') + ' ' + t('pages.services.details.header.titleLine2')) %></h2>
-                <p><%= service && service.shortDescription ? t('service.' + service.slug + '.shortDescription', service.shortDescription) : t('pages.services.details.header.description') %></p>
+                <h4><%= t('pages.services.details.header.eyebrow', 'Service details') %></h4>
+                <h2><%= service && service.title ? t('service.' + service.slug + '.title', service.title) : (t('pages.services.details.header.titleLine1', 'Handicap & accessible') + ' ' + t('pages.services.details.header.titleLine2', 'transport')) %></h2>
+                <p><%= service && service.shortDescription ? t('service.' + service.slug + '.shortDescription', service.shortDescription) : t('pages.services.details.header.description', 'Wheelchair-accessible transport with trained drivers, adapted vehicles, and optional TFlex/Mutuelle support.') %></p>
             </div>
         </div>
     </section>
@@ -19,9 +19,9 @@
                 <div class="col-lg-8 sm-padding">
                     <div class="service-details-info">
                         <img src="<%= service && service.featureImage ? service.featureImage : '/assets/img/post-2.jpg' %>" alt="img">
-                        <h2><%= service && service.title ? t('service.' + service.slug + '.title', service.title) : t('pages.services.details.title') %></h2>
-                        <p><%= service && service.description ? t('service.' + service.slug + '.description', service.description) : t('pages.services.details.paragraph1') %></p>
-                        <p><%= service && service.shortDescription ? t('service.' + service.slug + '.shortDescription', service.shortDescription) : t('pages.services.details.paragraph2') %></p>
+                        <h2><%= service && service.title ? t('service.' + service.slug + '.title', service.title) : t('pages.services.details.title', 'Accessible taxi & handicap transport') %></h2>
+                        <p><%= service && service.description ? t('service.' + service.slug + '.description', service.description) : t('pages.services.details.paragraph1', 'Taxiofany prioritises passengers who use wheelchairs or mobility aids. Our vans offer low-floor entry, ramps or lifts, secure anchorage points and space for a caregiver when needed.') %></p>
+                        <p><%= service && service.shortDescription ? t('service.' + service.slug + '.shortDescription', service.shortDescription) : t('pages.services.details.paragraph2', 'Alongside handicap transport we provide business transfers and regular taxi services—book online or call dispatch for urgent hospital or care-home rides.') %></p>
                         <ul class="service-features">
                             <% const detailsFeatures = service && Array.isArray(service.features) && service.features.length ? service.features : []; %>
                             <% if (detailsFeatures.length) { %>
@@ -38,20 +38,20 @@
                                 <li>
                                     <div><i class="las la-shipping-fast"></i></div>
                                     <div>
-                                        <h3><%= t('pages.services.details.features.fastPickups.title') %></h3>
-                                        <p><%= t('pages.services.details.features.fastPickups.description') %></p>
+                                        <h3><%= t('pages.services.details.features.fastPickups.title', 'Accessible pickups') %></h3>
+                                        <p><%= t('pages.services.details.features.fastPickups.description', 'Door-to-door assistance with safe wheelchair boarding and secure restraint in the vehicle.') %></p>
                                     </div>
                                 </li>
                             <% } %>
                         </ul>
-                        <p><%= t('pages.services.details.paragraph3') %></p>
+                        <p><%= t('pages.services.details.paragraph3', 'Need paperwork for reimbursement? Mention TFlex or Mutuelle when booking—we guide you through what we can provide on request.') %></p>
                         <div class="service-details-list">
                             <img src="<%= service && service.benefitsImage ? service.benefitsImage : '/assets/img/post-1.jpg' %>" alt="img">
                             <div>
-                                <h3><%= t('pages.services.details.benefits.title') %></h3>
-                                <p><%= t('pages.services.details.benefits.description') %></p>
+                                <h3><%= t('pages.services.details.benefits.title', 'Benefits for passengers') %></h3>
+                                <p><%= t('pages.services.details.benefits.description', 'Comfort, clarity and respect—whether it is a recurring therapy trip or a one-off airport run.') %></p>
                                 <ul class="service-icon-list">
-                                    <% const benefitPoints = service && Array.isArray(service.benefitPoints) && service.benefitPoints.length ? service.benefitPoints : [t('pages.services.details.benefits.item1'), t('pages.services.details.benefits.item2'), t('pages.services.details.benefits.item3')]; %>
+                                    <% const benefitPoints = service && Array.isArray(service.benefitPoints) && service.benefitPoints.length ? service.benefitPoints : [t('pages.services.details.benefits.item1', 'Restraint systems checked before every accessible ride'), t('pages.services.details.benefits.item2', 'Drivers trained in mobility assistance'), t('pages.services.details.benefits.item3', 'Dispatch prioritises medical & care-home appointments')]; %>
                                     <% benefitPoints.forEach(function(point, bpIdx) { %>
                                         <li><i class="las la-hand-point-right"></i><%= (service && service.slug) ? t('service.' + service.slug + '.benefitPoint.' + bpIdx, point) : point %></li>
                                     <% }) %>
@@ -63,7 +63,7 @@
                 <div class="col-lg-4 sm-padding">
                     <div class="service-sidebar sidebar-widget">
                         <div class="widget-title service-widget">
-                            <h3><%= t('pages.services.details.categories.title') %></h3>
+                            <h3><%= t('pages.services.details.categories.title', 'Our services') %></h3>
                         </div>
                         <ul>
                             <% if (Array.isArray(services) && services.length) { %>
@@ -71,25 +71,25 @@
                                     <li><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || '') : (item.title || '') %></a><i class="las la-arrow-right"></i></li>
                                 <% }) %>
                             <% } else { %>
-                                <li><a href="#"><%= t('home.services.regularTransport') %></a><i class="las la-arrow-right"></i></li>
+                                <li><a href="#"><%= t('home.services.handicapTransport', 'Handicap Transport') %></a><i class="las la-arrow-right"></i></li>
                             <% } %>
                         </ul>
                     </div>
                     <div class="sidebar-widget banner">
                         <div class="banner-info">
                             <a href="/"><img class="logo" src="/assets/img/logo-light.png" alt="logo"></a>
-                            <h3><%= t('pages.services.details.banner.titleLine1') %> <span><%= t('pages.services.details.banner.titleBrand') %></span></h3>
-                            <p><%= t('pages.services.details.banner.description') %></p>
-                            <h2 class="discount"><span>-60%</span> <%= t('pages.services.details.banner.discountSuffix') %></h2>
-                            <a href="/contact" class="default-btn"><%= t('pages.services.details.banner.cta') %></a>
+                            <h3><%= t('pages.services.details.banner.titleLine1', 'Plan your') %> <span><%= t('pages.services.details.banner.titleBrand', 'accessible ride') %></span></h3>
+                            <p><%= t('pages.services.details.banner.description', 'Tell us if you need a hoist, extra time for transfers, or a companion seat—we adapt the trip.') %></p>
+                            <h2 class="discount"><span>24/7</span> <%= t('pages.services.details.banner.discountSuffix', 'care & hospital dispatch') %></h2>
+                            <a href="/contact" class="default-btn"><%= t('pages.services.details.banner.cta', 'Contact dispatch') %></a>
                         </div>
                     </div>
                     <div class="sidebar-widget">
                         <div class="widget-title">
-                            <h3><%= t('pages.services.details.tagsTitle') %></h3>
+                            <h3><%= t('pages.services.details.tagsTitle', 'Tags') %></h3>
                         </div>
                         <ul class="tags">
-                            <% const tags = service && Array.isArray(service.tags) && service.tags.length ? service.tags : [t('pages.users.services.details.business', 'business'), t('pages.users.services.details.marketing', 'marketing'), t('pages.users.services.details.startup', 'startup')]; %>
+                            <% const tags = service && Array.isArray(service.tags) && service.tags.length ? service.tags : [t('pages.users.services.details.business', 'handicap transport'), t('pages.users.services.details.marketing', 'wheelchair taxi'), t('pages.users.services.details.startup', 'Belgium')]; %>
                             <% tags.forEach(function(tag) { %>
                                 <% var tagKey = String(tag || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); %>
                                 <li><a href="#"><%= tagKey ? t('tag.' + tagKey, tag) : tag %></a></li>

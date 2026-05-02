@@ -13,17 +13,17 @@
                             <div class="slider-content text-center pb-60">
                                 <div class="slider-caption medium">
                                     <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.3s"><%= t('home.hero.tagline', 'Travel securely with us!') %></div>
+                                        <div data-animation="fade-in-bottom" data-delay="0.3s"><%= t('home.hero.tagline', 'Wheelchair-accessible taxis across Belgium.') %></div>
                                     </div>
                                 </div>
                                 <div class="slider-caption big">
                                     <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.5s"><%= t('home.hero.title', 'Book your taxi from anywhare today!') %></div>
+                                        <div data-animation="fade-in-bottom" data-delay="0.5s"><%= t('home.hero.title', 'Reliable handicap transport with adapted vehicles.') %></div>
                                     </div>
                                 </div>
                                 <div class="slider-caption small">
                                     <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.7s" data-duration="1s"><%= t('home.hero.description', 'Everything your taxi business needs is already here! taxiOfany made for taxi service companies!') %></div>
+                                        <div data-animation="fade-in-bottom" data-delay="0.7s" data-duration="1s"><%= t('home.hero.description', 'Taxiofany specialises in wheelchair-accessible transport. Our adapted vehicles—low-floor entry, side ramps, wheelchair lifts and 4-point restraints—are driven by trained accessibility specialists. We also provide business and regular taxi transport. TFlex/Mutuelle billing on request.') %></div>
                                     </div>
                                 </div>
                                 <div class="slider-btn">
@@ -54,8 +54,8 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="section-heading mb-30">
-                        <h4><span></span><%= t('home.booking.onlineBooking', 'Online Booking') %></h4>
-                        <h2 class="white"><%= t('home.booking.bookTaxiRide', 'Book Your Taxi Ride') %></h2>
+                        <h4><span></span><%= t('home.booking.onlineBooking', 'Online booking') %></h4>
+                        <h2 class="white"><%= t('home.booking.bookTaxiRide', 'Book your accessible ride') %></h2>
                     </div>
                     <form action="<%= wl('/book-taxi') %>" method="post" id="book-taxi-ride" data-booking-authed="<%= bookingAuthed ? '1' : '0' %>">
                         <div class="booking-form">
@@ -98,22 +98,22 @@
                             </div>
                             <div class="form-field">
                                 <i class="las la-map-marker"></i>
-                                <input type="text" id="start-dest" name="start-dest" class="form-control" placeholder="<%= t('home.booking.startDestination', 'Start Destination') %>" required>
+                                <input type="text" id="start-dest" name="start-dest" class="form-control" placeholder="<%= t('home.booking.startDestination', 'Pickup address') %>" required>
                             </div>
                             <div class="form-field">
                                 <i class="las la-map-marker"></i>
-                                <input type="text" id="end-dest" name="end-dest" class="form-control" placeholder="<%= t('home.booking.endDestination', 'End Destination') %>" required>
+                                <input type="text" id="end-dest" name="end-dest" class="form-control" placeholder="<%= t('home.booking.endDestination', 'Drop-off address') %>" required>
                             </div>
                             <div class="form-field">
                                 <i class="las la-calendar"></i>
-                                <input type="text" id="ride-date" name="ride-date" class="form-control date-picker" placeholder="<%= t('home.booking.selectDate', 'Select Date') %>" required>
+                                <input type="text" id="ride-date" name="ride-date" class="form-control date-picker" placeholder="<%= t('home.booking.selectDate', 'Ride date') %>" required>
                             </div>
                             <div class="form-field">
                                 <i class="las la-clock"></i>
-                                <input type="text" id="ride-time" name="ride-time" class="form-control time-picker" placeholder="<%= t('home.booking.selectTime', 'Select Time') %>" required>
+                                <input type="text" id="ride-time" name="ride-time" class="form-control time-picker" placeholder="<%= t('home.booking.selectTime', 'Ride time') %>" required>
                             </div>
                             <div class="form-field">
-                                <button id="submit" class="default-btn" type="submit"><%= t('home.booking.submit', 'Book Your Taxi') %></button>
+                                <button id="submit" class="default-btn" type="submit"><%= t('home.booking.submit', 'Request ride') %></button>
                             </div>
                         </div>
                         <div id="form-messages" class="alert" role="alert"></div>
@@ -130,9 +130,9 @@
         <div class="bg-half"></div>
         <div class="container">
             <div class="section-heading text-center mb-40 wow fade-in-bottom" data-wow-delay="200ms">
-                <h4><span></span><%= t('home.services.eyebrow') %></h4>
-                <h2 class="white"><%= t('home.services.titleStart') %><br><%= t('home.services.titleEnd') %></h2>
-                <p><%= t('home.services.description') %></p>
+                <h4><span></span><%= t('home.services.eyebrow', 'What we offer') %></h4>
+                <h2 class="white"><%= t('home.services.titleStart', 'Handicap transport first') %><br><%= t('home.services.titleEnd', '—then business & regular taxi') %></h2>
+                <p><%= t('home.services.description', 'Primary: wheelchair-accessible vans with ramps, lifts and secure restraint systems. Secondary: executive business transport and everyday taxi rides. Airport and medical-appointment transfers welcome.') %></p>
             </div>
             <!--/.section-heading-->
             <% if (homeServices.length) { %>
@@ -157,9 +157,9 @@
                                     <% if (carImg) { %><div class="service-car"><img src="<%= carImg %>" alt=""></div><% } %>
                                 </div>
                                 <div class="service-content">
-                                    <h3><a href="<%= serviceHref %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.regularTransport')) : (item.title || t('home.services.regularTransport')) %></a></h3>
-                                    <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || t('home.services.itemDescription')) : (item.shortDescription || item.description || t('home.services.itemDescription')) %></p>
-                                    <a class="read-more" href="<%= serviceHref %>"><%= t('home.services.readMore') %></a>
+                                    <h3><a href="<%= serviceHref %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.handicapTransport', 'Handicap Transport')) : (item.title || t('home.services.handicapTransport', 'Handicap Transport')) %></a></h3>
+                                    <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) : (item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) %></p>
+                                    <a class="read-more" href="<%= serviceHref %>"><%= t('home.services.readMore', 'Read more') %></a>
                                 </div>
                             </div>
                         </div>
@@ -183,17 +183,17 @@
             <div class="row align-items-center">
                 <div class="col-lg-4">
                     <div class="cta-content">
-                        <h4><%= t('home.cta.serviceLabel') %></h4>
-                        <h2><%= t('home.cta.feelYourJourney') %></h2>
-                        <a href="/book-taxi" class="default-btn"><%= t('home.cta.bookTaxiBtn') %></a>
+                        <h4><%= t('home.cta.serviceLabel', 'Taxiofany accessible transport') %></h4>
+                        <h2><%= t('home.cta.feelYourJourney', 'Move with confidence') %></h2>
+                        <a href="/book-taxi" class="default-btn"><%= t('home.cta.bookTaxiBtn', 'Book accessible ride') %></a>
                     </div>
                 </div>
                 <div class="col-lg-5">
                     <ul class="check-list">
-                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item1') %></li>
-                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item2') %></li>
-                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item3') %></li>
-                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item4') %></li>
+                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item1', 'Ramp- and lift-equipped vans') %></li>
+                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item2', 'Drivers trained for wheelchair transfers') %></li>
+                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item3', 'TFlex / Mutuelle paperwork on request') %></li>
+                        <li><i class="las la-arrow-right"></i><%= t('home.cta2.item4', '24/7 dispatch for care & hospital rides') %></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
@@ -207,20 +207,20 @@
     <section class="pricing-section bg-grey bd-bottom padding">
         <div class="container">
             <div class="section-heading text-center mb-40 wow fade-in-bottom" data-wow-delay="200ms">
-                <h4><span></span><%= t('home.pricing.eyebrow') %></h4>
-                <h2><%= t('home.pricing.title') %></h2>
-                <p><%= t('home.pricing.description') %></p>
+                <h4><span></span><%= t('home.pricing.eyebrow', 'Our fleet') %></h4>
+                <h2><%= t('home.pricing.title', 'Adapted vans & accessible taxis') %></h2>
+                <p><%= t('home.pricing.description', 'Explore wheelchair-accessible vehicles with ramps or lifts, plus business and standard taxis.') %></p>
             </div>
             <!--/.section-heading-->
             <ul class="nav pricing-tab-menu" id="pricing-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="hybrid-taxi" data-bs-toggle="tab" data-bs-target="#hybrid-taxi-content" type="button" role="tab" aria-controls="hybrid-taxi-content" aria-selected="true"><%= t('pages.users.home.modern.hybrid_taxi', 'Hybrid Taxi') %></button>
+                    <button class="nav-link active" id="hybrid-taxi" data-bs-toggle="tab" data-bs-target="#hybrid-taxi-content" type="button" role="tab" aria-controls="hybrid-taxi-content" aria-selected="true"><%= t('pages.users.home.modern.hybrid_taxi', 'Wheelchair vans') %></button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="town-taxt" data-bs-toggle="tab" data-bs-target="#town-taxi-content" type="button" role="tab" aria-controls="town-taxi-content" aria-selected="false"><%= t('pages.users.home.modern.town_taxi', 'Town Taxi') %></button>
+                    <button class="nav-link" id="town-taxt" data-bs-toggle="tab" data-bs-target="#town-taxi-content" type="button" role="tab" aria-controls="town-taxi-content" aria-selected="false"><%= t('pages.users.home.modern.town_taxi', 'Business transport') %></button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="limousine-taxi" data-bs-toggle="tab" data-bs-target="#limousine-taxi-content" type="button" role="tab" aria-controls="limousine-taxi-content" aria-selected="false"><%= t('pages.users.home.modern.limousine_taxi', 'Limousine Taxi') %></button>
+                    <button class="nav-link" id="limousine-taxi" data-bs-toggle="tab" data-bs-target="#limousine-taxi-content" type="button" role="tab" aria-controls="limousine-taxi-content" aria-selected="false"><%= t('pages.users.home.modern.limousine_taxi', 'Regular taxi') %></button>
                 </li>
             </ul>
             <!--Tab Menu-->
@@ -264,21 +264,21 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="section-heading text-md-start mb-30">
-                        <h4 class="text-white-50" style="opacity:0.85"><span></span><%= t('home.professional.eyebrow', 'Service & reliability') %></h4>
-                        <h2 class="text-white"><%= t('home.professional.title', 'Built for safe, comfortable journeys') %></h2>
-                        <p class="text-white-50" style="opacity:0.9"><%= t('home.professional.description', 'We focus on professional drivers, clear communication, and transparent service. Book on the web when you are ready—no app required.') %></p>
+                        <h4 class="text-white-50" style="opacity:0.85"><span></span><%= t('home.professional.eyebrow', 'Accessibility first') %></h4>
+                        <h2 class="text-white"><%= t('home.professional.title', 'Handicap transport you can trust') %></h2>
+                        <p class="text-white-50" style="opacity:0.9"><%= t('home.professional.description', 'Handicap transport is our priority: adapted vehicles, trained drivers, and 24/7 dispatch for hospitals and care homes. We also provide executive business rides and everyday taxi—book on the web; no app required.') %></p>
                         <ul class="app-feature list-unstyled mt-4" style="padding-left: 0;">
                             <li class="d-flex align-items-start mb-3" style="gap: 0.75rem;">
                                 <i class="las la-shield-alt text-info" style="font-size: 1.75rem; margin-top: 0.15rem;"></i>
-                                <div><strong class="text-white d-block"><%= t('home.professional.point1', 'Punctual pickups & familiar routes') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point1sub', 'Plan your trip with confidence and reliable scheduling.') %></span></div>
+                                <div><strong class="text-white d-block"><%= t('home.professional.point1', 'Safe wheelchair transfers') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point1sub', 'Ramps, lifts, restraints—and drivers who know how to use them.') %></span></div>
                             </li>
                             <li class="d-flex align-items-start mb-3" style="gap: 0.75rem;">
                                 <i class="las la-user-tie text-info" style="font-size: 1.75rem; margin-top: 0.15rem;"></i>
-                                <div><strong class="text-white d-block"><%= t('home.professional.point2', 'Licensed drivers & maintained vehicles') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point2sub', 'Safety and comfort on every trip.') %></span></div>
+                                <div><strong class="text-white d-block"><%= t('home.professional.point2', 'TFlex & Mutuelle billing') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point2sub', 'Ask about reimbursement paperwork when you book.') %></span></div>
                             </li>
                             <li class="d-flex align-items-start" style="gap: 0.75rem;">
                                 <i class="las la-file-invoice-dollar text-info" style="font-size: 1.75rem; margin-top: 0.15rem;"></i>
-                                <div><strong class="text-white d-block"><%= t('home.professional.point3', 'Clear pricing & straightforward booking') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point3sub', 'Request a ride in minutes on the web—no app download needed.') %></span></div>
+                                <div><strong class="text-white d-block"><%= t('home.professional.point3', 'Business & regular taxi too') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point3sub', 'Same booking flow—choose handicap, business or regular transport.') %></span></div>
                             </li>
                         </ul>
                         <div class="mt-4">
@@ -297,9 +297,9 @@
     <section class="team-section padding">
         <div class="container">
             <div class="section-heading text-center mb-40 wow fade-in-bottom" data-wow-delay="200ms">
-                <h4><span></span><%= t('home.pricing.eyebrow') %></h4>
-                <h2><%= t('home.team.title', 'Our Expert Drivers') %></h2>
-                <p><%= t('home.team.description', 'We successfully cope with tasks of varying complexity, provide long-term guarantees and regularly master new technologies.') %></p>
+                <h4><span></span><%= t('home.pricing.eyebrow', 'Our fleet') %></h4>
+                <h2><%= t('home.team.title', 'Drivers trained for accessibility') %></h2>
+                <p><%= t('home.team.description', 'Our team is trained in safe wheelchair transfers, securing mobility aids, and calm communication with passengers and caregivers.') %></p>
             </div>
             <div class="row">
                 <% const teamDrivers = typeof drivers !== 'undefined' && Array.isArray(drivers) ? drivers : []; %>
@@ -318,9 +318,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="section-heading mb-10">
-                        <h4><span></span><%= t('home.testimonial.eyebrow') %></h4>
-                        <h2><%= t('home.testimonial.title') %></h2>
-                        <p><%= t('home.testimonial.description') %></p>
+                        <h4><span></span><%= t('home.testimonial.eyebrow', 'Passenger stories') %></h4>
+                        <h2><%= t('home.testimonial.title', 'Trusted for accessible rides') %></h2>
+                        <p><%= t('home.testimonial.description', 'Families and caregivers rely on Taxiofany for dignified, on-time handicap transport across Belgium.') %></p>
                     </div>
                     <div class="swiper-outside testi-pagination">
                         <div class="testimonial-carousel">
@@ -334,9 +334,9 @@
                 <div class="col-lg-6">
                     <div class="feature-wrap">
                         <div class="section-heading mb-30 wow fade-in-right" data-wow-delay="200ms">
-                            <h4 class="white"><span></span><%= t('home.features.eyebrow') %></h4>
-                            <h2 class="white"><%= t('home.features.title') %></h2>
-                            <p class="white"><%= t('home.features.description') %></p>
+                            <h4 class="white"><span></span><%= t('home.features.eyebrow', 'Why Taxiofany') %></h4>
+                            <h2 class="white"><%= t('home.features.title', 'Built around accessibility') %></h2>
+                            <p class="white"><%= t('home.features.description', 'Ramp- and lift-equipped vans, 4-point wheel restraint systems, caregiver seating, and dispatch that understands medical and care-home schedules.') %></p>
                         </div>
                         <!--/.section-heading-->
                         <ul class="taxiofany-features">
@@ -345,8 +345,8 @@
                                     <i class="las la-gem"></i>
                                 </div>
                                 <div class="feature-content">
-                                    <h3><%= t('home.features.safeGuarantee') %></h3>
-                                    <p><%= t('home.features.itemDescription') %></p>
+                                    <h3><%= t('home.features.safeGuarantee', 'Trained for safe transfers') %></h3>
+                                    <p><%= t('home.features.itemDescription', 'Drivers practiced in boarding, securing wheelchairs, and assisting passengers with reduced mobility.') %></p>
                                 </div>
                             </li>
                             <li class="wow fade-in-right" data-wow-delay="400ms">
@@ -354,8 +354,8 @@
                                     <i class="las la-taxi"></i>
                                 </div>
                                 <div class="feature-content">
-                                    <h3><%= t('home.features.fastPickups') %></h3>
-                                    <p><%= t('home.features.itemDescription') %></p>
+                                    <h3><%= t('home.features.fastPickups', 'Hospital & care-home rides') %></h3>
+                                    <p><%= t('home.features.itemDescription', 'Drivers practiced in boarding, securing wheelchairs, and assisting passengers with reduced mobility.') %></p>
                                 </div>
                             </li>
                             <li class="wow fade-in-right" data-wow-delay="500ms">
@@ -363,8 +363,8 @@
                                     <i class="las la-tachometer-alt"></i>
                                 </div>
                                 <div class="feature-content">
-                                    <h3><%= t('home.features.quickRide') %></h3>
-                                    <p><%= t('home.features.itemDescription') %></p>
+                                    <h3><%= t('home.features.quickRide', 'Adapted vehicles') %></h3>
+                                    <p><%= t('home.features.itemDescription', 'Drivers practiced in boarding, securing wheelchairs, and assisting passengers with reduced mobility.') %></p>
                                 </div>
                             </li>
                         </ul>
@@ -379,9 +379,9 @@
     <section class="blog-section bg-grey padding">
         <div class="container">
             <div class="section-heading text-center mb-40 wow fade-in-bottom" data-wow-delay="200ms">
-                <h4><span></span><%= t('home.blog.eyebrow') %></h4>
-                <h2><%= t('home.blog.title') %></h2>
-                <p><%= t('home.blog.description') %></p>
+                <h4><span></span><%= t('home.blog.eyebrow', 'Mobility news') %></h4>
+                <h2><%= t('home.blog.title', 'Insights on accessible transport') %></h2>
+                <p><%= t('home.blog.description', 'Updates on handicap transport, vehicle adaptations, and travelling safely in Belgium.') %></p>
             </div>
             <% if (homeBlogPosts.length) { %>
             <div class="row grid-post">
@@ -397,7 +397,7 @@
                         </div>
                         <div class="post-content-wrap">
                             <ul class="post-meta">
-                                <li><i class="las la-calendar"></i><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(locale || 'en') : t('common.emDash', '—') %></li>
+                                <li><i class="las la-calendar"></i><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(locale || 'nl') : t('common.emDash', '—') %></li>
                                 <li><i class="las la-user"></i><%= post.authorName || '—' %></li>
                             </ul>
                             <div class="post-content">
@@ -405,7 +405,7 @@
                                     <a href="<%= blogHref %>" class="hover"><%= post.slug ? t('blog.' + post.slug + '.title', post.title || '') : (post.title || '') %></a>
                                 </h3>
                                 <p><%= post.slug ? t('blog.' + post.slug + '.excerpt', post.excerpt || '') : (post.excerpt || '') %></p>
-                                <a href="<%= blogHref %>" class="read-more"><%= t('home.blog.readMore') %></a>
+                                <a href="<%= blogHref %>" class="read-more"><%= t('home.blog.readMore', 'Read more') %></a>
                             </div>
                         </div>
                     </div>

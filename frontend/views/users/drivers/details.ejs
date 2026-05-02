@@ -5,9 +5,9 @@
         <div class="page-header-shape"></div>
         <div class="container">
             <div class="page-header-info">
-                <h4><%= t('pages.users.drivers.details.service_details', 'Service Details!') %></h4>
-                <h2><%= t('pages.users.drivers.details.our_expert_drivers_will', 'Our expert drivers will') %> <br><%= t('pages.users.drivers.details.make_your', 'make your') %> <span><%= t('pages.users.drivers.details.ride_safe', 'Ride Safe!') %></span></h2>
-                <p><%= t('pages.users.drivers.details.everything_your_taxi_business', 'Everything your taxi business') %> <br><%= t('pages.users.drivers.details.needs_is_already_here', 'needs is already here!') %> </p>
+                <h4><%= t('pages.users.drivers.details.service_details', 'Driver profile') %></h4>
+                <h2><%= t('pages.users.drivers.details.our_expert_drivers_will', 'Your accessibility') %> <br><%= t('pages.users.drivers.details.make_your', 'partner on the') %> <span><%= t('pages.users.drivers.details.ride_safe', 'road') %></span></h2>
+                <p><%= t('pages.users.drivers.details.everything_your_taxi_business', 'Each driver is briefed on safe boarding, restraints, and communication with') %> <br><%= t('pages.users.drivers.details.needs_is_already_here', 'passengers and caregivers—handicap transport is our daily work.') %> </p>
             </div>
         </div>
     </section>
@@ -18,24 +18,24 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="section-heading mb-40">
-                        <h4><span></span><%= t('pages.users.drivers.details.about_the_driver', 'About The Driver!') %></h4>
-                            <h2><%= driver && driver.fullName ? driver.fullName : t('pages.users.drivers.details.mauricio_fern_ndez', 'Featured Driver') %></h2>
-                            <p><%= driver && driver.bio ? driver.bio : t('pages.users.drivers.details.we_successfully_cope_with_tasks_of_varying_compl', 'Meet one of our experienced professional drivers, ready to deliver safe, reliable, and comfortable transportation across every route.') %></p>
+                        <h4><span></span><%= t('pages.users.drivers.details.about_the_driver', 'About the driver') %></h4>
+                            <h2><%= driver && driver.fullName ? driver.fullName : t('pages.users.drivers.details.mauricio_fern_ndez', 'Featured driver') %></h2>
+                            <p><%= driver && driver.bio ? driver.bio : t('pages.users.drivers.details.we_successfully_cope_with_tasks_of_varying_compl', 'This Taxiofany driver specialises in wheelchair-accessible transport—safe transfers, calm assistance, and routes planned around hospitals, therapies and daily needs.') %></p>
                     </div>
                     <ul class="about-info">
                         <li>
-                            <img class="owner-thumb" src="<%= driver && driver.image ? driver.image : '/assets/img/profile-avatar.svg' %>" alt="<%= t('drivers.card.alt', 'driver') %>">
+                            <img class="owner-thumb" src="<%= driver && driver.image ? driver.image : '/assets/img/profile-avatar.svg' %>" alt="<%= t('drivers.card.alt', 'Accessibility-trained driver') %>">
                             <div class="owner">
-                                    <h4><%= driver && driver.roleTitle ? driver.roleTitle : t('pages.users.drivers.details.founder_ceo', 'Professional Driver') %></h4>
+                                    <h4><%= driver && driver.roleTitle ? driver.roleTitle : t('pages.users.drivers.details.founder_ceo', 'Accessibility-trained driver') %></h4>
                                 <span class="signature"><%= t('drivers.signatureText', 'Taxiofany') %></span>
                             </div>
                         </li>
                         <li>
-                                <h2><span><%= t('pages.users.drivers.details.call_for_taxi', 'Call For Taxi') %></span><a href="tel:<%= driver && driver.phone ? driver.phone.replace(/[^\d+]/g, '') : '+32484262105'.replace(/[^\d+]/g, '') %>"><%= driver && driver.phone ? driver.phone : t('header.fallbackPhone', '+32484262105') %></a></h2>
+                                <h2><span><%= t('pages.users.drivers.details.call_for_taxi', 'Call for accessible transport') %></span><a href="tel:<%= driver && driver.phone ? driver.phone.replace(/[^\d+]/g, '') : '+32484262105'.replace(/[^\d+]/g, '') %>"><%= driver && driver.phone ? driver.phone : t('header.fallbackPhone', '+32484262105') %></a></h2>
                         </li>
                     </ul>
                         <ul class="taxi-features mt-30">
-                            <li><span><i class="las la-taxi"></i><%= t('pages.users.drivers.details.vehicle', 'Vehicle:') %></span> <%= driver && driver.carType ? driver.carType : t('drivers.fallback.vehicle', 'Executive Taxi') %></li>
+                            <li><span><i class="las la-taxi"></i><%= t('pages.users.drivers.details.vehicle', 'Vehicle:') %></span> <%= driver && driver.carType ? driver.carType : t('drivers.fallback.vehicle', 'Wheelchair-access van') %></li>
                             <li><span><i class="las la-id-card"></i><%= t('pages.users.drivers.details.plate', 'Plate:') %></span> <%= driver && driver.plateNumber ? driver.plateNumber : t('drivers.fallback.plate', 'Assigned on dispatch') %></li>
                             <li><span><i class="las la-language"></i><%= t('pages.users.drivers.details.languages', 'Languages:') %></span> <%= driver && driver.languages ? driver.languages : t('drivers.fallback.languages', 'English') %></li>
                             <li><span><i class="las la-user-clock"></i><%= t('pages.users.drivers.details.experience', 'Experience:') %></span> <%= driver ? Number(driver.experienceYears || 0) : 0 %> <%= t('pages.users.drivers.details.years', 'years') %></li>
@@ -45,9 +45,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="driver-details">
-                            <img src="<%= driver && driver.detailImage ? driver.detailImage : '/assets/img/professional-driver.svg' %>" alt="<%= t('drivers.card.alt', 'driver') %>">
+                            <img src="<%= driver && driver.detailImage ? driver.detailImage : '/assets/img/professional-driver.svg' %>" alt="<%= t('drivers.card.alt', 'Accessibility-trained driver') %>">
                         <div class="experience-box">
-                                <h3><span><%= driver ? Number(driver.experienceYears || 0) : 0 %>+</span><%= t('pages.users.drivers.details.years_of', 'Years Of') %> <br> <%= t('pages.users.drivers.details.experiences', 'Experiences!') %></h3>
+                                <h3><span><%= driver ? Number(driver.experienceYears || 0) : 0 %>+</span><%= t('pages.users.drivers.details.years_of', 'Years of') %> <br> <%= t('pages.users.drivers.details.experiences', 'accessible transport') %></h3>
                         </div>
                     </div>
                 </div>
@@ -60,19 +60,19 @@
     <section class="team-section padding">
         <div class="container">
             <div class="section-heading text-center mb-40">
-                <h4><span></span><%= t('pages.users.drivers.details.more_drivers', 'More Drivers') %></h4>
-                <h2><%= t('pages.users.drivers.details.meet_other_available_drivers', 'Meet Other Available Drivers') %></h2>
+                <h4><span></span><%= t('pages.users.drivers.details.more_drivers', 'More drivers') %></h4>
+                <h2><%= t('pages.users.drivers.details.meet_other_available_drivers', 'Meet other accessibility-trained drivers') %></h2>
             </div>
             <div class="row">
                 <% relatedDrivers.forEach(function(item) { %>
                     <div class="col-lg-4 col-md-6 padding-15">
                         <div class="team-item">
                             <div class="team-thumb">
-                                <img src="<%= item.image || '/assets/img/professional-driver.svg' %>" alt="<%= t('drivers.card.alt', 'driver') %>">
+                                <img src="<%= item.image || '/assets/img/professional-driver.svg' %>" alt="<%= t('drivers.card.alt', 'Accessibility-trained driver') %>">
                             </div>
                             <div class="team-content">
                                 <h3><a href="/drivers/details/<%= encodeURIComponent(item.slug) %>"><%= item.fullName || '' %></a></h3>
-                                <h4><%= item.carType || (item.roleTitle || t('drivers.fallback.roleTitle', 'Professional Driver')) %></h4>
+                                <h4><%= item.carType || (item.roleTitle || t('drivers.fallback.roleTitle', 'Accessibility-trained driver')) %></h4>
                             </div>
                         </div>
                     </div>
@@ -85,9 +85,9 @@
     <section class="testimonial-section-2 bg-grey padding">
         <div class="container">
             <div class="section-heading text-center mb-40">
-                <h4><span></span><%= t('pages.users.drivers.details.clients_testimonial', 'Clients Testimonial') %></h4>
-                <h2><%= t('pages.users.drivers.details.taxiofany_passenger_reviews', 'taxiOfany Passenger Reviews...') %></h2>
-                <p><%= t('pages.users.company.about-company.we_successfully_cope_with_tasks_of_varying_compl', 'We successfully cope with tasks of varying complexity, provide long-term') %> <br> <%= t('pages.users.drivers.details.guarantees_and_regularly_master_technologies', 'guarantees and regularly master technologies.') %></p>
+                <h4><span></span><%= t('pages.users.drivers.details.clients_testimonial', 'Passenger feedback') %></h4>
+                <h2><%= t('pages.users.drivers.details.taxiofany_passenger_reviews', 'What riders say about Taxiofany') %></h2>
+                <p><%= t('pages.users.company.about-company.we_successfully_cope_with_tasks_of_varying_compl', 'Families trust our drivers for punctual') %> <br> <%= t('pages.users.drivers.details.guarantees_and_regularly_master_technologies', 'handicap transport—kind help at every step.') %></p>
             </div>
             <div class="swiper-outside testi-pagination">
                 <div class="testimonial-carousel-2 swiper-container">
