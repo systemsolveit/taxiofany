@@ -4,7 +4,7 @@
  */
 const EXACT_PATHS = new Set(['/404']);
 
-const PREFIXES = ['/account', '/bookings', '/emails', '/profile'];
+const PREFIXES = ['/account', '/bookings', '/emails', '/profile', '/drivers'];
 
 function normalizePath(url) {
   const raw = String(url || '').trim();

@@ -1,25 +1,19 @@
 const carsApi = require('./carsApi');
-const driversApi = require('./driversApi');
 const { asArray, warnDev } = require('./apiListUtils');
 
 /**
- * Published cars & drivers for public pages (user API enforces isPublished).
+ * Published cars for public pages (user API enforces isPublished).
+ * Driver roster is not loaded for the public site.
  */
 async function loadPublicFleetData() {
-  const [carsRaw, driversRaw] = await Promise.all([
-    carsApi.listCars().catch((err) => {
-      warnDev('publicFleet cars', err);
-      return [];
-    }),
-    driversApi.listDrivers().catch((err) => {
-      warnDev('publicFleet drivers', err);
-      return [];
-    }),
-  ]);
+  const carsRaw = await carsApi.listCars().catch((err) => {
+    warnDev('publicFleet cars', err);
+    return [];
+  });
 
   return {
     cars: asArray(carsRaw),
-    drivers: asArray(driversRaw),
+    drivers: [],
   };
 }
 

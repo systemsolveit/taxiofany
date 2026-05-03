@@ -1,4 +1,3 @@
-const { loadPublicFleetData } = require('../../services/publicFleetData');
 const servicesApi = require('../../services/servicesApi');
 const blogApi = require('../../services/blogApi');
 const publicContentApi = require('../../services/publicContentApi');
@@ -23,14 +22,12 @@ async function loadLatestBlogPostsSafely(limit = 3) {
 
 exports.aboutUs = async (req, res, next) => {
   try {
-    const [fleetData, services, latestBlogPosts, testimonials] = await Promise.all([
-      loadPublicFleetData(),
+    const [services, latestBlogPosts, testimonials] = await Promise.all([
       loadPublishedServicesSafely(6),
       loadLatestBlogPostsSafely(3),
       publicContentApi.listTestimonials(6),
     ]);
     return res.render('users/company/about-us', {
-      drivers: fleetData.drivers,
       services,
       latestBlogPosts,
       testimonials,
@@ -42,14 +39,12 @@ exports.aboutUs = async (req, res, next) => {
 
 exports.aboutCompany = async (req, res, next) => {
   try {
-    const [fleetData, services, latestBlogPosts, testimonials] = await Promise.all([
-      loadPublicFleetData(),
+    const [services, latestBlogPosts, testimonials] = await Promise.all([
       loadPublishedServicesSafely(6),
       loadLatestBlogPostsSafely(3),
       publicContentApi.listTestimonials(6),
     ]);
     return res.render('users/company/about-company', {
-      drivers: fleetData.drivers,
       services,
       latestBlogPosts,
       testimonials,

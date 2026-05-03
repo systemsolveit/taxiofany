@@ -200,11 +200,7 @@
                                 <div class="form-field">
                                     <i class="las la-user-friends"></i>
                                     <select name="passengers" id="passengers" class="niceSelect">
-                                        <option value="1"><%= t('home.booking.person1', '1 person') %></option>
-                                        <option value="2"><%= t('home.booking.person2', '2 people') %></option>
-                                        <option value="3"><%= t('home.booking.person3', '3 people') %></option>
-                                        <option value="4"><%= t('home.booking.person4', '4 people') %></option>
-                                        <option value="5"><%= t('home.booking.person5', '5 people') %></option>
+                                        <%- include('../bookings/partials/passenger-select-options') %>
                                     </select>
                                 </div>
                                 <div class="form-field">
@@ -297,25 +293,6 @@
         </div>
     </section>
     <!--/.pricing-section-->
-
-    <section class="team-section padding">
-        <div class="container">
-            <div class="section-heading text-center mb-40 wow fade-in-bottom" data-wow-delay="200ms">
-                <h4><span></span><%= t('home.pricing.eyebrow') %></h4>
-                <h2><%= t('home.team.title', 'Drivers trained for accessibility') %></h2>
-                <p><%= t('home.team.description', 'Our team is trained in safe wheelchair transfers, securing mobility aids, and calm communication with passengers and caregivers. Published drivers appear below.') %></p>
-            </div>
-            <div class="row">
-                <% const teamDriversIdx = typeof drivers !== 'undefined' && Array.isArray(drivers) ? drivers : []; %>
-                <% if (teamDriversIdx.length) { teamDriversIdx.forEach(function(driver) { %>
-                    <%- include('../partials/driver-team-item', { driver: driver, t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
-                <% }); } else { %>
-                    <div class="col-12 text-center text-muted py-4"><%= t('home.team.noDrivers', 'No drivers published yet. Add drivers in the admin panel.') %></div>
-                <% } %>
-            </div>
-        </div>
-    </section>
-    <!--/.team-section-->
 
     <% const ctaBookPath = typeof withLocale === 'function' ? withLocale('/book-taxi') : '/book-taxi'; %>
     <section class="download-section bd-bottom padding" style="background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);">

@@ -23,18 +23,17 @@
                                 <div class="pricing-head-wrap">
                                     <div class="pricing-car">
                                         <img src="<%= car.image || '/assets/img/pricing-car.png' %>" alt="<%= t('taxi.carImageAlt', 'Wheelchair-accessible taxi van') %>">
-                                        <div class="price">$<%= Number(car.pricePerKm || 0).toFixed(2) %>/km</div>
+                                        <div class="price"><%= t('taxi.priceOnReservation', 'Price on reservation') %></div>
                                     </div>
                                 </div>
                                 <div class="pricing-head">
-                                    <h3><a href="/taxi/details/<%= encodeURIComponent(car.slug) %>"><%= car.title || '' %></a></h3>
-                                    <span class="location"><%= car.city || '-' %></span>
+                                    <h3><a href="/taxi/details/<%= encodeURIComponent(car.slug) %>"><%= t('car.' + car.slug + '.title', car.title || '') %></a></h3>
                                 </div>
+                                <% const carDesc = t('car.' + car.slug + '.description', car.description || ''); %>
+                                <% if (carDesc && String(carDesc).trim()) { %>
+                                    <p class="taxi-card-description sm-padding" style="padding-top:0;padding-bottom:12px;margin:0;color:#555;line-height:1.55;white-space:pre-line;"><%= carDesc %></p>
+                                <% } %>
                                 <ul class="pricing-list">
-                                    <li><%= t('pages.users.taxi.list.initial_charge', 'Initial Charge:') %> <span>$<%= Number(car.initialCharge || 0).toFixed(2) %></span></li>
-                                    <li><%= t('pages.users.taxi.list.per_mile_km', 'Per Mile/KM:') %> <span>$<%= Number(car.perMileKm || 0).toFixed(2) %></span></li>
-                                    <li><%= t('pages.users.taxi.list.per_stopped_trafic', 'Per Stopped Trafic:') %> <span>$<%= Number(car.perStoppedTraffic || 0).toFixed(2) %></span></li>
-                                    <li><%= t('pages.users.taxi.list.passengers', 'Passengers:') %> <span><%= Number(car.passengers || 0) %> <%= t('pages.users.taxi.list.4_person', 'Person') %></span></li>
                                     <li><a href="/book-taxi" class="default-btn"><%= t('pages.users.taxi.list.book_taxi_now', 'Book Taxi Now') %></a></li>
                                 </ul>
                             </div>

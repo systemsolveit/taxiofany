@@ -25,6 +25,14 @@ async function listBookingsForCustomerEmail(email) {
   return Booking.find({ customerEmail: normalized }).sort({ createdAt: -1 }).lean();
 }
 
+function normalizePassengers(value) {
+  const n = Math.floor(Number(value));
+  if (!Number.isFinite(n) || n < 1) {
+    return 1;
+  }
+  return Math.min(16, n);
+}
+
 async function createBooking(payload) {
   const bookingCode = await generateBookingCode();
   const booking = await Booking.create({
@@ -32,7 +40,7 @@ async function createBooking(payload) {
     customerName: payload.customerName,
     customerEmail: payload.customerEmail,
     packageType: payload.packageType,
-    passengers: payload.passengers,
+    passengers: normalizePassengers(payload.passengers),
     pickupLocation: payload.pickupLocation,
     destinationLocation: payload.destinationLocation,
     rideDate: payload.rideDate,

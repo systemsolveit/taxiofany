@@ -164,25 +164,6 @@
     </section>
     <!--/.testimonial-section-->
 
-    <section class="team-section padding">
-        <div class="container">
-            <div class="section-heading text-center mb-40">
-                <h4><span></span><%= t('home.pricing.eyebrow', 'Our fleet') %></h4>
-                <h2><%= t('home.team.title', 'Drivers trained for accessibility') %></h2>
-                <p><%= t('home.team.description', 'Our team is trained in safe wheelchair transfers, securing mobility aids, and calm communication with passengers and caregivers.') %></p>
-            </div>
-            <div class="row">
-                <% const aboutDrivers = typeof drivers !== 'undefined' && Array.isArray(drivers) ? drivers : []; %>
-                <% if (aboutDrivers.length) { aboutDrivers.forEach(function(driver) { %>
-                    <%- include('../partials/driver-team-item', { driver: driver, t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
-                <% }); } else { %>
-                    <div class="col-12 text-center text-muted py-4"><%= t('home.team.noDrivers', 'No drivers published yet. Add drivers in the admin panel.') %></div>
-                <% } %>
-            </div>
-        </div>
-    </section>
-    <!--/.team-section-->
-
     <section class="cta-section-2 padding">
         <div class="container">
             <div class="row align-items-center">

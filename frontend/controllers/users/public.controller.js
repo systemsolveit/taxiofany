@@ -39,13 +39,11 @@ exports.home = async (req, res, next) => {
       publicContentApi.listTestimonials(6),
     ]);
     const cars = sortByLatestCreated(fleetData.cars);
-    const drivers = sortByLatestCreated(fleetData.drivers);
     const servicesSorted = sortByLatestCreated(services);
     const pricingTabs = splitCarsForPricingTabs(cars, 3);
 
     return res.render('users/home/index', {
       cars,
-      drivers,
       services: servicesSorted,
       blogPosts,
       testimonials,
@@ -65,12 +63,10 @@ exports.modernHome = async (req, res, next) => {
       publicContentApi.listTestimonials(6),
     ]);
     const cars = sortByLatestCreated(fleetData.cars);
-    const drivers = sortByLatestCreated(fleetData.drivers);
     const servicesSorted = sortByLatestCreated(services);
     const pricingTabs = splitCarsForPricingTabs(cars, 3);
     return res.render('users/home/modern', {
       cars,
-      drivers,
       services: servicesSorted,
       blogPosts,
       testimonials,

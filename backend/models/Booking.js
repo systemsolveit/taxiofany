@@ -25,6 +25,7 @@ const bookingSchema = new Schema(
     passengers: {
       type: Number,
       min: 1,
+      max: 16,
       default: 1,
     },
     pickupLocation: {

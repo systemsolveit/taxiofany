@@ -1,5 +1,6 @@
 const { connectDatabase, mongoose } = require('../config/database');
 const { Translation, Locale } = require('../models');
+const defaultCarI18n = require('./data/default-car-i18n');
 
 /** English UI copy aligned with public marketing “handicap transport first” positioning. */
 const entries = {
@@ -90,6 +91,8 @@ const entries = {
   'booking.package.regular': 'Regular transport',
   'booking.package.business': 'Business transport',
   'booking.package.handicap': 'Handicap transport',
+  'booking.passengersWordOne': 'person',
+  'booking.passengersWordMany': 'people',
   'home.hero.tagline': 'Wheelchair-accessible taxis across Belgium.',
   'home.hero.title': 'Reliable handicap transport with adapted vehicles.',
   'home.hero.description':
@@ -573,7 +576,9 @@ const entries = {
   'common.no': 'No',
   'taxi.carImageAlt': 'Wheelchair-accessible taxi',
   'taxi.imageAlt': 'Accessible taxi or van',
+  'taxi.priceOnReservation': 'Price on reservation',
   'service.imageAlt': 'Accessible transport service',
+  ...defaultCarI18n.en,
 };
 
 async function ensureLocale() {

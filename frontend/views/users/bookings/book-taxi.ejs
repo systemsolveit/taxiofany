@@ -51,11 +51,7 @@
                             <div class="form-field">
                                 <i class="las la-user-friends"></i>
                                 <select name="passengers" id="passengers" class="niceSelect">
-                                    <option value="1"><%= t('pages.users.bookings.book-taxi.1_person', '1 Person') %></option>
-                                    <option value="2"><%= t('pages.users.bookings.book-taxi.2_person', '2 Person') %></option>
-                                    <option value="3"><%= t('pages.users.bookings.book-taxi.3_person', '3 Person') %></option>
-                                    <option value="4"><%= t('pages.users.bookings.book-taxi.4_person', '4 Person') %></option>
-                                    <option value="5"><%= t('pages.users.bookings.book-taxi.5_person', '5 Person') %></option>
+                                    <%- include('partials/passenger-select-options') %>
                                 </select>
                             </div>
                             <div class="form-field">

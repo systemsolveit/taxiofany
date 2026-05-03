@@ -1,5 +1,6 @@
 const { connectDatabase, mongoose } = require('../config/database');
 const { Translation, Locale } = require('../models');
+const defaultCarI18n = require('./data/default-car-i18n');
 
 /** French UI copy aligned with public marketing “handicap transport first” positioning. */
 const entries = {
@@ -91,6 +92,8 @@ const entries = {
   'booking.package.regular': 'Transport régulier',
   'booking.package.business': 'Transport professionnel',
   'booking.package.handicap': 'Transport handicap',
+  'booking.passengersWordOne': 'personne',
+  'booking.passengersWordMany': 'personnes',
   'home.hero.tagline': 'Taxis accessibles aux fauteuils roulants partout en Belgique.',
   'home.hero.title': 'Transport handicap fiable avec véhicules adaptés.',
   'home.hero.description':
@@ -603,7 +606,9 @@ const entries = {
   'common.no': 'Non',
   'taxi.carImageAlt': 'Taxi accessible fauteuil',
   'taxi.imageAlt': 'Taxi ou véhicule accessible',
+  'taxi.priceOnReservation': 'Tarif sur réservation',
   'service.imageAlt': 'Service de transport accessible',
+  ...defaultCarI18n.fr,
 };
 
 async function ensureLocale() {

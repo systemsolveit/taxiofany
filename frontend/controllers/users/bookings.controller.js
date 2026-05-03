@@ -72,7 +72,7 @@ exports.submitBooking = async (req, res) => {
       customerName: String(req.body['full-name'] || '').trim(),
       customerEmail: String(req.body.email || '').trim().toLowerCase(),
       packageType: String(req.body['package-type'] || '').trim(),
-      passengers: Number(req.body.passengers || 1),
+      passengers: Math.min(16, Math.max(1, Math.floor(Number(req.body.passengers) || 1))),
       pickupLocation: String(req.body['start-dest'] || '').trim(),
       destinationLocation: String(req.body['end-dest'] || '').trim(),
       rideDate: combineRideDate(requestedDateText, rideTime),

@@ -19,23 +19,16 @@
                 <div class="col-lg-6">
                     <div class="taxi-details-img">
                         <img src="<%= car && car.detailImage ? car.detailImage : '/assets/img/car-2.png' %>" alt="<%= t('taxi.imageAlt', 'Accessible taxi or van') %>">
-                        <div class="price"><i class="las la-tachometer-alt"></i>$<%= car ? Number(car.pricePerKm || 0).toFixed(2) : '0.00' %>/km</div>
+                        <div class="price"><i class="las la-calendar-check"></i><%= t('taxi.priceOnReservation', 'Price on reservation') %></div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="section-heading">
                         <h4><span></span><%= t('pages.users.taxi.details.introducing', 'Fleet highlight') %></h4>
-                        <h2><%= car && car.title ? car.title : t('pages.users.taxi.details.mercedes_maybach_haute_voiture_2024', 'Renault Trafic Access (example)') %></h2>
-                        <p><%= car && car.description ? car.description : t('pages.users.taxi.details.we_successfully_cope_with_tasks_of_varying_compl', 'Example spec: lowered floor, side ramp or rear lift, ISO-fixed wheelchair positions, 4-point straps, companion seating and climate control for comfortable medical and daily journeys across Belgium.') %></p>
+                        <h2><%= car && car.slug ? t('car.' + car.slug + '.title', car.title || '') : t('pages.users.taxi.details.mercedes_maybach_haute_voiture_2024', 'Renault Trafic Access (example)') %></h2>
+                        <% const detailDesc = car && car.slug ? t('car.' + car.slug + '.description', car.description || '') : ''; %>
+                        <p style="white-space:pre-line;"><%= detailDesc && String(detailDesc).trim() ? detailDesc : t('pages.users.taxi.details.we_successfully_cope_with_tasks_of_varying_compl', 'Example spec: lowered floor, side ramp or rear lift, ISO-fixed wheelchair positions, 4-point straps, companion seating and climate control for comfortable medical and daily journeys across Belgium.') %></p>
                     </div>
-                    <ul class="taxi-features">
-                        <li><span><i class="las la-taxi"></i><%= t('pages.users.taxi.details.car_id', 'Car ID:') %></span> <%= car && car._id ? String(car._id).slice(-6).toUpperCase() : 'N/A' %></li>
-                        <li><span><i class="las la-compass"></i><%= t('pages.users.taxi.details.transmission', 'Transmission:') %></span> <%= car && car.transmission ? car.transmission : t('pages.users.taxi.details.auto', 'Auto') %></li>
-                        <li><span><i class="las la-route"></i><%= t('pages.users.taxi.details.mileage', 'Mileage:') %></span> <%= car && car.mileage ? car.mileage : t('pages.users.taxi.details.170k', 'Fleet-maintained') %></li>
-                        <li><span><i class="las la-tools"></i><%= t('pages.users.taxi.details.engine', 'Powertrain:') %></span> <%= car && car.engine ? car.engine : t('pages.users.taxi.details.6_5l_lp_petrol', 'Euro diesel / hybrid (region-dependent)') %></li>
-                        <li><span><i class="las la-sync"></i><%= t('pages.users.taxi.details.air_condition', 'Air Condition:') %></span> <%= car && car.airCondition ? t('common.yes', 'Yes') : t('common.no', 'No') %></li>
-                        <li><span><i class="las la-briefcase"></i><%= t('pages.users.taxi.details.luggage_carry', 'Luggage Carry:') %></span> <%= car ? Number(car.luggageCarry || 0) : 0 %></li>
-                    </ul>
                     <a href="/book-taxi" class="default-btn mt-30"><%= t('pages.users.taxi.details.book_your_ride', 'Book accessible ride') %></a>
                 </div>
             </div>
@@ -61,18 +54,17 @@
                                         <div class="pricing-head-wrap">
                                             <div class="pricing-car">
                                                 <img src="<%= item.image || '/assets/img/pricing-car.png' %>" alt="<%= t('taxi.carImageAlt', 'Wheelchair-accessible taxi van') %>">
-                                                <div class="price">$<%= Number(item.pricePerKm || 0).toFixed(2) %>/km</div>
+                                                <div class="price"><%= t('taxi.priceOnReservation', 'Price on reservation') %></div>
                                             </div>
                                         </div>
                                         <div class="pricing-head">
-                                            <h3><a href="/taxi/details/<%= encodeURIComponent(item.slug) %>"><%= item.title || '' %></a></h3>
-                                            <span class="location"><%= item.city || '-' %></span>
+                                            <h3><a href="/taxi/details/<%= encodeURIComponent(item.slug) %>"><%= t('car.' + item.slug + '.title', item.title || '') %></a></h3>
                                         </div>
+                                        <% const relDesc = t('car.' + item.slug + '.description', item.description || ''); %>
+                                        <% if (relDesc && String(relDesc).trim()) { %>
+                                            <p class="taxi-card-description sm-padding" style="padding-top:0;padding-bottom:12px;margin:0;color:#555;line-height:1.55;white-space:pre-line;"><%= relDesc %></p>
+                                        <% } %>
                                         <ul class="pricing-list">
-                                            <li><%= t('pages.users.taxi.details.initial_charge', 'Initial Charge:') %> <span>$<%= Number(item.initialCharge || 0).toFixed(2) %></span></li>
-                                            <li><%= t('pages.users.taxi.details.per_mile_km', 'Per Mile/KM:') %> <span>$<%= Number(item.perMileKm || 0).toFixed(2) %></span></li>
-                                            <li><%= t('pages.users.taxi.details.per_stopped_trafic', 'Per Stopped Trafic:') %> <span>$<%= Number(item.perStoppedTraffic || 0).toFixed(2) %></span></li>
-                                            <li><%= t('pages.users.taxi.details.passengers', 'Passengers:') %> <span><%= Number(item.passengers || 0) %> <%= t('pages.users.taxi.details.4_person', 'Person') %></span></li>
                                             <li><a href="/book-taxi" class="default-btn"><%= t('pages.users.taxi.details.book_taxi_now', 'Book ride') %></a></li>
                                         </ul>
                                     </div>
