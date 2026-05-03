@@ -616,7 +616,7 @@ button {
 }
 
 .default-btn {
-    background-color: #ff9900;
+    background-color: #1E56B8;
     border-radius: 2px;
     height: 45px;
     font-size: 16px;
@@ -633,7 +633,7 @@ button {
 
 .default-btn:after,
 .default-btn:before {
-    background-color: #222;
+    background-color: #143a85;
     content: "";
     position: absolute;
     top: 0;

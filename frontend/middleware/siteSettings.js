@@ -2,7 +2,7 @@ const { getPublicSiteSettings } = require('../services/publicSettingsApi');
 const { isHiddenFromMainNav } = require('../utils/navFilters');
 
 const FALLBACK_SETTINGS = {
-  primaryColor: '#f59e0b',
+  primaryColor: '#1E56B8',
   navbarMenu: [],
   pages: [],
   header: {

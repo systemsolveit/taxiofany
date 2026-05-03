@@ -171,7 +171,7 @@ function normalizeProvidedNotificationsSettings(payload = {}) {
   return provided;
 }
 
-function normalizeHexColor(value, fallback = '#f59e0b') {
+function normalizeHexColor(value, fallback = '#1E56B8') {
   const text = String(value || '').trim();
   if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(text)) {
     return text;
@@ -439,7 +439,7 @@ function normalizeSiteSettings(payload = {}) {
     : DEFAULT_HEADER.socialLinks.map((item, index) => normalizeSocialItem(item, index));
 
   return {
-    primaryColor: normalizeHexColor(payload.primaryColor, '#f59e0b'),
+    primaryColor: normalizeHexColor(payload.primaryColor, '#1E56B8'),
     navbarMenu,
     pages: normalizedPages,
     header: {
