@@ -44,8 +44,8 @@
 }
 
 .client-auth-card .form-control:focus {
-    border-color: var(--site-primary-color, #f59e0b);
-    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    border-color: var(--site-primary-color, #1E56B8);
+    box-shadow: 0 0 0 3px rgba(30, 86, 184, 0.22);
 }
 
 .client-auth-card label {
@@ -56,8 +56,8 @@
 }
 
 .client-auth-card .btn-primary {
-    background: var(--site-primary-color, #f59e0b);
-    border-color: var(--site-primary-color, #f59e0b);
+    background: var(--site-primary-color, #1E56B8);
+    border-color: var(--site-primary-color, #1E56B8);
     border-radius: 0.5rem;
     padding: 0.65rem 1.25rem;
     font-weight: 600;
@@ -76,7 +76,7 @@
 }
 
 .client-auth-card__footer a {
-    color: var(--site-primary-color, #f59e0b);
+    color: var(--site-primary-color, #1E56B8);
     font-weight: 600;
 }
 
@@ -202,9 +202,9 @@
 }
 
 .client-portal-nav__link.is-active {
-    background: rgba(245, 158, 11, 0.12);
+    background: rgba(30, 86, 184, 0.12);
     color: #0f172a;
-    border-color: rgba(245, 158, 11, 0.35);
+    border-color: rgba(30, 86, 184, 0.35);
     font-weight: 600;
 }
 

@@ -11,5 +11,8 @@ module.exports = {
   EmailTemplate: require('./EmailTemplate'),
   ContactSubmission: require('./ContactSubmission'),
   IntegrationSetting: require('./IntegrationSetting'),
+  Testimonial: require('./Testimonial'),
+  Package: require('./Package'),
+  BootstrapMarker: require('./BootstrapMarker'),
   ...require('./RolePermission'),
 };

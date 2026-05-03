@@ -1,4 +1,5 @@
 const driversApi = require('../../services/driversApi');
+const publicContentApi = require('../../services/publicContentApi');
 
 async function listDriversSafely() {
   try {
@@ -32,9 +33,11 @@ exports.detailsPage = async (req, res) => {
   }
 
   const relatedDrivers = drivers.filter((item) => !driver || String(item.slug) !== String(driver.slug)).slice(0, 6);
-  return res.render('users/drivers/details', { driver, relatedDrivers });
+  const testimonials = await publicContentApi.listTestimonials(6);
+  return res.render('users/drivers/details', { driver, relatedDrivers, testimonials });
 };
 
-exports.testimonialsPage = (req, res) => {
-  res.render('users/testimonials/index');
+exports.testimonialsPage = async (req, res) => {
+  const testimonials = await publicContentApi.listTestimonials(12);
+  res.render('users/testimonials/index', { testimonials });
 };

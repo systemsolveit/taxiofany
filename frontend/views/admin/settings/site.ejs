@@ -162,7 +162,7 @@
               </div>
               <div id="siteAccCColor" class="collapse" data-parent="#siteSettingsAccordion" aria-labelledby="siteAccHColor">
               <div class="card-body border-top">
-                <% const primaryColorValue = (siteSettings && siteSettings.effective && siteSettings.effective.primaryColor) || '#f59e0b'; %>
+                <% const primaryColorValue = (siteSettings && siteSettings.effective && siteSettings.effective.primaryColor) || '#1E56B8'; %>
                 <div class="form-row align-items-end">
                   <div class="form-group col-md-4">
                     <label class="d-flex align-items-center flex-wrap" for="primaryColorInput">
@@ -170,12 +170,12 @@
                       <button type="button" class="btn btn-sm site-help-btn ml-2" tabindex="0"
                         data-toggle="popover" data-trigger="hover focus" data-placement="right" data-container="body"
                         title="Primary color"
-                        data-content="Sets the CSS variable used on the public site for primary actions and accents. Use a 6-digit HEX such as #f59e0b. The color picker next to it is read-only preview."
+                        data-content="Sets the CSS variable used on the public site for primary actions and accents. Use a 6-digit HEX such as #1E56B8. The color picker next to it is read-only preview."
                         aria-label="Help: primary site color">
                         ?
                       </button>
                     </label>
-                    <input id="primaryColorInput" class="form-control" name="primaryColor" value="<%= primaryColorValue %>" placeholder="#f59e0b" autocomplete="off" aria-describedby="helpPrimaryColor">
+                    <input id="primaryColorInput" class="form-control" name="primaryColor" value="<%= primaryColorValue %>" placeholder="#1E56B8" autocomplete="off" aria-describedby="helpPrimaryColor">
                     <span id="helpPrimaryColor" class="sr-only-help">Sets public site accent color via HEX. Preview only on the swatch beside this field.</span>
                   </div>
                   <div class="form-group col-md-2">

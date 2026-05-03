@@ -20,14 +20,14 @@
             <dl class="row mb-0">
               <dt class="col-sm-4"><%= t('pages.users.bookings.details.customer', 'Customer') %></dt>
               <dd class="col-sm-8"><%= booking.customerName %></dd>
-              <dt class="col-sm-4">Email</dt>
+              <dt class="col-sm-4"><%= t('pages.users.bookings.details.email', 'Email') %></dt>
               <dd class="col-sm-8"><%= booking.customerEmail || '-' %></dd>
               <dt class="col-sm-4"><%= t('pages.users.bookings.details.pickup', 'Pickup') %></dt>
               <dd class="col-sm-8"><%= booking.pickupLocation %></dd>
               <dt class="col-sm-4"><%= t('pages.users.bookings.details.destination', 'Destination') %></dt>
               <dd class="col-sm-8"><%= booking.destinationLocation %></dd>
               <dt class="col-sm-4"><%= t('pages.users.bookings.details.package', 'Package') %></dt>
-              <dd class="col-sm-8"><%= booking.packageType || '-' %></dd>
+              <dd class="col-sm-8"><%= booking.packageType ? t('booking.package.' + String(booking.packageType).toLowerCase().replace(/[^a-z0-9]+/g, '-'), booking.packageType) : '-' %></dd>
               <dt class="col-sm-4"><%= t('pages.users.bookings.details.passengers', 'Passengers') %></dt>
               <dd class="col-sm-8"><%= booking.passengers || '-' %></dd>
               <dt class="col-sm-4"><%= t('pages.users.bookings.details.requested_date', 'Requested Date') %></dt>
@@ -35,7 +35,8 @@
               <dt class="col-sm-4"><%= t('pages.users.bookings.details.requested_time', 'Requested Time') %></dt>
               <dd class="col-sm-8"><%= booking.rideTime || '-' %></dd>
               <dt class="col-sm-4"><%= t('pages.users.bookings.details.status', 'Status') %></dt>
-              <dd class="col-sm-8"><%= booking.status || 'pending' %></dd>
+              <% const bookingStatus = booking.status || 'pending'; %>
+              <dd class="col-sm-8"><%= t('booking.status.' + String(bookingStatus).toLowerCase().replace(/[^a-z0-9]+/g, '-'), bookingStatus) %></dd>
             </dl>
           </div>
         </div>

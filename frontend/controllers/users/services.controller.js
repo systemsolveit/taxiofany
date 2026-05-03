@@ -1,4 +1,5 @@
 const servicesApi = require('../../services/servicesApi');
+const blogApi = require('../../services/blogApi');
 
 async function listServicesSafely() {
   try {
@@ -9,10 +10,23 @@ async function listServicesSafely() {
   }
 }
 
+async function listLatestBlogPostsSafely(limit = 3) {
+  try {
+    const result = await blogApi.listPosts({ page: 1, limit });
+    return result && Array.isArray(result.items) ? result.items : [];
+  } catch (error) {
+    return [];
+  }
+}
+
 exports.listPage = async (req, res) => {
-  const services = await listServicesSafely();
+  const [services, latestBlogPosts] = await Promise.all([
+    listServicesSafely(),
+    listLatestBlogPostsSafely(3),
+  ]);
   res.render('users/services/list', {
     services,
+    latestBlogPosts,
   });
 };
 

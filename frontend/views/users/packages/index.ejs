@@ -1,7 +1,46 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
-  <main>
-    <h1><%= t('pages.users.packages.packages', 'Packages') %></h1>
-    <%- include('../../shared/components/alerts', { message: message }) %>
-  </main>
+<section class="page-header">
+  <div class="page-header-shape"></div>
+  <div class="container">
+    <div class="page-header-info">
+      <h4><%= t('pages.users.packages.packages', 'Ride packages') %></h4>
+      <h2><%= t('packages.header.title', 'Handicap, business &') %> <span><%= t('packages.header.highlight', 'regular transport') %></span></h2>
+      <p><%= t('packages.header.description', 'Published packages are configured in admin—typically handicap-accessible, executive business, or standard taxi bundles.') %></p>
+    </div>
+  </div>
+</section>
+
+<section class="service-section bg-grey padding">
+  <div class="container">
+    <div class="row">
+      <% const packageItems = typeof packages !== 'undefined' && Array.isArray(packages) ? packages : []; %>
+      <% if (packageItems.length) { packageItems.forEach(function(item) { %>
+        <div class="col-lg-4 col-md-6 sm-padding">
+          <div class="service-item p-4">
+            <div class="service-content">
+              <h3><%= item.slug ? t('booking.package.' + item.slug, item.title || item.slug) : (item.title || '') %></h3>
+              <p><%= item.slug ? t('package.' + item.slug + '.summary', item.summary || '') : (item.summary || '') %></p>
+              <% if (item.priceLabel) { %>
+                <span class="badge badge-info mb-3"><%= item.slug ? t('package.' + item.slug + '.priceLabel', item.priceLabel) : item.priceLabel %></span>
+              <% } %>
+              <% if (Array.isArray(item.features) && item.features.length) { %>
+                <ul class="check-list">
+                  <% item.features.forEach(function(feature, index) { %>
+                    <li><i class="las la-arrow-right"></i><%= item.slug ? t('package.' + item.slug + '.feature.' + index, feature) : feature %></li>
+                  <% }) %>
+                </ul>
+              <% } %>
+              <a href="/book-taxi" class="read-more"><%= t('packages.bookNow', 'Book this package') %></a>
+            </div>
+          </div>
+        </div>
+      <% }); } else { %>
+        <div class="col-12">
+          <div class="alert alert-light border text-center mb-0"><%= t('packages.empty', 'No packages published yet—create handicap, business or regular bundles in the admin panel.') %></div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
   <%- include('../../shared/partials/legacy-footer') %>

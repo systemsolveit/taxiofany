@@ -2,6 +2,8 @@ const { connectDatabase, mongoose } = require('../config/database');
 const { Locale, Translation } = require('../models');
 const adminI18nService = require('../features/admin/i18n/service');
 const { entries: semanticEntries, ensureLocale } = require('./seed-ui-translations-nl');
+const { entries: enEntries, ensureLocale: ensureEnLocale } = require('./seed-ui-translations-en');
+const { entries: frEntries, ensureLocale: ensureFrLocale } = require('./seed-ui-translations-fr');
 
 async function seedSemanticEntries() {
   const operations = Object.entries(semanticEntries).map(([key, value]) => ({
@@ -15,6 +17,28 @@ async function seedSemanticEntries() {
   if (!operations.length) {
     return 0;
   }
+
+  await Translation.bulkWrite(operations, { ordered: false });
+  return operations.length;
+}
+
+async function replaceStaleBrandTranslations() {
+  const staleBrandPattern = new RegExp('r' + 'idek', 'ig');
+  const staleEntries = await Translation.find({ value: staleBrandPattern }).lean();
+  if (!staleEntries.length) {
+    return 0;
+  }
+
+  const operations = staleEntries.map((entry) => ({
+    updateOne: {
+      filter: { _id: entry._id },
+      update: {
+        $set: {
+          value: String(entry.value || '').replace(staleBrandPattern, 'taxiOfany'),
+        },
+      },
+    },
+  }));
 
   await Translation.bulkWrite(operations, { ordered: false });
   return operations.length;
@@ -80,7 +104,27 @@ async function seedExtractedEntries() {
   };
 }
 
-async function shouldBootstrapNl() {
+async function needsEnFrUiSeed() {
+  const [enLocale, frLocale, enCount, frCount] = await Promise.all([
+    Locale.findOne({ code: 'en' }).lean(),
+    Locale.findOne({ code: 'fr' }).lean(),
+    Translation.countDocuments({ locale: 'en' }),
+    Translation.countDocuments({ locale: 'fr' }),
+  ]);
+
+  if (!enLocale || enLocale.isActive === false) {
+    return true;
+  }
+  if (!frLocale || frLocale.isActive === false) {
+    return true;
+  }
+  if (enCount === 0 || frCount === 0) {
+    return true;
+  }
+  return false;
+}
+
+async function shouldRunFullNlPipeline() {
   const [localeCount, nlLocale, nlTranslationCount] = await Promise.all([
     Locale.countDocuments({}),
     Locale.findOne({ code: 'nl' }).lean(),
@@ -99,20 +143,63 @@ async function shouldBootstrapNl() {
     return true;
   }
 
+  const staleBrandTranslation = await Translation.exists({
+    value: new RegExp('r' + 'idek', 'i'),
+  });
+
+  if (staleBrandTranslation) {
+    return true;
+  }
+
   return false;
+}
+
+async function shouldBootstrapNl() {
+  return (await shouldRunFullNlPipeline()) || (await needsEnFrUiSeed());
+}
+
+async function seedLocaleDictionary(entries, localeCode) {
+  const operations = Object.entries(entries).map(([key, value]) => ({
+    updateOne: {
+      filter: { locale: localeCode, key },
+      update: { $set: { value } },
+      upsert: true,
+    },
+  }));
+
+  if (!operations.length) {
+    return 0;
+  }
+
+  await Translation.bulkWrite(operations, { ordered: false });
+  return operations.length;
 }
 
 async function bootstrapNlTranslations() {
   await ensureLocale();
 
-  const semanticCount = await seedSemanticEntries();
-  const extractedResult = await seedExtractedEntries();
+  let replacedBrandCount = 0;
+  let semanticCount = 0;
+  let extractedResult = { extractedCount: 0, translatedCount: 0 };
+
+  if (await shouldRunFullNlPipeline()) {
+    replacedBrandCount = await replaceStaleBrandTranslations();
+    semanticCount = await seedSemanticEntries();
+    extractedResult = await seedExtractedEntries();
+  }
+
+  await ensureEnLocale();
+  await ensureFrLocale();
+  const enSeeded = await seedLocaleDictionary(enEntries, 'en');
+  const frSeeded = await seedLocaleDictionary(frEntries, 'fr');
 
   return {
     locale: 'nl',
+    replacedBrandCount,
     semanticCount,
     extractedCount: extractedResult.extractedCount,
     translatedCount: extractedResult.translatedCount,
+    enFrSeeded: enSeeded + frSeeded,
   };
 }
 
@@ -122,13 +209,16 @@ async function run() {
   const result = await bootstrapNlTranslations();
 
   console.log(`Locale ${result.locale} ensured.`);
+  console.log(`Stale brand translations replaced: ${result.replacedBrandCount}`);
   console.log(`Semantic keys seeded: ${result.semanticCount}`);
   console.log(`Extracted page keys found: ${result.extractedCount}`);
   console.log(`Extracted page keys translated and saved: ${result.translatedCount}`);
+  console.log(`EN+FR UI dictionary upserts: ${result.enFrSeeded}`);
 }
 
 module.exports = {
   shouldBootstrapNl,
+  shouldRunFullNlPipeline,
   bootstrapNlTranslations,
   run,
 };

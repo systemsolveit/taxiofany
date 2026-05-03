@@ -1,75 +1,131 @@
-const { connectDatabase } = require('../config/database');
+const { connectDatabase, mongoose } = require('../config/database');
 const { Service } = require('../models');
 
+/** Canonical public services (English stored on documents; nl/fr/en overrides via Translation keys service.<slug>.*). */
 const BASE_SERVICES = [
   {
-    title: 'Regular Transport',
-    slug: 'regular-transport',
-    shortDescription: 'Reliable rides for daily city travel with transparent pricing.',
-    description: 'Our regular transport service is designed for day-to-day commuting, shopping trips, and family travel. Expect punctual pickups, clean vehicles, and route-aware drivers who optimize time and comfort.',
-    category: 'City',
-    iconClass: 'las la-taxi',
+    title: 'Handicap Transport',
+    slug: 'handicap-transport',
+    shortDescription:
+      'Wheelchair-accessible vans with ramps or lifts, trained drivers, secure restraint systems and 24/7 dispatch for hospital and care-home rides across Belgium.',
+    description:
+      'Taxiofany specialises in handicap and wheelchair-accessible transport. Our adapted fleet includes low-floor entry, side ramps and wheelchair lifts with ISO-compatible anchorage and four-point restraints. Drivers are trained for safe transfers and communication with passengers and caregivers. TFlex and Mutuelle billing paperwork can be prepared on request. We prioritise medical appointments, therapy visits and dignified daily mobility.',
+    category: 'Accessibility',
+    iconClass: 'las la-wheelchair',
     coverImage: '/assets/img/service-1.jpg',
     featureImage: '/assets/img/post-2.jpg',
     benefitsImage: '/assets/img/post-1.jpg',
+    serviceCarImage: '/assets/img/car-1.png',
     features: [
-      { iconClass: 'las la-shipping-fast', title: 'Fast Pickups', description: 'Average dispatch times tuned for urban zones.' },
-      { iconClass: 'las la-user-shield', title: 'Verified Drivers', description: 'Trained and verified professionals for safer rides.' },
-      { iconClass: 'las la-wallet', title: 'Fair Pricing', description: 'Transparent fare policy with no hidden fees.' },
+      {
+        iconClass: 'las la-ramp-loading',
+        title: 'Ramps, lifts and securement',
+        description: 'Vehicles equipped with access ramps or lifts, plus correct wheelchair tie-downs for every trip.',
+      },
+      {
+        iconClass: 'las la-user-nurse',
+        title: 'Trained accessibility drivers',
+        description: 'Crews rehearse boarding angles, restraint checks and calm assistance for reduced mobility.',
+      },
+      {
+        iconClass: 'las la-file-medical',
+        title: 'TFlex / Mutuelle on request',
+        description: 'Ask when booking—we provide confirmations and invoicing useful for many reimbursement schemes.',
+      },
     ],
-    benefitPoints: ['24/7 booking support', 'GPS tracked rides', 'Digital receipts'],
-    tags: ['city', 'daily', 'transport'],
+    benefitPoints: [
+      'Companion seating when you book ahead',
+      'Dispatch tuned for clinics, hospitals and care homes',
+      'Same booking flow as business and regular taxi',
+    ],
+    tags: ['handicap', 'wheelchair', 'Belgium'],
     displayOrder: 1,
-    isPublished: true,
-  },
-  {
-    title: 'Airport Transport',
-    slug: 'airport-transport',
-    shortDescription: 'On-time airport pickups and drop-offs with luggage support.',
-    description: 'Avoid last-minute airport stress with dedicated transfer scheduling, real-time traffic handling, and flight-aware dispatch coordination.',
-    category: 'Airport',
-    iconClass: 'las la-plane-departure',
-    coverImage: '/assets/img/service-2.jpg',
-    featureImage: '/assets/img/post-2.jpg',
-    benefitsImage: '/assets/img/post-1.jpg',
-    features: [
-      { iconClass: 'las la-clock', title: 'Scheduled in Advance', description: 'Book rides ahead to secure timing windows.' },
-      { iconClass: 'las la-suitcase-rolling', title: 'Luggage Assistance', description: 'Extra help for baggage handling when needed.' },
-      { iconClass: 'las la-route', title: 'Traffic-Optimized Routes', description: 'Dynamic route updates to keep you on schedule.' },
-    ],
-    benefitPoints: ['Terminal pickup options', 'Corporate transfer support', 'Late-night availability'],
-    tags: ['airport', 'transfer', 'travel'],
-    displayOrder: 2,
     isPublished: true,
   },
   {
     title: 'Business Transport',
     slug: 'business-transport',
-    shortDescription: 'Professional mobility solutions for teams and executives.',
-    description: 'Business transport combines punctuality, discretion, and service consistency for executive travel, partner meetings, and corporate accounts.',
+    shortDescription:
+      'Executive and corporate rides across Belgium—airport transfers, client visits and account-ready invoicing.',
+    description:
+      'Business transport delivers punctual, discreet mobility for teams and executives. Schedule airport transfers, multi-stop itineraries and recurring shuttle patterns with predictable service levels. Ideal for meetings, roadshows and airport corridors serving Brussels and regional hubs.',
     category: 'Business',
     iconClass: 'las la-briefcase',
     coverImage: '/assets/img/service-5.jpg',
     featureImage: '/assets/img/post-2.jpg',
     benefitsImage: '/assets/img/post-1.jpg',
+    serviceCarImage: '/assets/img/car-1.png',
     features: [
-      { iconClass: 'las la-calendar-check', title: 'Priority Scheduling', description: 'Service-level commitments for high-priority trips.' },
-      { iconClass: 'las la-file-invoice-dollar', title: 'Centralized Billing', description: 'Monthly billing and trip-level reporting.' },
-      { iconClass: 'las la-headset', title: 'Account Support', description: 'Dedicated assistance for corporate coordinators.' },
+      {
+        iconClass: 'las la-calendar-check',
+        title: 'Priority scheduling',
+        description: 'Book recurring routes and hold slots for critical appointments.',
+      },
+      {
+        iconClass: 'las la-plane-departure',
+        title: 'Airport and station coverage',
+        description: 'Flight-aware pickup windows and luggage-friendly vehicles.',
+      },
+      {
+        iconClass: 'las la-file-invoice-dollar',
+        title: 'Invoice-ready trips',
+        description: 'Structured confirmations for finance teams and corporate policies.',
+      },
     ],
-    benefitPoints: ['Invoice-ready reports', 'Executive comfort standards', 'Multi-user booking controls'],
-    tags: ['business', 'corporate', 'executive'],
+    benefitPoints: [
+      'Executive comfort and professional presentation',
+      'Central coordination for multiple travellers',
+      'Combine with handicap fleet when colleagues need accessible vehicles',
+    ],
+    tags: ['business', 'corporate', 'airport'],
+    displayOrder: 2,
+    isPublished: true,
+  },
+  {
+    title: 'Regular Transport',
+    slug: 'regular-transport',
+    shortDescription:
+      'Everyday taxi rides with transparent pricing—city errands, evenings out and quick hops across Belgium.',
+    description:
+      'Regular transport covers standard taxi demand: shopping trips, social visits, station runs and late-night journeys. Use the same trusted Taxiofany dispatch and drivers when you do not need a wheelchair-accessible vehicle—simple booking and clear communication.',
+    category: 'City',
+    iconClass: 'las la-taxi',
+    coverImage: '/assets/img/service-2.jpg',
+    featureImage: '/assets/img/post-3.jpg',
+    benefitsImage: '/assets/img/post-4.jpg',
+    serviceCarImage: '/assets/img/car-1.png',
+    features: [
+      {
+        iconClass: 'las la-shipping-fast',
+        title: 'Fast urban pickups',
+        description: 'Dispatch optimised for dense Belgian cities and suburbs.',
+      },
+      {
+        iconClass: 'las la-wallet',
+        title: 'Clear fares',
+        description: 'Straightforward pricing with digital receipts when you need them.',
+      },
+      {
+        iconClass: 'las la-headset',
+        title: 'Friendly support',
+        description: 'Reach dispatch for changes, delays or extra stops.',
+      },
+    ],
+    benefitPoints: [
+      'Ideal when mobility aids are not required',
+      'Same booking channels as handicap and business transport',
+      'Evening and weekend coverage subject to availability',
+    ],
+    tags: ['city', 'daily', 'taxi'],
     displayOrder: 3,
     isPublished: true,
   },
 ];
 
 async function bootstrapServicesTemplate() {
-  const operations = BASE_SERVICES.map((item) => Service.updateOne(
-    { slug: item.slug },
-    { $set: item },
-    { upsert: true }
-  ));
+  const operations = BASE_SERVICES.map((item) =>
+    Service.updateOne({ slug: item.slug }, { $set: item }, { upsert: true })
+  );
 
   await Promise.all(operations);
 
@@ -78,9 +134,9 @@ async function bootstrapServicesTemplate() {
   };
 }
 
+/** CMS orchestrator handles wiping/reseeding; standalone CLI upserts only. */
 async function shouldBootstrapServicesTemplate() {
-  const count = await Service.countDocuments({});
-  return count === 0;
+  return false;
 }
 
 async function run() {

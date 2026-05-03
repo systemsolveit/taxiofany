@@ -63,7 +63,7 @@ Use the following exact titles from the current home page template and NL transl
 ### About Section
 
 - home.about.eyebrow: Over Ons Bedrijf
-- home.about.title: Ervaar het verschil en de ontspanning met Ridek Taxi Company!
+- home.about.title: Ervaar het verschil en de ontspanning met taxiOfany Taxi Company!
 - home.about.founderTitle: Oprichter - CEO
 - home.about.callForTaxi: Bel Voor Taxi
 
@@ -71,7 +71,7 @@ Use the following exact titles from the current home page template and NL transl
 
 - home.services.eyebrow: Wat Wij Aanbieden
 - home.services.titleStart: Start je reis met
-- home.services.titleEnd: Ridek Taxi Company!
+- home.services.titleEnd: taxiOfany Taxi Company!
 - home.services.regularTransport: Regulier Vervoer
 - home.services.airportTransport: Luchthavenvervoer
 - home.services.luggageTransport: Bagagevervoer
@@ -96,17 +96,17 @@ Use the following exact titles from the current home page template and NL transl
 ### App Download Section
 
 - home.download.eyebrow: Online Boeking
-- home.download.title: Download de Ridek-app en start je reis!
+- home.download.title: Download de taxiOfany-app en start je reis!
 
 ### Testimonials Section
 
 - home.testimonial.eyebrow: Klantervaringen
-- home.testimonial.title: Ridek Passagiersreviews...
+- home.testimonial.title: taxiOfany Passagiersreviews...
 
 ### Feature Strip
 
 - home.features.eyebrow: Waarom Kiezen Voor Ons!
-- home.features.title: Waarom rijden met Ridek?
+- home.features.title: Waarom rijden met taxiOfany?
 - home.features.safeGuarantee: Veilige Garantie
 - home.features.fastPickups: Snelle Ophaling
 - home.features.quickRide: Snelle Rit
