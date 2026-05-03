@@ -4,8 +4,7 @@ const config = require('./config');
 const { connectDatabase } = require('./config/database');
 const { ensureSuperAdmin } = require('./features/admin/auth/bootstrap');
 const { shouldBootstrapNl, bootstrapNlTranslations } = require('./scripts/bootstrap-nl-translations');
-const { shouldBootstrapBlogTemplate, bootstrapBlogTemplate } = require('./scripts/bootstrap-blog-template');
-const { shouldBootstrapServicesTemplate, bootstrapServicesTemplate } = require('./scripts/bootstrap-services-template');
+const { shouldBootstrapCmsTemplate, bootstrapCmsTemplate } = require('./scripts/bootstrap-cms-content');
 const { shouldBootstrapCarsTemplate, bootstrapCarsTemplate } = require('./scripts/bootstrap-cars-template');
 const { shouldBootstrapEmailTemplates, bootstrapEmailTemplates } = require('./scripts/bootstrap-email-templates');
 const { shouldBootstrapPublicContent, bootstrapPublicContent } = require('./scripts/bootstrap-public-content');
@@ -23,14 +22,11 @@ async function startServer() {
       );
     }
 
-    if (await shouldBootstrapBlogTemplate()) {
-      const blogBootstrapResult = await bootstrapBlogTemplate();
-      console.log(`Auto-bootstrapped blog template posts (${blogBootstrapResult.count} records).`);
-    }
-
-    if (await shouldBootstrapServicesTemplate()) {
-      const servicesBootstrapResult = await bootstrapServicesTemplate();
-      console.log(`Auto-bootstrapped service template records (${servicesBootstrapResult.count} records).`);
+    if (await shouldBootstrapCmsTemplate()) {
+      const cmsResult = await bootstrapCmsTemplate();
+      console.log(
+        `Auto-bootstrapped CMS content (${cmsResult.servicesCount} services, ${cmsResult.postsCount} blog posts, ${cmsResult.translations.totalOperations} translation upserts).`
+      );
     }
 
     if (await shouldBootstrapCarsTemplate()) {

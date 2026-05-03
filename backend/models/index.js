@@ -13,5 +13,6 @@ module.exports = {
   IntegrationSetting: require('./IntegrationSetting'),
   Testimonial: require('./Testimonial'),
   Package: require('./Package'),
+  BootstrapMarker: require('./BootstrapMarker'),
   ...require('./RolePermission'),
 };

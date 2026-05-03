@@ -10,6 +10,8 @@
     "i18n:seed-ui:nl": "node scripts/seed-ui-translations-nl.js",
     "i18n:seed-ui:en": "node scripts/seed-ui-translations-en.js",
     "i18n:seed-ui:fr": "node scripts/seed-ui-translations-fr.js",
+    "i18n:seed-cms": "node scripts/seed-cms-translations.js",
+    "cms:seed:bootstrap": "node scripts/bootstrap-cms-content.js",
     "i18n:bootstrap:nl": "node scripts/bootstrap-nl-translations.js",
     "blog:bootstrap:template": "node scripts/bootstrap-blog-template.js",
     "blog:smoke": "node scripts/smoke-blog.js",
