@@ -56,9 +56,19 @@ Use the following exact titles from the current home page template and NL transl
 
 ### Hero / Slider
 
+Homepage banners use four themed assets under `frontend/public/assets/img/`:
+
+- `banner-pmr.jpg` — PMR / accessible transport (slide 1)
+- `banner-medical.jpg` — medical appointments (slide 2)
+- `banner-business.jpg` — business transport (slide 3)
+- `banner-taxi-be.jpg` — Belgium taxi / general mobility (slide 4)
+
+Replace placeholder copies with licensed or client-supplied photography. Recommended crop: wide landscape, faces/vehicles centered for mobile `object-position` overrides.
+
 - home.hero.tagline: Reis veilig met ons!
 - home.hero.title: Boek vandaag nog je taxi vanaf elke locatie!
 - home.hero.ctaBookNow: Boek Nu
+- home.hero.bannerAlt: descriptive alt per locale
 
 ### About Section
 

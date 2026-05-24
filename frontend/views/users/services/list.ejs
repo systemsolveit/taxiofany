@@ -6,8 +6,8 @@
         <div class="container">
             <div class="page-header-info">
                 <h4><%= t('pages.services.list.header.eyebrow', 'Our services') %></h4>
-                <h2><%= t('pages.services.list.header.titleLine1', 'Handicap transport') %> <br><span><%= t('pages.services.list.header.titleBrand', 'Taxiofany') %></span> <%= t('pages.services.list.header.titleLine2', '& more') %></h2>
-                <p><%= t('pages.services.list.header.description', 'Wheelchair-accessible rides lead our lineup—followed by business transport, regular taxi and airport or medical transfers.') %></p>
+                <h2><%= t('pages.services.list.header.titleLine1', 'PMR transport') %> <br><span><%= t('pages.services.list.header.titleBrand', 'Taxiofany') %></span> <%= t('pages.services.list.header.titleLine2', '& more') %></h2>
+                <p><%= t('pages.services.list.header.description', 'PMR and medical transport, business travel and regular taxi—with professional drivers across Belgium.') %></p>
             </div>
         </div>
     </section>
@@ -28,7 +28,9 @@
                                     <div class="service-car"><img src="<%= item.serviceCarImage || '/assets/img/car-1.png' %>" alt="<%= t('taxi.carImageAlt', 'Wheelchair-accessible taxi van') %>"></div>
                                 </div>
                                 <div class="service-content">
-                                    <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.handicapTransport', 'Handicap Transport')) : (item.title || t('home.services.handicapTransport', 'Handicap Transport')) %></a></h3>
+                                    <% const svcIcon = (item.iconClass && String(item.iconClass).trim()) || ''; %>
+                                    <% if (svcIcon) { %><div class="service-icon" aria-hidden="true"><i class="<%= svcIcon %>"></i></div><% } %>
+                                    <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.handicapTransport', 'PMR transport')) : (item.title || t('home.services.handicapTransport', 'PMR transport')) %></a></h3>
                                     <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) : (item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) %></p>
                                     <a class="read-more" href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= t('home.services.readMore', 'Read more') %></a>
                                 </div>

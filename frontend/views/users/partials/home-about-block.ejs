@@ -1,0 +1,19 @@
+<% const publicPhone = (siteSettings && siteSettings.header && siteSettings.header.phone) || t('footer.fallbackPhone', '+32484262105'); %>
+<div class="section-heading mb-40 wow fade-in-right" data-wow-delay="200ms">
+    <h4><span></span><%= t('home.about.eyebrow', 'About Taxiofany') %></h4>
+    <h2><%= t('home.about.title', 'Safe, dignified mobility for every passenger') %></h2>
+    <p><%= t('home.about.description', 'Votre mobilité est réduite et vous avez besoin d\'un transport jusqu\'à votre lieu de rendez-vous ? Que ce soit un rendez-vous privé ou une consultation médicale, TAXI OFANY vous y emmène.') %></p>
+    <p class="about-seat-partner small text-muted mb-0"><%- t('home.about.seatPartner', 'Seating and restraint systems provided by <a href="https://www.hendriks.be/fr?utm_source=taxiofany" target="_blank" rel="noopener noreferrer">Hendriks</a>.') %></p>
+</div>
+<ul class="about-info wow fade-in-right" data-wow-delay="400ms">
+    <li>
+        <span class="about-info-icon" aria-hidden="true"><i class="las la-headset"></i></span>
+        <div class="owner">
+            <h4><%= t('home.about.founderTitle', 'Dispatch & accessibility team') %></h4>
+            <span class="about-info-icon about-info-icon--secondary" aria-hidden="true"><i class="las la-phone-volume"></i></span>
+        </div>
+    </li>
+    <li>
+        <h2><span><%= t('home.about.callForTaxi', 'Call for accessible transport') %></span><a href="tel:<%= String(publicPhone).replace(/[^\d+]/g, '') %>"><%= publicPhone %></a></h2>
+    </li>
+</ul>

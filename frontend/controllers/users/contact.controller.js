@@ -4,9 +4,13 @@ exports.indexPage = (req, res) => {
   res.render('users/contact/index');
 };
 
+exports.thankYouPage = (req, res) => {
+  res.render('users/contact/thank-you');
+};
+
 exports.submitMessage = async (req, res) => {
   try {
-    const payload = await contactApi.createSubmission({
+    await contactApi.createSubmission({
       firstName: String(req.body.firstname || '').trim(),
       lastName: String(req.body.lastname || '').trim(),
       email: String(req.body.email || '').trim().toLowerCase(),
@@ -16,8 +20,23 @@ exports.submitMessage = async (req, res) => {
       subject: 'Contact Us Form',
     });
 
-    return res.send(payload.message || 'Thanks! Your message was sent successfully.');
+    const wl =
+      res.locals && typeof res.locals.withLocale === 'function'
+        ? res.locals.withLocale
+        : (path) => path;
+    return res.redirect(302, wl('/contact/thank-you'));
   } catch (error) {
-    return res.status(error.statusCode || 500).send(error.message || 'Contact submission failed.');
+    const wantsJson =
+      req.xhr ||
+      (req.get('accept') || '').includes('application/json') ||
+      (req.get('x-requested-with') || '').toLowerCase() === 'xmlhttprequest';
+    if (wantsJson) {
+      return res.status(error.statusCode || 500).send(error.message || 'Contact submission failed.');
+    }
+    const wl =
+      res.locals && typeof res.locals.withLocale === 'function'
+        ? res.locals.withLocale
+        : (path) => path;
+    return res.redirect(302, wl('/contact?error=1'));
   }
 };

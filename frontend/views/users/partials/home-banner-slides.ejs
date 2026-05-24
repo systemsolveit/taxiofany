@@ -1,0 +1,52 @@
+<%#
+  variant: 'classic' (car overlay + bottom controls) | 'modern' (side arrows + pagination)
+%>
+<% const bannerVariant = typeof variant === 'string' ? variant : 'classic'; %>
+<% const homeBannerSlides = [
+  { image: '/assets/img/banner-pmr.jpg', objectPosition: 'center 35%' },
+  { image: '/assets/img/banner-medical.jpg', objectPosition: 'center 40%' },
+  { image: '/assets/img/banner-business.jpg', objectPosition: 'center center' },
+  { image: '/assets/img/banner-taxi-be.jpg', objectPosition: 'center 30%' },
+]; %>
+<% const bookPath = typeof withLocale === 'function' ? withLocale('/book-taxi') : '/book-taxi'; %>
+<% homeBannerSlides.forEach(function(slide, slideIndex) { %>
+<div class="swiper-slide" data-banner-index="<%= slideIndex %>">
+  <div class="slider-img">
+    <img src="<%= slide.image %>" alt="<%= t('home.hero.bannerAlt', 'Taxiofany transport in Belgium') %>" class="kenburns banner-hero-img" style="animation-duration: 12000ms; object-position: <%= slide.objectPosition %>;">
+  </div>
+  <% if (bannerVariant === 'classic') { %>
+  <div class="car-holder">
+    <img src="/assets/img/car-1.png" alt="<%= t('taxi.carImageAlt', 'Accessible transport van') %>" data-animation="car-animation" data-duration="1.5s">
+    <div class="shape">
+      <div data-animation="slide-in-bottom" data-duration="1.5s" data-delay="0.3s"></div>
+      <div data-animation="fade-in" data-duration="1.5s" data-delay="0.2s"></div>
+      <div data-animation="slide-in-top" data-duration="1.5s" data-delay="0.5s"></div>
+    </div>
+  </div>
+  <% } %>
+  <div class="slider-content-wrap d-flex align-items-center text-left">
+    <div class="container">
+      <div class="slider-content<%= bannerVariant === 'modern' ? ' text-center pb-60' : '' %>">
+        <div class="slider-caption medium">
+          <div class="inner-layer">
+            <div data-animation="fade-in-bottom" data-delay="0.3s"><%= t('home.hero.tagline', 'Accessible transport across Belgium.') %></div>
+          </div>
+        </div>
+        <div class="slider-caption big">
+          <div class="inner-layer">
+            <div data-animation="fade-in-bottom" data-delay="0.5s"><%= t('home.hero.title', 'Reliable PMR transport with adapted vehicles.') %></div>
+          </div>
+        </div>
+        <div class="slider-caption small">
+          <div class="inner-layer">
+            <div data-animation="fade-in-bottom" data-delay="0.7s" data-duration="1s"><%= t('home.hero.description', 'Taxiofany offers PMR, medical and business transport with professional drivers—24/7 across Belgium.') %></div>
+          </div>
+        </div>
+        <div class="slider-btn">
+          <a href="<%= bookPath %>" class="default-btn" data-animation="fade-in-bottom" data-delay="0.9s"><%= t('home.hero.ctaBookNow', 'Book Now') %></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% }); %>

@@ -4,40 +4,16 @@
 <div class="slider-section">
         <div class="main-slider-2">
             <div class="swiper-wrapper">
-                <% const homeBannerImages = ['/assets/img/banner-1.jpg', '/assets/img/banner-2.jpg', '/assets/img/banner-3.jpg', '/assets/img/slider-bg.jpg']; %>
-                <% homeBannerImages.forEach(function(bannerImage) { %>
-                <div class="swiper-slide">
-                    <div class="slider-img"><img src="<%= bannerImage %>" alt="Taxiofany banner" class="kenburns" style="animation-duration: 12000ms; "></div>
-                    <div class="slider-content-wrap d-flex align-items-center text-left">
-                        <div class="container">
-                            <div class="slider-content text-center pb-60">
-                                <div class="slider-caption medium">
-                                    <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.3s"><%= t('home.hero.tagline', 'Wheelchair-accessible taxis across Belgium.') %></div>
-                                    </div>
-                                </div>
-                                <div class="slider-caption big">
-                                    <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.5s"><%= t('home.hero.title', 'Reliable handicap transport with adapted vehicles.') %></div>
-                                    </div>
-                                </div>
-                                <div class="slider-caption small">
-                                    <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.7s" data-duration="1s"><%= t('home.hero.description', 'Taxiofany specialises in wheelchair-accessible transport. Our adapted vehicles—low-floor entry, side ramps, wheelchair lifts and 4-point restraints—are driven by trained accessibility specialists. We also provide business and regular taxi transport. TFlex/Mutuelle billing on request.') %></div>
-                                    </div>
-                                </div>
-                                <div class="slider-btn">
-                                    <a href="/book-taxi" class="default-btn" data-animation="fade-in-bottom" data-delay="0.9s"><%= t('home.hero.ctaBookNow', 'Book Now') %></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <% }); %>
+                <%- include('../partials/home-banner-slides', { variant: 'modern', t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
             </div>
-            <!-- Slider Arrows -->
-            <div class="swiper-nav swiper-next"><i class="las la-long-arrow-alt-right"></i></div>
-            <div class="swiper-nav swiper-prev"><i class="las la-long-arrow-alt-left"></i></div>
+            <div class="slider-controls slider-controls--modern">
+                <div class="slider-control slider-button-prev"><span><i class="las la-long-arrow-alt-left"></i></span><%= t('home.hero.prev', 'Prev') %></div>
+                <div class="slider-pagination"></div>
+                <div class="slider-control slider-button-next"><%= t('home.hero.next', 'Next') %><span><i class="las la-long-arrow-alt-right"></i></span></div>
+            </div>
+            <!-- Slider Arrows (desktop) -->
+            <div class="swiper-nav swiper-next d-none d-md-flex"><i class="las la-long-arrow-alt-right"></i></div>
+            <div class="swiper-nav swiper-prev d-none d-md-flex"><i class="las la-long-arrow-alt-left"></i></div>
         </div>
     </div>
     <!--/.slider-section-->
@@ -127,8 +103,8 @@
         <div class="container">
             <div class="section-heading text-center mb-40 wow fade-in-bottom" data-wow-delay="200ms">
                 <h4><span></span><%= t('home.services.eyebrow', 'What we offer') %></h4>
-                <h2 class="white"><%= t('home.services.titleStart', 'Handicap transport first') %><br><%= t('home.services.titleEnd', '—then business & regular taxi') %></h2>
-                <p><%= t('home.services.description', 'Primary: wheelchair-accessible vans with ramps, lifts and secure restraint systems. Secondary: executive business transport and everyday taxi rides. Airport and medical-appointment transfers welcome.') %></p>
+                <h2 class="white"><%= t('home.services.titleStart', 'Persons with reduced mobility') %><br><%= t('home.services.titleEnd', '—medical, business & taxi') %></h2>
+                <p><%= t('home.services.description', 'PMR transport, medical appointments, business travel and regular taxi—with professional drivers available 24/7 across Belgium.') %></p>
             </div>
             <!--/.section-heading-->
             <% if (homeServices.length) { %>
@@ -153,7 +129,9 @@
                                     <% if (carImg) { %><div class="service-car"><img src="<%= carImg %>" alt=""></div><% } %>
                                 </div>
                                 <div class="service-content">
-                                    <h3><a href="<%= serviceHref %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.handicapTransport', 'Handicap Transport')) : (item.title || t('home.services.handicapTransport', 'Handicap Transport')) %></a></h3>
+                                    <% const svcIcon = (item.iconClass && String(item.iconClass).trim()) || ''; %>
+                                    <% if (svcIcon) { %><div class="service-icon" aria-hidden="true"><i class="<%= svcIcon %>"></i></div><% } %>
+                                    <h3><a href="<%= serviceHref %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.handicapTransport', 'PMR transport')) : (item.title || t('home.services.handicapTransport', 'PMR transport')) %></a></h3>
                                     <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) : (item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) %></p>
                                     <a class="read-more" href="<%= serviceHref %>"><%= t('home.services.readMore', 'Read more') %></a>
                                 </div>

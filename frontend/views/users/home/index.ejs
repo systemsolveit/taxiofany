@@ -5,48 +5,7 @@
 <div class="slider-section">
         <div class="main-slider">
             <div class="swiper-wrapper">
-                <% const homeBannerImages = ['/assets/img/banner-1.jpg', '/assets/img/banner-2.jpg', '/assets/img/banner-3.jpg', '/assets/img/slider-bg.jpg']; %>
-                <% homeBannerImages.forEach(function(bannerImage) { %>
-                <div class="swiper-slide">
-                    <div class="slider-img"><img src="<%= bannerImage %>" alt="Taxiofany banner" class="kenburns"
-                            style="animation-duration: 12000ms; "></div>
-                    <div class="car-holder">
-                        <img src="/assets/img/car-1.png" alt="<%= t('taxi.carImageAlt', 'Wheelchair-accessible taxi van') %>" data-animation="car-animation" data-duration="1.5s">
-                        <div class="shape">
-                            <div data-animation="slide-in-bottom" data-duration="1.5s" data-delay="0.3s"></div>
-                            <div data-animation="fade-in" data-duration="1.5s" data-delay="0.2s"></div>
-                            <div data-animation="slide-in-top" data-duration="1.5s" data-delay="0.5s"></div>
-                        </div>
-                    </div>
-                    <div class="slider-content-wrap d-flex align-items-center text-left">
-                        <div class="container">
-                            <div class="slider-content">
-                                <div class="slider-caption medium">
-                                    <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.3s"><%= t('home.hero.tagline', 'Wheelchair-accessible taxis across Belgium.') %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider-caption big">
-                                    <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.5s"><%= t('home.hero.title', 'Reliable handicap transport with adapted vehicles.') %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider-caption small">
-                                    <div class="inner-layer">
-                                        <div data-animation="fade-in-bottom" data-delay="0.7s" data-duration="1s"><%= t('home.hero.description', 'Taxiofany specialises in wheelchair-accessible transport. Our adapted vehicles—low-floor entry, side ramps, wheelchair lifts and 4-point restraints—are driven by trained accessibility specialists. We also provide business and regular taxi transport. TFlex/Mutuelle billing on request.') %></div>
-                                    </div>
-                                </div>
-                                <div class="slider-btn">
-                                    <a href="/book-taxi" class="default-btn" data-animation="fade-in-bottom"
-                                        data-delay="0.9s"><%= t('home.hero.ctaBookNow', 'Book Now') %></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <% }); %>
+                <%- include('../partials/home-banner-slides', { variant: 'classic', t: t, withLocale: typeof withLocale === 'function' ? withLocale : null }) %>
             </div>
             <!-- Slider navigation buttons -->
             <div class="slider-controls">
@@ -72,24 +31,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="section-heading mb-40 wow fade-in-right" data-wow-delay="200ms">
-                        <h4><span></span><%= t('home.about.eyebrow', 'About Taxiofany') %></h4>
-                        <h2><%= t('home.about.title', 'Safe, dignified mobility for every passenger') %></h2>
-                        <p><%= t('home.about.description', 'We focus on handicap and wheelchair-accessible transport first: trained drivers, ramp- and lift-equipped vans, and 24/7 dispatch for hospital, care-home and daily journeys across Belgium. Corporate shuttles and regular taxi rides are available too.') %></p>
-                    </div>
-                    <!--/.section-heading-->
-                    <ul class="about-info wow fade-in-right" data-wow-delay="400ms">
-                        <li>
-                            <img class="owner-thumb" src="/assets/img/comment-1.png" alt="thumb">
-                            <div class="owner">
-                                <h4><%= t('home.about.founderTitle', 'Dispatch & accessibility team') %></h4>
-                                <img class="signature" src="/assets/img/signature.png" alt="signature">
-                            </div>
-                        </li>
-                        <li>
-                            <h2><span><%= t('home.about.callForTaxi', 'Call for accessible transport') %></span><a href="tel:<%= String(publicPhone).replace(/[^\d+]/g, '') %>"><%= publicPhone %></a></h2>
-                        </li>
-                    </ul>
+                    <%- include('../partials/home-about-block', { t: t, siteSettings: siteSettings }) %>
                 </div>
             </div>
         </div>
@@ -103,8 +45,8 @@
         <div class="container">
             <div class="section-heading text-center mb-40 wow fade-in-bottom" data-wow-delay="200ms">
                 <h4><span></span><%= t('home.services.eyebrow', 'What we offer') %></h4>
-                <h2 class="white"><%= t('home.services.titleStart', 'Handicap transport first') %><br><%= t('home.services.titleEnd', '—then business & regular taxi') %></h2>
-                <p><%= t('home.services.description', 'Primary: wheelchair-accessible vans with ramps, lifts and secure restraint systems. Secondary: executive business transport and everyday taxi rides. Airport and medical-appointment transfers welcome.') %></p>
+                <h2 class="white"><%= t('home.services.titleStart', 'Persons with reduced mobility') %><br><%= t('home.services.titleEnd', '—medical, business & taxi') %></h2>
+                <p><%= t('home.services.description', 'PMR transport, medical appointments, business travel and regular taxi—with professional drivers available 24/7 across Belgium.') %></p>
             </div>
             <!--/.section-heading-->
             <% if (homeServices.length) { %>
@@ -129,7 +71,9 @@
                                     <% if (carImg) { %><div class="service-car"><img src="<%= carImg %>" alt=""></div><% } %>
                                 </div>
                                 <div class="service-content">
-                                    <h3><a href="<%= serviceHref %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.handicapTransport', 'Handicap Transport')) : (item.title || t('home.services.handicapTransport', 'Handicap Transport')) %></a></h3>
+                                    <% const svcIcon = (item.iconClass && String(item.iconClass).trim()) || ''; %>
+                                    <% if (svcIcon) { %><div class="service-icon" aria-hidden="true"><i class="<%= svcIcon %>"></i></div><% } %>
+                                    <h3><a href="<%= serviceHref %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.handicapTransport', 'PMR transport')) : (item.title || t('home.services.handicapTransport', 'PMR transport')) %></a></h3>
                                     <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) : (item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) %></p>
                                     <a class="read-more" href="<%= serviceHref %>"><%= t('home.services.readMore', 'Read more') %></a>
                                 </div>
@@ -194,7 +138,7 @@
                                     <select name="package-type" id="type" class="niceSelect">
                                         <option value="regular" selected><%= t('booking.package.regular', 'Regular Transport') %></option>
                                         <option value="business"><%= t('booking.package.business', 'Business Transport') %></option>
-                                        <option value="handicap"><%= t('booking.package.handicap', 'Handicap Transport') %></option>
+                                        <option value="handicap"><%= t('booking.package.handicap', 'PMR transport') %></option>
                                     </select>
                                 </div>
                                 <div class="form-field">

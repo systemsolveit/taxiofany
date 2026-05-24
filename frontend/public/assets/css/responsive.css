@@ -164,6 +164,14 @@
         padding: 50px 0 100px 0;
     }
     .main-slider-2 .swiper-nav{ display: none; }
+    .main-slider-2 .slider-controls.slider-controls--modern{
+        display: flex;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 4;
+    }
     .booking-form-2 .col-lg-8{
         padding: 50px 20px;
     }

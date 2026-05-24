@@ -1,0 +1,28 @@
+<%- include('../../shared/partials/legacy-head') %>
+<%- include('../../shared/partials/legacy-header-nav') %>
+<% const wl = typeof withLocale === 'function' ? withLocale : function (p) { return p; }; %>
+
+<section class="page-header">
+    <div class="page-header-shape"></div>
+    <div class="container">
+        <div class="page-header-info">
+            <h4><%= t('pages.users.contact.thankYou.eyebrow', 'Thank you') %></h4>
+            <h2><%= t('pages.users.contact.thankYou.title', 'Your message was sent') %></h2>
+            <p><%= t('pages.users.contact.thankYou.description', 'We received your request and will reply as soon as possible.') %></p>
+        </div>
+    </div>
+</section>
+
+<section class="contact-section bd-bottom padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <p class="mb-4"><%= t('pages.users.contact.thankYou.body', 'Our dispatch team will contact you if we need more details about your ride or mobility requirements.') %></p>
+                <a href="<%= wl('/') %>" class="default-btn me-2 mb-2"><%= t('pages.users.contact.thankYou.home', 'Back to home') %></a>
+                <a href="<%= wl('/contact') %>" class="default-btn btn-outline mb-2"><%= t('pages.users.contact.thankYou.contactAgain', 'Send another message') %></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('../../shared/partials/legacy-footer') %>

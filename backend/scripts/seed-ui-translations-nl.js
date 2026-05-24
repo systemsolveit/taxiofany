@@ -4,9 +4,9 @@ const defaultCarI18n = require('./data/default-car-i18n');
 
 /** Dutch UI copy aligned with public marketing “handicap transport first” positioning. */
 const entries = {
-  'meta.title': 'Taxiofany — gehandicapten- en rolstoelvervoer',
+  'meta.title': 'Taxiofany — PMR- en rolstoelvervoer',
   'meta.description':
-    'Taxiofany — rolstoeltoegankelijke taxi’s en gehandicaptenvervoer in België. Aangepaste busjes met liften, oprijplaten en opgeleide chauffeurs. Ook zakelijk en regulier taxivervoer.',
+    'Taxiofany — rolstoeltoegankelijke taxi’s en PMR-vervoer in België. Aangepaste busjes met liften, oprijplaten en opgeleide chauffeurs. Ook zakelijk en regulier taxivervoer.',
   'meta.author': 'Taxiofany',
   'meta.browserUpgrade.before': 'U gebruikt een verouderde browser. Gelieve',
   'meta.browserUpgrade.link': 'uw browser te upgraden',
@@ -21,7 +21,7 @@ const entries = {
   'header.fallbackPhone': '+32484262105',
   'header.fallbackEmail': 'info@taxiofany.com',
   'header.fallbackLocation': 'Wemmel Brussels Belgium',
-  'header.searchPlaceholder': 'Zoek gehandicaptenvervoer, boekingen…',
+  'header.searchPlaceholder': 'Zoek PMR-vervoer, boekingen…',
   'header.nav.home': 'Home',
   'header.nav.about': 'Over',
   'header.nav.homeDefault': 'Standaard home',
@@ -56,7 +56,7 @@ const entries = {
   'header.sidebox.fallbackAddress': 'Wemmel Brussels Belgium',
   'header.sidebox.fallbackEmail': 'info@taxiofany.com',
   'footer.description':
-    'Taxiofany — betrouwbaar gehandicapten- en rolstoelvervoer in België. Onze aangepaste voertuigen hebben liften, oprijplaten, vierpuntsbevestiging en opgeleide chauffeurs. 24/7 voor ziekenhuis, zorg en dagelijkse ritten. Ook zakelijk en regulier taxi.',
+    'Taxiofany — betrouwbaar PMR- en rolstoelvervoer in België. Onze aangepaste voertuigen hebben liften, oprijplaten, vierpuntsbevestiging en opgeleide chauffeurs. 24/7 voor ziekenhuis, zorg en dagelijkse ritten. Ook zakelijk en regulier taxi.',
   'footer.callForTaxi': 'Bel voor toegankelijk vervoer',
   'footer.workingHours': 'Bereikbaarheid',
   'footer.openEveryDay': 'Elke dag:',
@@ -82,7 +82,7 @@ const entries = {
   'footer.fallbackEmail': 'info@taxiofany.com',
   'footer.rightsReserved': 'Alle rechten voorbehouden.',
   'footer.developedBy': 'Ontwikkeld door',
-  'footer.whatsapp.defaultMessage': 'Hallo Taxiofany, ik zoek rolstoeltoegankelijk of gehandicaptenvervoer.',
+  'footer.whatsapp.defaultMessage': 'Hallo Taxiofany, ik zoek rolstoeltoegankelijk of PMR-vervoer.',
   'footer.whatsapp.ariaLabel': 'Chat met Taxiofany via WhatsApp',
   'footer.copyrightSiteName': 'SystemSolveIT',
   'footer.copyrightSiteUrl': 'https://systemsolveit.com',
@@ -90,28 +90,31 @@ const entries = {
   'footer.copyrightSuffix': 'Alle rechten voorbehouden.',
   'booking.package.regular': 'Regulier vervoer',
   'booking.package.business': 'Zakelijk vervoer',
-  'booking.package.handicap': 'Gehandicaptenvervoer',
+  'booking.package.handicap': 'PMR-vervoer',
   'booking.passengersWordOne': 'persoon',
   'booking.passengersWordMany': 'personen',
   'home.hero.tagline': 'Rolstoeltoegankelijke taxi’s in heel België.',
-  'home.hero.title': 'Betrouwbaar gehandicaptenvervoer met aangepaste voertuigen.',
+  'home.hero.title': 'Betrouwbaar PMR-vervoer met aangepaste voertuigen.',
   'home.hero.description':
     'Taxiofany is gespecialiseerd in rolstoeltoegankelijk vervoer. Onze busjes — verlaagde instap, zijplaten, liften en vierpuntsankers — worden bestuurd door chauffeurs met opleiding mobiliteit. Ook zakelijk en regulier taxi. TFlex/Mutuelle op aanvraag.',
   'home.hero.ctaBookNow': 'Boek nu',
+  'home.hero.bannerAlt': 'Taxiofany vervoer in België',
   'home.hero.prev': 'Vorige',
   'home.hero.next': 'Volgende',
   'home.about.eyebrow': 'Over Taxiofany',
   'home.about.title': 'Waardige mobiliteit voor elke passagier',
   'home.about.description':
-    'We zetten gehandicapten- en rolstoelvervoer voorop: opgeleide chauffeurs, busjes met plaat of lift, en 24/7 planning voor ziekenhuis, rusthuis en dagelijkse ritten in België. Ook zakelijke shuttle en regulier taxi.',
+    'Votre mobilité est réduite et vous avez besoin d\'un transport jusqu\'à votre lieu de rendez-vous ? Que ce soit un rendez-vous privé ou une consultation médicale, TAXI OFANY vous y emmène.',
   'home.about.founderTitle': 'Planning & toegankelijkheid',
   'home.about.callForTaxi': 'Bel voor toegankelijk vervoer',
+  'home.about.seatPartner':
+    'Zitplaatsen en bevestigingssystemen geleverd door <a href="https://www.hendriks.be/nl?utm_source=taxiofany" target="_blank" rel="noopener noreferrer">Hendriks</a>.',
   'home.services.eyebrow': 'Wat we aanbieden',
-  'home.services.titleStart': 'Gehandicaptenvervoer eerst',
-  'home.services.titleEnd': '— dan zakelijk & regulier taxi',
+  'home.services.titleStart': 'Personen met beperkte mobiliteit',
+  'home.services.titleEnd': '— medisch, zakelijk & taxi',
   'home.services.description':
-    'Primair: rolstoelbusjes met plaat, lift en veilige bevestiging. Daarnaast: zakelijke ritten en gewone taxi. Ook luchthaven en medische afspraken.',
-  'home.services.handicapTransport': 'Gehandicaptenvervoer',
+    'PMR-vervoer, medisch vervoer en zakelijk vervoer met professionele chauffeurs — 24/7 in heel België.',
+  'home.services.handicapTransport': 'PMR-vervoer',
   'home.services.regularTransport': 'Regulier vervoer',
   'home.services.airportTransport': 'Luchthaven',
   'home.services.luggageTransport': 'Bagage',
@@ -164,7 +167,7 @@ const entries = {
   'home.testimonial.eyebrow': 'Ervaringen',
   'home.testimonial.title': 'Vertrouwd voor toegankelijke ritten',
   'home.testimonial.description':
-    'Gezinnen en zorgers rekenen op Taxiofany voor waardig en stipt gehandicaptenvervoer in België.',
+    'Gezinnen en zorgers rekenen op Taxiofany voor waardig en stipt PMR-vervoer in België.',
   'home.testimonial.reviewText':
     'Prettige chauffeur, rustige rit en netjes geholpen bij het vastzetten van de rolstoel.',
   'home.testimonial.reviewerName': 'Passagier',
@@ -193,7 +196,7 @@ const entries = {
   'home.cta2.item4': '24/7 dispatch voor zorg- en ziekenhuisritten',
   'home.blog.eyebrow': 'Mobiliteit nieuws',
   'home.blog.title': 'Inzichten over toegankelijk vervoer',
-  'home.blog.description': 'Updates over gehandicaptenvervoer en veilig reizen in België.',
+  'home.blog.description': 'Updates over PMR-vervoer en veilig reizen in België.',
   'home.blog.categoryBusiness': 'Zakelijk',
   'home.blog.categoryStartup': 'Mobiliteit',
   'home.blog.categoryFinance': 'Zorg',
@@ -212,15 +215,15 @@ const entries = {
     'Geen diensten gepubliceerd. Publiceer minstens één dienst in het adminpaneel.',
   'home.empty.noPublishedBlog': 'Geen blogposts — publiceer een bericht in het adminpaneel.',
   'home.professional.eyebrow': 'Toegankelijkheid eerst',
-  'home.professional.title': 'Gehandicaptenvervoer waarop u kunt rekenen',
+  'home.professional.title': 'Personen met beperkte mobiliteit waarop u kunt rekenen',
   'home.professional.description':
-    'Gehandicaptenvervoer staat voorop: aangepaste voertuigen, opgeleide chauffeurs en 24/7 dispatch voor ziekenhuizen en rusthuizen. Ook zakelijke en gewone taxi — boek op het web; geen app nodig.',
+    'Personen met beperkte mobiliteit staat voorop: aangepaste voertuigen, opgeleide chauffeurs en 24/7 dispatch voor ziekenhuizen en rusthuizen. Ook zakelijke en gewone taxi — boek op het web; geen app nodig.',
   'home.professional.point1': 'Veilige rolstoeltransfers',
   'home.professional.point1sub': 'Platen, liften, riemen — en chauffeurs die ze correct gebruiken.',
   'home.professional.point2': 'TFlex & Mutuelle',
   'home.professional.point2sub': 'Vraag naar terugbetalingspapieren bij het boeken.',
   'home.professional.point3': 'Ook zakelijk & regulier taxi',
-  'home.professional.point3sub': 'Zelfde boekingsflow — kies gehandicapten-, zakelijk of regulier.',
+  'home.professional.point3sub': 'Zelfde boekingsflow — kies PMR-, zakelijk of regulier.',
   'home.professional.ctaBook': 'Boek uw rit',
   'pages.users.home.modern.1_person': '1 persoon',
   'pages.users.home.modern.2_person': '2 personen',
@@ -235,13 +238,13 @@ const entries = {
   'pages.company.aboutUs.header.titleLine2': 'met',
   'pages.company.aboutUs.header.titleBrand': 'Taxiofany',
   'pages.company.aboutUs.header.description':
-    'België focust op gehandicaptenvervoer — aangepaste vloot, opgeleide crews, TFlex/Mutuelle waar mogelijk.',
+    'België focust op PMR-vervoer — aangepaste vloot, opgeleide crews, TFlex/Mutuelle waar mogelijk.',
   'pages.company.aboutCompany.header.eyebrow': 'Ons bedrijf',
   'pages.company.aboutCompany.header.titleLine1': 'Toegankelijk vervoer',
   'pages.company.aboutCompany.header.titleLine2': 'met',
   'pages.company.aboutCompany.header.titleBrand': 'Taxiofany',
   'pages.company.aboutCompany.header.description':
-    'We exploiteren gehandicaptenvervoer in België met aangepaste vloot, training en documentatieondersteuning.',
+    'We exploiteren PMR-vervoer in België met aangepaste vloot, training en documentatieondersteuning.',
   'pages.users.company.about-us.recent_posts': 'Recente berichten',
   'pages.users.company.about-us.news_and_insights': 'Nieuws & inzichten mobiliteit',
   'pages.users.company.about-us.we_successfully_cope_with_tasks_of_varying_compl': 'Verhalen over toegankelijk vervoer in België',
@@ -258,25 +261,25 @@ const entries = {
   'pages.users.company.about-company.business': 'Mobiliteit',
   'pages.users.company.about-company.read_more': 'Lees meer',
   'pages.services.list.header.eyebrow': 'Onze diensten',
-  'pages.services.list.header.titleLine1': 'Gehandicaptenvervoer',
+  'pages.services.list.header.titleLine1': 'Personen met beperkte mobiliteit',
   'pages.services.list.header.titleBrand': 'Taxiofany',
   'pages.services.list.header.titleLine2': '& meer',
   'pages.services.list.header.description':
     'Rolstoeltoegankelijke ritten voorop — gevolgd door zakelijk vervoer, regulier taxi en luchthaven/zorgritten.',
   'pages.services.list.noServices':
-    'Nog geen diensten — voeg gehandicapten-, zakelijk of regulier toe in het adminpaneel.',
+    'Nog geen diensten — voeg PMR-, zakelijk of regulier toe in het adminpaneel.',
   'pages.services.list.localTransport': 'Lokaal vervoer',
   'pages.services.details.header.eyebrow': 'Dienstdetails',
-  'pages.services.details.header.titleLine1': 'Gehandicapten &',
+  'pages.services.details.header.titleLine1': 'PMR &',
   'pages.services.details.header.titleLine2': 'toegankelijk vervoer',
   'pages.services.details.header.titleBrand': 'Taxiofany',
   'pages.services.details.header.description':
     'Rolstoeltoegankelijk vervoer met opgeleide chauffeurs, aangepaste voertuigen en optioneel TFlex/Mutuelle-ondersteuning.',
-  'pages.services.details.title': 'Toegankelijke taxi & gehandicaptenvervoer',
+  'pages.services.details.title': 'Toegankelijke taxi & PMR-vervoer',
   'pages.services.details.paragraph1':
     'Taxiofany zet passagiers met rolstoel of loophulp voorop. Onze busjes bieden verlaagde instap, plaat of lift, veilige ankerpunten en plaats voor een begeleider.',
   'pages.services.details.paragraph2':
-    'Naast gehandicaptenvervoer bieden we zakelijke transfers en regulier taxi — online boeken of bellen voor dringende ziekenhuis- of rusthuisritten.',
+    'Naast PMR-vervoer bieden we zakelijke transfers en regulier taxi — online boeken of bellen voor dringende ziekenhuis- of rusthuisritten.',
   'pages.services.details.features.fastPickups.title': 'Toegankelijke ophaling',
   'pages.services.details.features.fastPickups.description':
     'Deur-tot-deur hulp met veilig instappen en vastzetten in het voertuig.',
@@ -302,14 +305,14 @@ const entries = {
   'pages.services.details.banner.discountSuffix': 'zorg- & ziekenhuis dispatch',
   'pages.services.details.banner.cta': 'Contacteer dispatch',
   'pages.services.details.tagsTitle': 'Tags',
-  'pages.users.services.details.business': 'gehandicaptenvervoer',
+  'pages.users.services.details.business': 'PMR-vervoer',
   'pages.users.services.details.marketing': 'rolstoeltaxi',
   'pages.users.services.details.startup': 'België',
-  'service.handicap.title': 'Gehandicaptenvervoer',
+  'service.handicap.title': 'Personen met beperkte mobiliteit',
   'service.handicap.shortDescription':
     'Rolstoelbusjes met plaat of lift en opgeleide chauffeurs voor zorg-, werk- en dagelijkse ritten.',
   'service.handicap.description':
-    'Taxiofany plant gehandicaptenvervoer met veilige transfers en documentatieondersteuning waar mogelijk.',
+    'Taxiofany plant PMR-vervoer met veilige transfers en documentatieondersteuning waar mogelijk.',
   'service.handicap.feature.0.title': 'Veilige boarding',
   'service.handicap.feature.0.description': 'Oprijplaat of lift en vastzetting volgens normen.',
   'service.handicap.benefitPoint.0': 'Zorg voor juiste bevestiging van de rolstoel',
@@ -327,7 +330,7 @@ const entries = {
   'pages.users.drivers.list.make_your': 'veilige rolstoel',
   'pages.users.drivers.list.ride_safe': 'transfers',
   'pages.users.drivers.list.everything_your_taxi_business':
-    'Maak kennis met het Taxiofany-team — gericht op gehandicaptenvervoer en respectvolle begeleiding',
+    'Maak kennis met het Taxiofany-team — gericht op PMR-vervoer en respectvolle begeleiding',
   'pages.users.drivers.list.needs_is_already_here': 'en betrouwbare planning in België.',
   'pages.users.drivers.list.no_driver_profiles_are_published_yet':
     'Nog geen chauffeurs — voeg uw toegankelijkheidsteam toe in het adminpaneel.',
@@ -337,7 +340,7 @@ const entries = {
   'pages.users.drivers.details.ride_safe': 'weg',
   'pages.users.drivers.details.everything_your_taxi_business':
     'Elke chauffeur krijgt briefing over veilig instappen, bevestigen en communicatie met',
-  'pages.users.drivers.details.needs_is_already_here': 'passagiers en zorgers — gehandicaptenvervoer is ons dagelijks werk.',
+  'pages.users.drivers.details.needs_is_already_here': 'passagiers en zorgers — PMR-vervoer is ons dagelijks werk.',
   'pages.users.drivers.details.about_the_driver': 'Over de chauffeur',
   'pages.users.drivers.details.mauricio_fern_ndez': 'Uitgelichte chauffeur',
   'pages.users.drivers.details.we_successfully_cope_with_tasks_of_varying_compl':
@@ -357,7 +360,7 @@ const entries = {
   'pages.users.drivers.details.clients_testimonial': 'Feedback passagiers',
   'pages.users.drivers.details.taxiofany_passenger_reviews': 'Wat reizigers over Taxiofany zeggen',
   'pages.users.drivers.details.guarantees_and_regularly_master_technologies':
-    'gehandicaptenvervoer — vriendelijke hulp bij elke stap.',
+    'PMR-vervoer — vriendelijke hulp bij elke stap.',
   'pages.users.taxi.list.our_taxi_lists': 'Onze voertuigen',
   'pages.users.taxi.list.feel_your_journey': 'Rolstoeltoegankelijke',
   'pages.users.taxi.list.with': 'vloot met',
@@ -378,7 +381,7 @@ const entries = {
   'pages.users.taxi.details.with': 'met',
   'pages.users.taxi.details.taxiofany': 'Taxiofany',
   'pages.users.taxi.details.everything_your_taxi_business':
-    'Elk voertuig wordt onderhouden voor veilig gehandicapten- en rolstoelvervoer',
+    'Elk voertuig wordt onderhouden voor veilig PMR- en rolstoelvervoer',
   'pages.users.taxi.details.needs_is_already_here': 'met specificaties van onze vloot.',
   'pages.users.taxi.details.introducing': 'Vloothighlight',
   'pages.users.taxi.details.mercedes_maybach_haute_voiture_2024': 'Renault Trafic Access (voorbeeld)',
@@ -409,10 +412,16 @@ const entries = {
   'pages.users.contact.have_any': 'Plan een',
   'pages.users.contact.questions': 'toegankelijke rit?',
   'pages.users.contact.get_in_touch_to_discuss_your_employee_wellbeing_':
-    'Contacteer ons voor gehandicaptenvervoer, rolstoelbusjes, TFlex/Mutuelle, of zakelijk en regulier taxi. Bel, mail of gebruik het formulier.',
+    'Contacteer ons voor PMR-vervoer, rolstoelbusjes, TFlex/Mutuelle, of zakelijk en regulier taxi. Bel, mail of gebruik het formulier.',
   'pages.users.contact.contact_with_us': 'Bericht aan Taxiofany',
   'pages.users.contact.headOffice': 'Hoofdkantoor',
   'pages.users.contact.send_massage': 'Bericht verzenden',
+  'pages.users.contact.thankYou.eyebrow': 'Bedankt',
+  'pages.users.contact.thankYou.title': 'Uw bericht is verzonden',
+  'pages.users.contact.thankYou.description': 'We hebben uw bericht ontvangen en antwoorden zo snel mogelijk.',
+  'pages.users.contact.thankYou.body': 'Onze dispatch neemt contact op als we meer details over uw rit nodig hebben.',
+  'pages.users.contact.thankYou.home': 'Terug naar home',
+  'pages.users.contact.thankYou.contactAgain': 'Nog een bericht sturen',
   'contact.form.firstName': 'Voornaam',
   'contact.form.lastName': 'Achternaam',
   'contact.form.email': 'E-mail',
@@ -425,7 +434,7 @@ const entries = {
   'pages.users.support.faqs.everything_your_taxi_business':
     'Antwoorden over rolstoelbusjes, boeken, terugbetaling en veiligheid',
   'pages.users.support.faqs.needs_is_already_here': 'voor passagiers en zorgers in België.',
-  'pages.users.support.faqs.what_makes_a_good_taxi_service': 'Welke uitrusting hebben uw gehandicaptenvoertuigen?',
+  'pages.users.support.faqs.what_makes_a_good_taxi_service': 'Welke uitrusting hebben uw PMRvoertuigen?',
   'pages.users.support.faqs.the_restaurants_in_hangzhou_also_catered_to_many':
     'Onze busjes hebben typisch een plaat of lift, verlaagde vloer, ankerpunten (ISO), vierpuntsriemen en plaats voor een begeleider. Vermeld uw rolstoelmaat en of u extra tijd nodig heeft om in te stappen.',
   'pages.users.support.faqs.what_is_the_purpose_of_a_taxi_service': 'Mag een begeleider mee?',
@@ -438,11 +447,11 @@ const entries = {
   'pages.users.support.faqs.answer4':
     'Gebruik het online formulier of bel ons met afspraaktuist, ophaalfenster en mobiliteitsnotities. We geven waar mogelijk prioriteit aan medische planning.',
   'pages.users.support.faqs.how_many_cars_does_taxiofany_taxi_service_have':
-    'Biedt u ook regulier of zakelijk taxi — niet alleen gehandicaptenvervoer?',
+    'Biedt u ook regulier of zakelijk taxi — niet alleen PMR-vervoer?',
   'pages.users.support.faqs.answer5':
-    'Ja. Gehandicaptenvervoer is onze focus, maar u kunt zakelijk en regulier taxi via dezelfde kanalen boeken — kies het pakket bij reservering.',
+    'Ja. Personen met beperkte mobiliteit is onze focus, maar u kunt zakelijk en regulier taxi via dezelfde kanalen boeken — kies het pakket bij reservering.',
   'pages.users.support.faqs.categories': 'Rubrieken',
-  'pages.users.support.faqs.business_strategy': 'Gehandicaptenvervoer',
+  'pages.users.support.faqs.business_strategy': 'Personen met beperkte mobiliteit',
   'pages.users.support.faqs.project_management': 'Rolstoeltaxi',
   'pages.users.support.faqs.digital_marketing': 'Medische ritten',
   'pages.users.support.faqs.customer_experience': 'Tips voor zorgers',
@@ -456,7 +465,7 @@ const entries = {
     'TFlex, Mutuelle en terugbetaling: basis.',
   'pages.users.support.faqs.jan_01_2022': 'Jan 2026',
   'pages.users.support.faqs.tags': 'Tags',
-  'pages.users.support.faqs.business': 'gehandicapten',
+  'pages.users.support.faqs.business': 'PMR',
   'pages.users.support.faqs.marketing': 'rolstoel',
   'pages.users.support.faqs.startup': 'TFlex',
   'pages.users.support.faqs.design': 'Mutuelle',
@@ -466,18 +475,18 @@ const entries = {
   'pages.users.support.faqs.tips': 'Wemmel',
   'pages.users.support.faqs.seo': 'België',
   'pages.users.packages.packages': 'Ritpakketten',
-  'packages.header.title': 'Gehandicapten, zakelijk &',
+  'packages.header.title': 'PMR, zakelijk &',
   'packages.header.highlight': 'regulier vervoer',
   'packages.header.description':
-    'Pakketten worden in het adminpaneel geconfigureerd — typisch gehandicapten-, executive of standaard taxi.',
+    'Pakketten worden in het adminpaneel geconfigureerd — typisch PMR-, executive of standaard taxi.',
   'packages.bookNow': 'Boek dit pakket',
   'packages.empty':
-    'Nog geen pakketten — maak gehandicapten-, zakelijk of regulier bundels in het adminpaneel.',
+    'Nog geen pakketten — maak PMR-, zakelijk of regulier bundels in het adminpaneel.',
   'pages.users.solutions.solutions': 'Oplossingen',
   'solutions.header.title': 'Toegankelijk',
   'solutions.header.highlight': 'vervoer',
   'solutions.header.description':
-    'Gehandicapten- en rolstoelvervoer staat voorop — gevolgd door zakelijke shuttle en gewone taxi, allemaal hetzelfde boekingsproces.',
+    'PMR- en rolstoelvervoer staat voorop — gevolgd door zakelijke shuttle en gewone taxi, allemaal hetzelfde boekingsproces.',
   'pages.users.blog.grid.blog_grid': 'Blog',
   'pages.users.blog.grid.feel_your_journey': 'Mobiliteitsverhalen',
   'pages.users.blog.grid.with': 'met',
@@ -514,7 +523,7 @@ const entries = {
   'pages.users.blog.details.financial_experts_support_or_help_you_to_to_find':
     'Planning van een toegankelijke rit begint met duidelijke communicatie: mobiliteitsbehoeften, rolstoelafmetingen, tillift, tijdsdruk voor therapie of ziekenhuis.',
   'pages.users.blog.details.unless_you_are_the_one_who_really_cares_about_th':
-    'Taxiofany combineert gehandicapten-dispatch met zakelijk en regulier taxi — gezinnen, werkgevers en particulieren boeken dezelfde vertrouwde vloot.',
+    'Taxiofany combineert PMR-dispatch met zakelijk en regulier taxi — gezinnen, werkgevers en particulieren boeken dezelfde vertrouwde vloot.',
   'pages.users.blog.details.there_are_no_secrets_to_success_it_is_the_result':
     'Waardigheid op elke rit — dat onthouden gezinnen het meest.',
   'pages.users.blog.details.winston_churchill': '— Taxiofany-passagier',
@@ -525,7 +534,7 @@ const entries = {
     'Juiste vastzetting van de rolstoel beschermt passagier en chauffeur. Onze teams oefenen plaathellingen, remmen op hellingen en communicatie bij extra hulp.',
   'pages.users.blog.details.another_speaker_john_meuse_senior_director_of_he':
     'Vraag naar begeleiderszetels, bagage voor hulpmiddelen en prioriteit wanneer klinieken uitlopen — we passen aan waar mogelijk.',
-  'pages.users.blog.details.business': 'gehandicaptenvervoer',
+  'pages.users.blog.details.business': 'PMR-vervoer',
   'pages.users.blog.details.marketing': 'rolstoeltaxi',
   'pages.users.blog.details.startup': 'België',
   'pages.users.blog.details.design': 'TFlex',
@@ -553,7 +562,7 @@ const entries = {
   'pages.users.testimonials.our_passengers': 'Passagiers & zorgers',
   'pages.users.testimonials.reviews': 'reviews',
   'pages.users.testimonials.everything_your_taxi_business':
-    'Echte feedback over gehandicaptenvervoer, stiptheid',
+    'Echte feedback over PMR-vervoer, stiptheid',
   'pages.users.testimonials.needs_is_already_here': 'en zorgzame chauffeurs in België.',
   'testimonials.authorAlt': 'Passagier',
   'testimonials.empty':

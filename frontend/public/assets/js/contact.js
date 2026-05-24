@@ -23,20 +23,16 @@ $(function() {
 			url: $(form).attr('action'),
 			data: formData
 		})
-		.done(function(response) {
-			// Make sure that the formMessages div has the 'success' class.
+		.done(function() {
+			var thankYouUrl = $(form).data('thank-you-url');
+			if (thankYouUrl) {
+				window.location.href = thankYouUrl;
+				return;
+			}
 			$(formMessages).removeClass('alert-danger');
 			$(formMessages).addClass('alert-success');
-
-			// Set the message text.
-			$(formMessages).text(response);
-
-			// Clear the form.
-			$('#firstname').val('');
-			$('#lastname').val('');
-			$('#email').val('');
-			$('#phone').val('');
-			$('#message').val('');
+			$(formMessages).text('Thanks! Your message was sent successfully.');
+			form[0].reset();
 		})
 		.fail(function(data) {
 			// Make sure that the formMessages div has the 'error' class.

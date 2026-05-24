@@ -288,16 +288,50 @@
 }
 
 @media (max-width: 767px) {
+    .slider-content-wrap {
+        height: 460px;
+        min-height: 420px;
+    }
+
+    .slider-content {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .slider-caption.medium {
+        font-size: 15px;
+        line-height: 1.35;
+        margin-bottom: 12px;
+    }
+
     .slider-caption.big {
-        font-size: 36px;
-        line-height: 46px;
+        font-size: 32px;
+        line-height: 1.2;
+        margin-bottom: 14px;
+    }
+
+    .slider-caption.small {
+        font-size: 15px;
+        line-height: 1.45;
+        margin-bottom: 16px;
+    }
+
+    .slider-img img.kenburns,
+    .slider-img img.banner-hero-img {
+        animation: none;
     }
 
     .slider-controls {
-        height: 60px;
+        height: 56px;
+        bottom: 0;
+        z-index: 3;
+    }
+
+    .main-slider-2 .slider-controls.slider-controls--modern {
+        display: flex;
     }
 
     .slider-pagination .swiper-pagination-current {
-        font-size: 32px;
+        font-size: 28px;
     }
 }

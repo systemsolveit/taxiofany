@@ -4,13 +4,13 @@
  */
 
 const SERVICE_BUNDLES = {
-  'handicap-transport': {
+  'PMR-transport': {
     en: {
-      title: 'Handicap Transport',
+      title: 'PMR Transport',
       shortDescription:
         'Wheelchair-accessible vans with ramps or lifts, trained drivers, secure restraint systems and 24/7 dispatch for hospital and care-home rides across Belgium.',
       description:
-        'Taxiofany specialises in handicap and wheelchair-accessible transport. Our adapted fleet includes low-floor entry, side ramps and wheelchair lifts with ISO-compatible anchorage and four-point restraints. Drivers are trained for safe transfers and communication with passengers and caregivers. TFlex and Mutuelle billing paperwork can be prepared on request. We prioritise medical appointments, therapy visits and dignified daily mobility.',
+        'Taxiofany specialises in PMR and wheelchair-accessible transport. Our adapted fleet includes low-floor entry, side ramps and wheelchair lifts with ISO-compatible anchorage and four-point restraints. Drivers are trained for safe transfers and communication with passengers and caregivers. TFlex and Mutuelle billing paperwork can be prepared on request. We prioritise medical appointments, therapy visits and dignified daily mobility.',
       features: [
         {
           title: 'Ramps, lifts and securement',
@@ -35,11 +35,11 @@ const SERVICE_BUNDLES = {
       ],
     },
     nl: {
-      title: 'Gehandicaptenvervoer',
+      title: 'Personen met beperkte mobiliteit',
       shortDescription:
         'Rolstoeltoegankelijke busjes met plaat of lift, opgeleide chauffeurs, veilige bevestiging en 24/7-regeling voor ziekenhuis- en rusthuisritten in heel België.',
       description:
-        'Taxiofany is gespecialiseerd in gehandicapten- en rolstoelvervoer. Onze aangepaste vloot heeft verlaagde instap, zijplaten en rolstoelliften met ISO-compatibele ankerpunten en vierpuntsbevestiging. Chauffeurs worden opgeleid voor veilige transfers en heldere communicatie met passagiers en zorgers. TFlex- en Mutuelle-documentatie kan op aanvraag worden voorbereid. We geven prioriteit aan medische afspraken, therapie en waardige dagelijkse mobiliteit.',
+        'Taxiofany is gespecialiseerd in PMR- en rolstoelvervoer. Onze aangepaste vloot heeft verlaagde instap, zijplaten en rolstoelliften met ISO-compatibele ankerpunten en vierpuntsbevestiging. Chauffeurs worden opgeleid voor veilige transfers en heldere communicatie met passagiers en zorgers. TFlex- en Mutuelle-documentatie kan op aanvraag worden voorbereid. We geven prioriteit aan medische afspraken, therapie en waardige dagelijkse mobiliteit.',
       features: [
         {
           title: 'Platen, liften en vastzetting',
@@ -64,11 +64,11 @@ const SERVICE_BUNDLES = {
       ],
     },
     fr: {
-      title: 'Transport handicap',
+      title: 'Transport des personnes à mobilité réduite (PMR)',
       shortDescription:
         'Véhicules accessibles avec rampes ou élévateurs, chauffeurs formés, arrimage sécurisé et régulation 24/7 pour hôpitaux et maisons de soins en Belgique.',
       description:
-        'Taxiofany est spécialisé dans le transport handicap et accessible en fauteuil. Notre flotte adaptée comprend accès surbaissé, rampes latérales et élévateurs avec ancrages compatibles ISO et sangles quatre points. Les chauffeurs sont formés aux transferts sécurisés et à la communication avec passagers et aidants. Les dossiers TFlex et Mutuelle peuvent être préparés sur demande. Nous priorisons les rendez-vous médicaux, les séances de rééducation et la mobilité quotidienne dans la dignité.',
+        'Taxiofany est spécialisé dans le transport PMR et accessible en fauteuil. Notre flotte adaptée comprend accès surbaissé, rampes latérales et élévateurs avec ancrages compatibles ISO et sangles quatre points. Les chauffeurs sont formés aux transferts sécurisés et à la communication avec passagers et aidants. Les dossiers TFlex et Mutuelle peuvent être préparés sur demande. Nous priorisons les rendez-vous médicaux, les séances de rééducation et la mobilité quotidienne dans la dignité.',
       features: [
         {
           title: 'Rampes, élévateurs et arrimage',
@@ -117,7 +117,7 @@ const SERVICE_BUNDLES = {
       benefitPoints: [
         'Executive comfort and professional presentation',
         'Central coordination for multiple travellers',
-        'Combine with handicap fleet when colleagues need accessible vehicles',
+        'Combine with PMR fleet when colleagues need accessible vehicles',
       ],
     },
     nl: {
@@ -143,7 +143,7 @@ const SERVICE_BUNDLES = {
       benefitPoints: [
         'Executive comfort en professionele uitstraling',
         'Centrale coördinatie voor meerdere reizigers',
-        'Combineer met gehandicaptenvloot als collega’s een toegankelijk voertuig nodig hebben',
+        'Combineer met PMRvloot als collega’s een toegankelijk voertuig nodig hebben',
       ],
     },
     fr: {
@@ -169,7 +169,7 @@ const SERVICE_BUNDLES = {
       benefitPoints: [
         'Confort exécutif et présentation soignée',
         'Coordination centrale pour plusieurs voyageurs',
-        'Combinable avec la flotte handicap lorsque des collègues ont besoin d’un véhicule accessible',
+        'Combinable avec la flotte PMR lorsque des collègues ont besoin d’un véhicule accessible',
       ],
     },
   },
@@ -196,7 +196,7 @@ const SERVICE_BUNDLES = {
       ],
       benefitPoints: [
         'Ideal when mobility aids are not required',
-        'Same booking channels as handicap and business transport',
+        'Same booking channels as PMR and business transport',
         'Evening and weekend coverage subject to availability',
       ],
     },
@@ -222,7 +222,7 @@ const SERVICE_BUNDLES = {
       ],
       benefitPoints: [
         'Ideaal wanneer geen hulpmiddelen nodig zijn',
-        'Zelfde boekingskanalen als gehandicapten- en zakelijk vervoer',
+        'Zelfde boekingskanalen als PMR- en zakelijk vervoer',
         'Avond en weekend afhankelijk van beschikbaarheid',
       ],
     },
@@ -248,7 +248,7 @@ const SERVICE_BUNDLES = {
       ],
       benefitPoints: [
         'Idéal lorsqu’aucun équipement médical n’est requis',
-        'Mêmes canaux que transport handicap et professionnel',
+        'Mêmes canaux que transport PMR et professionnel',
         'Soir et week-end selon disponibilité',
       ],
     },
@@ -331,7 +331,7 @@ const BLOG_BUNDLES = {
       sectionParagraphOne:
         'Digital receipts are usually acceptable if legible, but some insurers still demand stamped proofs—ask before shredding paper copies.',
       sectionParagraphTwo:
-        'When upgrading from regular taxi to handicap transport mid-case, note the medical justification so reviewers understand the higher tariff.',
+        'When upgrading from regular taxi to PMR transport mid-case, note the medical justification so reviewers understand the higher tariff.',
       quoteText:
         'File reimbursement bundles within the statutory windows; late packets rarely benefit from goodwill appeals.',
       quoteAuthor: '— Mobility advisers',
@@ -350,7 +350,7 @@ const BLOG_BUNDLES = {
       sectionParagraphOne:
         'Digitale bonnen zijn meestal oké als ze leesbaar zijn; sommige verzekeraars eisen gestempelde bewijzen — vraag het voor u papier vernietigt.',
       sectionParagraphTwo:
-        'Als u overstapt van regulier naar gehandicaptenvervoer, noteer de medische reden zodat controleurs het hogere tarief begrijpen.',
+        'Als u overstapt van regulier naar PMRvervoer, noteer de medische reden zodat controleurs het hogere tarief begrijpen.',
       quoteText:
         'Dien bundels tijdig in; late dossiers krijgen zelden coulance.',
       quoteAuthor: '— Mobiliteitsadviseurs',
@@ -369,7 +369,7 @@ const BLOG_BUNDLES = {
       sectionParagraphOne:
         'Les reçus numériques suffisent souvent ; certaines mutuelles exigent encore des tampons — renseignez-vous avant destruction.',
       sectionParagraphTwo:
-        'Si vous passez du taxi classique au transport handicap, citez la justification médicale pour expliquer le tarif majoré.',
+        'Si vous passez du taxi classique au transport PMR, citez la justification médicale pour expliquer le tarif majoré.',
       quoteText:
         'Déposez les dossiers dans les délais légaux ; les envois tardifs sont rarement acceptés.',
       quoteAuthor: '— Conseillers mobilité',
@@ -510,7 +510,7 @@ const BLOG_BUNDLES = {
       sectionParagraphTwo:
         'Train assistants to flag urgent switches—moving from business sedan to accessible van should take only one phone call if passenger conditions flare.',
       quoteText:
-        'Handicap transport sits beside both categories—it shares booking rails but adds regulated securement and specialised vehicles.',
+        'PMR transport sits beside both categories—it shares booking rails but adds regulated securement and specialised vehicles.',
       quoteAuthor: '— Operations planner',
     },
     nl: {
@@ -529,7 +529,7 @@ const BLOG_BUNDLES = {
       sectionParagraphTwo:
         'Train planners om urgente switches te melden — van zakelijke sedan naar toegankelijk busje moet met één telefoontje kunnen.',
       quoteText:
-        'Gehandicaptenvervoer staat naast beide — dezelfde boeking maar met erkende bevestiging en gespecialiseerde voertuigen.',
+        'GePMRtenvervoer staat naast beide — dezelfde boeking maar met erkende bevestiging en gespecialiseerde voertuigen.',
       quoteAuthor: '— Operations planner',
     },
     fr: {
@@ -548,7 +548,7 @@ const BLOG_BUNDLES = {
       sectionParagraphTwo:
         'Formez les assistants à signaler les urgences : passer de berline à van accessible doit prendre un seul appel.',
       quoteText:
-        'Le transport handicap complète les deux — même réservation mais arrimage encadré et véhicules spécialisés.',
+        'Le transport PMR complète les deux — même réservation mais arrimage encadré et véhicules spécialisés.',
       quoteAuthor: '— Planificateur opérations',
     },
   },

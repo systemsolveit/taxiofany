@@ -4,15 +4,15 @@ const { Service } = require('../models');
 /** Canonical public services (English stored on documents; nl/fr/en overrides via Translation keys service.<slug>.*). */
 const BASE_SERVICES = [
   {
-    title: 'Handicap Transport',
+    title: 'PMR Transport',
     slug: 'handicap-transport',
     shortDescription:
-      'Wheelchair-accessible vans with ramps or lifts, trained drivers, secure restraint systems and 24/7 dispatch for hospital and care-home rides across Belgium.',
+      'Transport for persons with reduced mobility (PMR)—wheelchair-accessible vans with ramps or lifts, trained drivers, secure restraint systems and 24/7 dispatch across Belgium.',
     description:
-      'Taxiofany specialises in handicap and wheelchair-accessible transport. Our adapted fleet includes low-floor entry, side ramps and wheelchair lifts with ISO-compatible anchorage and four-point restraints. Drivers are trained for safe transfers and communication with passengers and caregivers. TFlex and Mutuelle billing paperwork can be prepared on request. We prioritise medical appointments, therapy visits and dignified daily mobility.',
+      'Taxiofany specialises in PMR and wheelchair-accessible transport. Our adapted fleet includes low-floor entry, side ramps and wheelchair lifts with ISO-compatible anchorage and four-point restraints. Drivers are trained for safe transfers and communication with passengers and caregivers. TFlex and Mutuelle billing paperwork can be prepared on request. We prioritise medical appointments, therapy visits and dignified daily mobility.',
     category: 'Accessibility',
     iconClass: 'las la-wheelchair',
-    coverImage: '/assets/img/service-1.jpg',
+    coverImage: '/assets/img/service-5.jpg',
     featureImage: '/assets/img/post-2.jpg',
     benefitsImage: '/assets/img/post-1.jpg',
     serviceCarImage: '/assets/img/car-1.png',
@@ -51,7 +51,7 @@ const BASE_SERVICES = [
       'Business transport delivers punctual, discreet mobility for teams and executives. Schedule airport transfers, multi-stop itineraries and recurring shuttle patterns with predictable service levels. Ideal for meetings, roadshows and airport corridors serving Brussels and regional hubs.',
     category: 'Business',
     iconClass: 'las la-briefcase',
-    coverImage: '/assets/img/service-5.jpg',
+    coverImage: '/assets/img/service-1.jpg',
     featureImage: '/assets/img/post-2.jpg',
     benefitsImage: '/assets/img/post-1.jpg',
     serviceCarImage: '/assets/img/car-1.png',

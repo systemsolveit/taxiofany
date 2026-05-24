@@ -2,11 +2,11 @@ const { connectDatabase, mongoose } = require('../config/database');
 const { Translation, Locale } = require('../models');
 const defaultCarI18n = require('./data/default-car-i18n');
 
-/** French UI copy aligned with public marketing “handicap transport first” positioning. */
+/** French UI copy aligned with public marketing “PMR transport first” positioning. */
 const entries = {
-  'meta.title': 'Taxiofany — Transport handicap & taxi accessible en fauteuil roulant',
+  'meta.title': 'Taxiofany — Transport des personnes à mobilité réduite (PMR) & taxi accessible en fauteuil roulant',
   'meta.description':
-    'Taxiofany — taxis accessibles aux fauteuils roulants et transport handicap en Belgique. Véhicules adaptés avec rampes, élévateurs et chauffeurs formés. Transport professionnel et taxi classique.',
+    'Taxiofany — taxis accessibles aux fauteuils roulants et transport PMR en Belgique. Véhicules adaptés avec rampes, élévateurs et chauffeurs formés. Transport professionnel et taxi classique.',
   'meta.author': 'Taxiofany',
   'meta.browserUpgrade.before': 'Vous utilisez un navigateur obsolète. Veuillez',
   'meta.browserUpgrade.link': 'mettre à jour votre navigateur',
@@ -21,7 +21,7 @@ const entries = {
   'header.fallbackPhone': '+32484262105',
   'header.fallbackEmail': 'info@taxiofany.com',
   'header.fallbackLocation': 'Wemmel Brussels Belgium',
-  'header.searchPlaceholder': 'Rechercher transport handicap, réservations…',
+  'header.searchPlaceholder': 'Rechercher transport PMR, réservations…',
   'header.nav.home': 'Accueil',
   'header.nav.about': 'À propos',
   'header.nav.homeDefault': 'Accueil classique',
@@ -56,7 +56,7 @@ const entries = {
   'header.sidebox.fallbackAddress': 'Wemmel Brussels Belgium',
   'header.sidebox.fallbackEmail': 'info@taxiofany.com',
   'footer.description':
-    'Taxiofany — transport handicap et accessible fiable en Belgique. Nos véhicules adaptés offrent rampes, élévateurs, sangles 4 points et chauffeurs formés. 24/7 pour hôpitaux, soins et trajets du quotidien. Transport professionnel et taxi classique également.',
+    'Taxiofany — transport PMR et accessible fiable en Belgique. Nos véhicules adaptés offrent rampes, élévateurs, sangles 4 points et chauffeurs formés. 24/7 pour hôpitaux, soins et trajets du quotidien. Transport professionnel et taxi classique également.',
   'footer.callForTaxi': 'Appelez pour un transport accessible',
   'footer.workingHours': 'Disponibilité',
   'footer.openEveryDay': 'Chaque jour :',
@@ -83,7 +83,7 @@ const entries = {
   'footer.rightsReserved': 'Tous droits réservés.',
   'footer.developedBy': 'Développé par',
   'footer.whatsapp.defaultMessage':
-    'Bonjour Taxiofany, je souhaite un transport accessible ou handicap.',
+    'Bonjour Taxiofany, je souhaite un transport accessible ou PMR.',
   'footer.whatsapp.ariaLabel': 'Discuter avec Taxiofany sur WhatsApp',
   'footer.copyrightSiteName': 'SystemSolveIT',
   'footer.copyrightSiteUrl': 'https://systemsolveit.com',
@@ -91,28 +91,31 @@ const entries = {
   'footer.copyrightSuffix': 'Tous droits réservés.',
   'booking.package.regular': 'Transport régulier',
   'booking.package.business': 'Transport professionnel',
-  'booking.package.handicap': 'Transport handicap',
+  'booking.package.PMR': 'Transport des personnes à mobilité réduite (PMR)',
   'booking.passengersWordOne': 'personne',
   'booking.passengersWordMany': 'personnes',
   'home.hero.tagline': 'Taxis accessibles aux fauteuils roulants partout en Belgique.',
-  'home.hero.title': 'Transport handicap fiable avec véhicules adaptés.',
+  'home.hero.title': 'Transport des personnes à mobilité réduite (PMR) fiable avec véhicules adaptés.',
   'home.hero.description':
     'Taxiofany est spécialisé dans le transport accessible. Nos véhicules — accès surbaissé, rampes latérales, élévateurs et ancrages 4 points — sont conduits par des chauffeurs formés à la mobilité. Transport professionnel et taxi classique. TFlex/Mutuelle sur demande.',
   'home.hero.ctaBookNow': 'Réserver',
+  'home.hero.bannerAlt': 'Transport Taxiofany en Belgique',
   'home.hero.prev': 'Précédent',
   'home.hero.next': 'Suivant',
   'home.about.eyebrow': 'À propos de Taxiofany',
   'home.about.title': 'Une mobilité digne pour chaque passager',
   'home.about.description':
-    'Nous plaçons le transport handicap et accessible en priorité : chauffeurs formés, véhicules avec rampe ou élévateur, et répartition 24/7 pour hôpitaux, maisons de soins et trajets quotidiens en Belgique. Navettes professionnelles et taxi classique également.',
+    'Votre mobilité est réduite et vous avez besoin d\'un transport jusqu\'à votre lieu de rendez-vous ? Que ce soit un rendez-vous privé ou une consultation médicale, TAXI OFANY vous y emmène.',
   'home.about.founderTitle': 'Planification & accessibilité',
   'home.about.callForTaxi': 'Appelez pour un transport accessible',
+  'home.about.seatPartner':
+    'Sièges et systèmes de retenue fournis par <a href="https://www.hendriks.be/fr?utm_source=taxiofany" target="_blank" rel="noopener noreferrer">Hendriks</a>.',
   'home.services.eyebrow': 'Ce que nous offrons',
-  'home.services.titleStart': 'Transport handicap en premier',
-  'home.services.titleEnd': '— puis taxi professionnel & classique',
+  'home.services.titleStart': 'Transport des personnes à mobilité réduite (PMR)',
+  'home.services.titleEnd': '— médical, professionnel & taxi',
   'home.services.description':
-    'Priorité : véhicules fauteuil avec rampe, élévateur et sangles. Ensuite : courses professionnelles et taxi standard. Aéroport et rendez-vous médicaux.',
-  'home.services.handicapTransport': 'Transport handicap',
+    'Transport PMR, rendez-vous médicaux, déplacements professionnels et taxi — chauffeurs professionnels 24h/24 en Belgique.',
+  'home.services.PMRTransport': 'Transport des personnes à mobilité réduite (PMR)',
   'home.services.regularTransport': 'Transport régulier',
   'home.services.airportTransport': 'Aéroport',
   'home.services.luggageTransport': 'Bagages',
@@ -166,7 +169,7 @@ const entries = {
   'home.testimonial.eyebrow': 'Témoignages',
   'home.testimonial.title': 'Une confiance pour les courses accessibles',
   'home.testimonial.description':
-    'Les familles et aidants comptent sur Taxiofany pour un transport handicap ponctuel et respectueux en Belgique.',
+    'Les familles et aidants comptent sur Taxiofany pour un transport PMR ponctuel et respectueux en Belgique.',
   'home.testimonial.reviewText':
     'Chauffeur attentionné, trajet calme et aide pour arrimer le fauteuil.',
   'home.testimonial.reviewerName': 'Passager',
@@ -196,7 +199,7 @@ const entries = {
   'home.blog.eyebrow': 'Actualités mobilité',
   'home.blog.title': 'Regards sur le transport accessible',
   'home.blog.description':
-    'Actualités transport handicap, adaptations véhicules et sécurité routière en Belgique.',
+    'Actualités transport PMR, adaptations véhicules et sécurité routière en Belgique.',
   'home.blog.categoryBusiness': 'Professionnel',
   'home.blog.categoryStartup': 'Mobilité',
   'home.blog.categoryFinance': 'Soins',
@@ -217,16 +220,16 @@ const entries = {
   'home.empty.noPublishedBlog':
     'Aucun article — publiez un billet dans le panneau admin.',
   'home.professional.eyebrow': 'Accessibilité d’abord',
-  'home.professional.title': 'Un transport handicap sur lequel vous comptez',
+  'home.professional.title': 'Un transport PMR sur lequel vous comptez',
   'home.professional.description':
-    'Le transport handicap passe en premier : véhicules adaptés, chauffeurs formés et régulation 24/7 pour hôpitaux et maisons de soins. Taxi professionnel et classique aussi — réservez sur le web, sans appli.',
+    'Le transport PMR passe en premier : véhicules adaptés, chauffeurs formés et régulation 24/7 pour hôpitaux et maisons de soins. Taxi professionnel et classique aussi — réservez sur le web, sans appli.',
   'home.professional.point1': 'Transferts fauteuil sécurisés',
   'home.professional.point1sub': 'Rampes, élévateurs, sangles — et chauffeurs qui les maîtrisent.',
   'home.professional.point2': 'TFlex & Mutuelle',
   'home.professional.point2sub': 'Demandez les justificatifs de remboursement à la réservation.',
   'home.professional.point3': 'Taxi professionnel & classique aussi',
   'home.professional.point3sub':
-    'Même flux de réservation — choisissez handicap, professionnel ou régulier.',
+    'Même flux de réservation — choisissez PMR, professionnel ou régulier.',
   'home.professional.ctaBook': 'Réservez votre course',
   'pages.users.home.modern.1_person': '1 personne',
   'pages.users.home.modern.2_person': '2 personnes',
@@ -241,13 +244,13 @@ const entries = {
   'pages.company.aboutUs.header.titleLine2': 'avec',
   'pages.company.aboutUs.header.titleBrand': 'Taxiofany',
   'pages.company.aboutUs.header.description':
-    'Réseau taxi « handicap d’abord » en Belgique — véhicules adaptés, chauffeurs formés, accompagnement TFlex/Mutuelle sur demande.',
+    'Réseau taxi « PMR d’abord » en Belgique — véhicules adaptés, chauffeurs formés, accompagnement TFlex/Mutuelle sur demande.',
   'pages.company.aboutCompany.header.eyebrow': 'Notre entreprise',
   'pages.company.aboutCompany.header.titleLine1': 'Transport accessible',
   'pages.company.aboutCompany.header.titleLine2': 'avec',
   'pages.company.aboutCompany.header.titleBrand': 'Taxiofany',
   'pages.company.aboutCompany.header.description':
-    'Nous opérons un transport handicap centré sur la Belgique : flotte adaptée, équipes formées et aide administrative lorsque c’est possible.',
+    'Nous opérons un transport PMR centré sur la Belgique : flotte adaptée, équipes formées et aide administrative lorsque c’est possible.',
   'pages.users.company.about-us.recent_posts': 'Articles récents',
   'pages.users.company.about-us.news_and_insights': 'Actualités & regards mobilité',
   'pages.users.company.about-us.we_successfully_cope_with_tasks_of_varying_compl':
@@ -265,25 +268,25 @@ const entries = {
   'pages.users.company.about-company.business': 'Mobilité',
   'pages.users.company.about-company.read_more': 'Lire la suite',
   'pages.services.list.header.eyebrow': 'Nos services',
-  'pages.services.list.header.titleLine1': 'Transport handicap',
+  'pages.services.list.header.titleLine1': 'Transport des personnes à mobilité réduite (PMR)',
   'pages.services.list.header.titleBrand': 'Taxiofany',
   'pages.services.list.header.titleLine2': '& plus',
   'pages.services.list.header.description':
     'Courses accessibles d’abord — puis transport professionnel, taxi classique et trajets aéroport/soins.',
   'pages.services.list.noServices':
-    'Aucun service publié. Ajoutez handicap, professionnel ou régulier dans le panneau admin.',
+    'Aucun service publié. Ajoutez PMR, professionnel ou régulier dans le panneau admin.',
   'pages.services.list.localTransport': 'Transport local',
   'pages.services.details.header.eyebrow': 'Détail du service',
-  'pages.services.details.header.titleLine1': 'Handicap &',
+  'pages.services.details.header.titleLine1': 'PMR &',
   'pages.services.details.header.titleLine2': 'transport accessible',
   'pages.services.details.header.titleBrand': 'Taxiofany',
   'pages.services.details.header.description':
     'Transport accessible avec chauffeurs formés, véhicules adaptés et accompagnement TFlex/Mutuelle en option.',
-  'pages.services.details.title': 'Taxi accessible & transport handicap',
+  'pages.services.details.title': 'Taxi accessible & transport PMR',
   'pages.services.details.paragraph1':
     'Taxiofany met en priorité les passagers en fauteuil ou avec aide à la marche. Nos véhicules offrent accès surbaissé, rampe ou élévateur, points d’ancrage et siège accompagnant.',
   'pages.services.details.paragraph2':
-    'Outre le transport handicap, nous proposons transferts professionnels et taxi classique — réservez en ligne ou appelez la répartition pour urgences hôpital ou maison de soins.',
+    'Outre le transport PMR, nous proposons transferts professionnels et taxi classique — réservez en ligne ou appelez la répartition pour urgences hôpital ou maison de soins.',
   'pages.services.details.features.fastPickups.title': 'Prise en charge accessible',
   'pages.services.details.features.fastPickups.description':
     'Aide porte-à-porte pour monter en sécurité et arrimer dans le véhicule.',
@@ -314,17 +317,17 @@ const entries = {
   'pages.services.details.banner.discountSuffix': 'régulation soins & hôpital',
   'pages.services.details.banner.cta': 'Contacter la répartition',
   'pages.services.details.tagsTitle': 'Tags',
-  'pages.users.services.details.business': 'transport handicap',
+  'pages.users.services.details.business': 'transport PMR',
   'pages.users.services.details.marketing': 'taxi fauteuil',
   'pages.users.services.details.startup': 'Belgique',
-  'service.handicap.title': 'Transport handicap',
-  'service.handicap.shortDescription':
+  'service.PMR.title': 'Transport des personnes à mobilité réduite (PMR)',
+  'service.PMR.shortDescription':
     'Véhicules fauteuil avec rampe ou élévateur et chauffeurs formés pour soins, travail et quotidien.',
-  'service.handicap.description':
-    'Taxiofany planifie le transport handicap avec transferts sécurisés et aide documentaire lorsque possible.',
-  'service.handicap.feature.0.title': 'Embarquement sûr',
-  'service.handicap.feature.0.description': 'Rampe ou élévateur et arrimage conforme.',
-  'service.handicap.benefitPoint.0': 'Arrimage fauteuil correct à chaque fois',
+  'service.PMR.description':
+    'Taxiofany planifie le transport PMR avec transferts sécurisés et aide documentaire lorsque possible.',
+  'service.PMR.feature.0.title': 'Embarquement sûr',
+  'service.PMR.feature.0.description': 'Rampe ou élévateur et arrimage conforme.',
+  'service.PMR.benefitPoint.0': 'Arrimage fauteuil correct à chaque fois',
   'driver.availability.available': 'Disponible',
   'driver.availability.busy': 'Occupé',
   'driver.availability.offline': 'Hors ligne',
@@ -339,7 +342,7 @@ const entries = {
   'pages.users.drivers.list.make_your': 'des transferts fauteuil',
   'pages.users.drivers.list.ride_safe': 'sécurisés',
   'pages.users.drivers.list.everything_your_taxi_business':
-    'Découvrez l’équipe Taxiofany — centrée sur le transport handicap et une assistance respectueuse',
+    'Découvrez l’équipe Taxiofany — centrée sur le transport PMR et une assistance respectueuse',
   'pages.users.drivers.list.needs_is_already_here': 'et une régulation fiable en Belgique.',
   'pages.users.drivers.list.no_driver_profiles_are_published_yet':
     'Aucun chauffeur publié — ajoutez votre équipe accessibilité dans le panneau admin.',
@@ -350,7 +353,7 @@ const entries = {
   'pages.users.drivers.details.everything_your_taxi_business':
     'Chaque chauffeur est briefé sur l’embarquement sûr, les sangles et la communication avec',
   'pages.users.drivers.details.needs_is_already_here':
-    'passagers et aidants — le transport handicap est notre quotidien.',
+    'passagers et aidants — le transport PMR est notre quotidien.',
   'pages.users.drivers.details.about_the_driver': 'À propos du chauffeur',
   'pages.users.drivers.details.mauricio_fern_ndez': 'Chauffeur mis en avant',
   'pages.users.drivers.details.we_successfully_cope_with_tasks_of_varying_compl':
@@ -372,7 +375,7 @@ const entries = {
   'pages.users.drivers.details.taxiofany_passenger_reviews':
     'Ce que disent les voyageurs sur Taxiofany',
   'pages.users.drivers.details.guarantees_and_regularly_master_technologies':
-    'transport handicap — aide bienveillante à chaque étape.',
+    'transport PMR — aide bienveillante à chaque étape.',
   'pages.users.taxi.list.our_taxi_lists': 'Nos véhicules',
   'pages.users.taxi.list.feel_your_journey': 'Flotte accessible',
   'pages.users.taxi.list.with': 'avec',
@@ -393,7 +396,7 @@ const entries = {
   'pages.users.taxi.details.with': 'avec',
   'pages.users.taxi.details.taxiofany': 'Taxiofany',
   'pages.users.taxi.details.everything_your_taxi_business':
-    'Chaque véhicule listé est entretenu pour un transport handicap et fauteuil sûr',
+    'Chaque véhicule listé est entretenu pour un transport PMR et fauteuil sûr',
   'pages.users.taxi.details.needs_is_already_here':
     'avec les fiches publiées par notre équipe flotte.',
   'pages.users.taxi.details.introducing': 'Mise en avant flotte',
@@ -427,10 +430,16 @@ const entries = {
   'pages.users.contact.have_any': 'Vous planifiez une',
   'pages.users.contact.questions': 'course accessible ?',
   'pages.users.contact.get_in_touch_to_discuss_your_employee_wellbeing_':
-    'Contactez-nous pour transport handicap, véhicules fauteuil, questions TFlex/Mutuelle, ou réservations taxi professionnel et classique. Appelez, écrivez ou utilisez le formulaire — nous répondons vite.',
+    'Contactez-nous pour transport PMR, véhicules fauteuil, questions TFlex/Mutuelle, ou réservations taxi professionnel et classique. Appelez, écrivez ou utilisez le formulaire — nous répondons vite.',
   'pages.users.contact.contact_with_us': 'Message à Taxiofany',
   'pages.users.contact.headOffice': 'Siège',
   'pages.users.contact.send_massage': 'Envoyer le message',
+  'pages.users.contact.thankYou.eyebrow': 'Merci',
+  'pages.users.contact.thankYou.title': 'Votre message a été envoyé',
+  'pages.users.contact.thankYou.description': 'Nous avons bien reçu votre message et vous répondrons dès que possible.',
+  'pages.users.contact.thankYou.body': 'Notre équipe vous contactera si nous avons besoin de précisions sur votre trajet.',
+  'pages.users.contact.thankYou.home': 'Retour à l\'accueil',
+  'pages.users.contact.thankYou.contactAgain': 'Envoyer un autre message',
   'contact.form.firstName': 'Prénom',
   'contact.form.lastName': 'Nom',
   'contact.form.email': 'Email',
@@ -444,7 +453,7 @@ const entries = {
     'Réponses sur véhicules fauteuil, réservation, remboursement et sécurité',
   'pages.users.support.faqs.needs_is_already_here': 'pour passagers et aidants en Belgique.',
   'pages.users.support.faqs.what_makes_a_good_taxi_service':
-    'Quel équipement ont vos véhicules handicap ?',
+    'Quel équipement ont vos véhicules PMR ?',
   'pages.users.support.faqs.the_restaurants_in_hangzhou_also_catered_to_many':
     'Nos véhicules ont en général rampe ou élévateur, plancher surbaissé, ancrages ISO, sangles 4 points et siège accompagnant. Indiquez la taille du fauteuil et si vous avez besoin de temps d’embarquement supplémentaire.',
   'pages.users.support.faqs.what_is_the_purpose_of_a_taxi_service':
@@ -460,11 +469,11 @@ const entries = {
   'pages.users.support.faqs.answer4':
     'Utilisez le formulaire en ligne ou appelez avec heure de RDV, fenêtre de prise en charge et notes mobilité. Nous priorisons la planification médicale si possible.',
   'pages.users.support.faqs.how_many_cars_does_taxiofany_taxi_service_have':
-    'Proposez-vous aussi taxi classique ou professionnel — pas seulement handicap ?',
+    'Proposez-vous aussi taxi classique ou professionnel — pas seulement PMR ?',
   'pages.users.support.faqs.answer5':
-    'Oui. Le transport handicap est notre cœur de métier, mais vous pouvez réserver professionnel et classique sur les mêmes canaux — choisissez le forfait à la réservation.',
+    'Oui. Le transport PMR est notre cœur de métier, mais vous pouvez réserver professionnel et classique sur les mêmes canaux — choisissez le forfait à la réservation.',
   'pages.users.support.faqs.categories': 'Catégories',
-  'pages.users.support.faqs.business_strategy': 'Transport handicap',
+  'pages.users.support.faqs.business_strategy': 'Transport des personnes à mobilité réduite (PMR)',
   'pages.users.support.faqs.project_management': 'Taxi fauteuil',
   'pages.users.support.faqs.digital_marketing': 'Courses médicales',
   'pages.users.support.faqs.customer_experience': 'Conseils aidants',
@@ -478,7 +487,7 @@ const entries = {
     'TFlex, Mutuelle et remboursement : bases.',
   'pages.users.support.faqs.jan_01_2022': 'janv. 2026',
   'pages.users.support.faqs.tags': 'Tags',
-  'pages.users.support.faqs.business': 'handicap',
+  'pages.users.support.faqs.business': 'PMR',
   'pages.users.support.faqs.marketing': 'fauteuil',
   'pages.users.support.faqs.startup': 'TFlex',
   'pages.users.support.faqs.design': 'Mutuelle',
@@ -488,18 +497,18 @@ const entries = {
   'pages.users.support.faqs.tips': 'Wemmel',
   'pages.users.support.faqs.seo': 'Belgique',
   'pages.users.packages.packages': 'Forfaits courses',
-  'packages.header.title': 'Handicap, pro &',
+  'packages.header.title': 'PMR, pro &',
   'packages.header.highlight': 'transport régulier',
   'packages.header.description':
     'Les forfaits publiés se configurent dans l’admin — souvent bundles accessibles fauteuil, affaires ou taxi standard.',
   'packages.bookNow': 'Réserver ce forfait',
   'packages.empty':
-    'Aucun forfait publié — créez des bundles handicap, professionnel ou régulier dans le panneau admin.',
+    'Aucun forfait publié — créez des bundles PMR, professionnel ou régulier dans le panneau admin.',
   'pages.users.solutions.solutions': 'Solutions',
   'solutions.header.title': 'Transport',
   'solutions.header.highlight': 'accessible',
   'solutions.header.description':
-    'Le transport handicap et fauteuil passe en premier — puis navette professionnelle et taxi classique, même parcours de réservation.',
+    'Le transport PMR et fauteuil passe en premier — puis navette professionnelle et taxi classique, même parcours de réservation.',
   'pages.users.blog.grid.blog_grid': 'Blog',
   'pages.users.blog.grid.feel_your_journey': 'Récits mobilité',
   'pages.users.blog.grid.with': 'avec',
@@ -539,7 +548,7 @@ const entries = {
   'pages.users.blog.details.financial_experts_support_or_help_you_to_to_find':
     'Planifier une course accessible commence par une communication claire : besoins mobilité, dimensions fauteuil, utilisation d’un lève-personne, contraintes horaires pour thérapies ou hôpital.',
   'pages.users.blog.details.unless_you_are_the_one_who_really_cares_about_th':
-    'Taxiofany combine une répartition « handicap d’abord » avec taxi professionnel et classique — familles, employeurs et particuliers réservent la même flotte de confiance.',
+    'Taxiofany combine une répartition « PMR d’abord » avec taxi professionnel et classique — familles, employeurs et particuliers réservent la même flotte de confiance.',
   'pages.users.blog.details.there_are_no_secrets_to_success_it_is_the_result':
     'La dignité à chaque trajet — ce dont les familles se souviennent le plus.',
   'pages.users.blog.details.winston_churchill': '— Passager Taxiofany',
@@ -551,7 +560,7 @@ const entries = {
     'Un bon arrimage du fauteuil protège passager et chauffeur. Nos équipes répètent angles de rampe, freinage en pente et communication quand une aide supplémentaire est nécessaire.',
   'pages.users.blog.details.another_speaker_john_meuse_senior_director_of_he':
     'Demandez siège accompagnant, bagage pour équipement et priorité si les cliniques retardent — nous adaptons quand c’est possible.',
-  'pages.users.blog.details.business': 'transport handicap',
+  'pages.users.blog.details.business': 'transport PMR',
   'pages.users.blog.details.marketing': 'taxi fauteuil',
   'pages.users.blog.details.startup': 'Belgique',
   'pages.users.blog.details.design': 'TFlex',
@@ -583,7 +592,7 @@ const entries = {
   'pages.users.testimonials.our_passengers': 'Passagers & aidants',
   'pages.users.testimonials.reviews': 'avis',
   'pages.users.testimonials.everything_your_taxi_business':
-    'Retours réels sur transport handicap, ponctualité',
+    'Retours réels sur transport PMR, ponctualité',
   'pages.users.testimonials.needs_is_already_here': 'et chauffeurs attentionnés en Belgique.',
   'testimonials.authorAlt': 'Passager',
   'testimonials.empty':
