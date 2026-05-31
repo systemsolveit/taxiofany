@@ -1,5 +1,6 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
+<% const wl = typeof withLocale === 'function' ? withLocale : function(p) { return p; }; %>
 
 <section class="page-header">
         <div class="page-header-shape"></div>
@@ -20,7 +21,7 @@
                     <div class="accordion faq-accordion" id="faq-accordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><%= t('pages.users.support.faqs.what_makes_a_good_taxi_service', 'What equipment do your handicap vehicles have?') %></button>
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><%= t('pages.users.support.faqs.what_makes_a_good_taxi_service', 'What equipment do your PMR vehicles have?') %></button>
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faq-accordion">
                                 <div class="accordion-body">
@@ -60,7 +61,7 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingFive">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive"> <%= t('pages.users.support.faqs.how_many_cars_does_taxiofany_taxi_service_have', 'Do you also offer regular or business taxi—not only handicap?') %> </button>
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive"> <%= t('pages.users.support.faqs.how_many_cars_does_taxiofany_taxi_service_have', 'Do you also offer regular or business taxi—not only PMR?') %> </button>
                             </h2>
                             <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faq-accordion">
                                 <div class="accordion-body">
@@ -83,11 +84,11 @@
                             <h3><%= t('pages.users.support.faqs.categories', 'Categories') %></h3>
                         </div>
                         <ul class="category-list">
-                            <li><a href="/blog"><%= t('pages.users.support.faqs.business_strategy', 'Handicap transport') %></a><span>23</span></li>
-                            <li><a href="/blog"><%= t('pages.users.support.faqs.project_management', 'Wheelchair taxi') %></a><span>05</span></li>
-                            <li><a href="/blog"><%= t('pages.users.support.faqs.digital_marketing', 'Medical rides') %></a><span>18</span></li>
-                            <li><a href="/blog"><%= t('pages.users.support.faqs.customer_experience', 'Caregiver tips') %></a><span>04</span></li>
-                            <li><a href="/blog"><%= t('pages.users.support.faqs.partnership_system', 'Belgium mobility') %></a><span>15</span></li>
+                            <li><a href="<%= wl('/blog') %>"><%= t('pages.users.support.faqs.business_strategy', 'PMR transport') %></a><span>23</span></li>
+                            <li><a href="<%= wl('/blog') %>"><%= t('pages.users.support.faqs.project_management', 'Wheelchair taxi') %></a><span>05</span></li>
+                            <li><a href="<%= wl('/blog') %>"><%= t('pages.users.support.faqs.digital_marketing', 'Medical rides') %></a><span>18</span></li>
+                            <li><a href="<%= wl('/blog') %>"><%= t('pages.users.support.faqs.customer_experience', 'Caregiver tips') %></a><span>04</span></li>
+                            <li><a href="<%= wl('/blog') %>"><%= t('pages.users.support.faqs.partnership_system', 'Belgium mobility') %></a><span>15</span></li>
                         </ul>
                     </div>
                     <!--Categories-->
@@ -101,7 +102,7 @@
                                     <img src="/assets/img/post-thumb-1.jpg" alt="thumb">
                                 </div>
                                 <div class="thumb-post-info">
-                                    <h3><a href="/blog/details"><%= t('pages.users.support.faqs.how_to_go_about_initiating_an_startup_in_few_day', 'Choosing a wheelchair-accessible taxi in Belgium.') %></a></h3>
+                                    <h3><a href="<%= wl('/blog/details') %>"><%= t('pages.users.support.faqs.how_to_go_about_initiating_an_startup_in_few_day', 'Choosing a wheelchair-accessible taxi in Belgium.') %></a></h3>
                                     <a href="#" class="date"><%= t('pages.users.support.faqs.jan_01_2022', 'Jan 01 2022') %></a>
                                 </div>
                             </li>
@@ -110,7 +111,7 @@
                                     <img src="/assets/img/post-thumb-2.jpg" alt="thumb">
                                 </div>
                                 <div class="thumb-post-info">
-                                    <h3><a href="/blog/details"><%= t('pages.users.support.faqs.financial_experts_support_help_you_to_find_out', 'What to tell dispatch before your first accessible ride.') %></a></h3>
+                                    <h3><a href="<%= wl('/blog/details') %>"><%= t('pages.users.support.faqs.financial_experts_support_help_you_to_find_out', 'What to tell dispatch before your first accessible ride.') %></a></h3>
                                     <a href="#" class="date"><%= t('pages.users.support.faqs.jan_01_2022', 'Jan 01 2022') %></a>
                                 </div>
                             </li>
@@ -119,7 +120,7 @@
                                     <img src="/assets/img/post-thumb-3.jpg" alt="thumb">
                                 </div>
                                 <div class="thumb-post-info">
-                                    <h3><a href="/blog/details"><%= t('pages.users.support.faqs.innovative_helping_business_all_over_the_world', 'TFlex, Mutuelle and mobility reimbursement basics.') %></a></h3>
+                                    <h3><a href="<%= wl('/blog/details') %>"><%= t('pages.users.support.faqs.innovative_helping_business_all_over_the_world', 'TFlex, Mutuelle and mobility reimbursement basics.') %></a></h3>
                                     <a href="#" class="date"><%= t('pages.users.support.faqs.jan_01_2022', 'Jan 01 2022') %></a>
                                 </div>
                             </li>
@@ -131,7 +132,7 @@
                             <h3><%= t('pages.users.support.faqs.tags', 'Tags') %></h3>
                         </div>
                         <ul class="tags">
-                            <li><a href="#"><%= t('pages.users.support.faqs.business', 'handicap') %></a></li>
+                            <li><a href="#"><%= t('pages.users.support.faqs.business', 'PMR') %></a></li>
                             <li><a href="#"><%= t('pages.users.support.faqs.marketing', 'wheelchair') %></a></li>
                             <li><a href="#"><%= t('pages.users.support.faqs.startup', 'TFlex') %></a></li>
                             <li><a href="#"><%= t('pages.users.support.faqs.design', 'Mutuelle') %></a></li>

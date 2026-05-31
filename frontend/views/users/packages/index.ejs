@@ -1,12 +1,13 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
+<% const wl = typeof withLocale === 'function' ? withLocale : function (p) { return p; }; %>
 <section class="page-header">
   <div class="page-header-shape"></div>
   <div class="container">
     <div class="page-header-info">
       <h4><%= t('pages.users.packages.packages', 'Ride packages') %></h4>
-      <h2><%= t('packages.header.title', 'Handicap, business &') %> <span><%= t('packages.header.highlight', 'regular transport') %></span></h2>
-      <p><%= t('packages.header.description', 'Published packages are configured in admin—typically handicap-accessible, executive business, or standard taxi bundles.') %></p>
+      <h2><%= t('packages.header.title', 'PMR, business &') %> <span><%= t('packages.header.highlight', 'regular transport') %></span></h2>
+      <p><%= t('packages.header.description', 'Published packages are configured in admin—typically PMR-accessible, executive business, or standard taxi bundles.') %></p>
     </div>
   </div>
 </section>
@@ -31,13 +32,13 @@
                   <% }) %>
                 </ul>
               <% } %>
-              <a href="/book-taxi" class="read-more"><%= t('packages.bookNow', 'Book this package') %></a>
+              <a href="<%= wl('/book-taxi') %>" class="read-more"><%= t('packages.bookNow', 'Book this package') %></a>
             </div>
           </div>
         </div>
       <% }); } else { %>
         <div class="col-12">
-          <div class="alert alert-light border text-center mb-0"><%= t('packages.empty', 'No packages published yet—create handicap, business or regular bundles in the admin panel.') %></div>
+          <div class="alert alert-light border text-center mb-0"><%= t('packages.empty', 'No packages published yet—create PMR, business or regular bundles in the admin panel.') %></div>
         </div>
       <% } %>
     </div>

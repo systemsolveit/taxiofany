@@ -56,7 +56,7 @@ function buildSeedPosts() {
       sectionParagraphOne:
         'Digital receipts are usually acceptable if legible, but some insurers still demand stamped proofs—ask before shredding paper copies.',
       sectionParagraphTwo:
-        'When upgrading from regular taxi to handicap transport mid-case, note the medical justification so reviewers understand the higher tariff.',
+        'When upgrading from regular taxi to PMR transport mid-case, note the medical justification so reviewers understand the higher tariff.',
       category: 'Reimbursement',
       authorName: 'Taxiofany editorial',
       coverImage: '/assets/img/post-2.jpg',

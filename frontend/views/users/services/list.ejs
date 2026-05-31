@@ -1,5 +1,6 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
+<% const wl = typeof withLocale === 'function' ? withLocale : function (p) { return p; }; %>
 
 <section class="page-header">
         <div class="page-header-shape"></div>
@@ -30,16 +31,16 @@
                                 <div class="service-content">
                                     <% const svcIcon = (item.iconClass && String(item.iconClass).trim()) || ''; %>
                                     <% if (svcIcon) { %><div class="service-icon" aria-hidden="true"><i class="<%= svcIcon %>"></i></div><% } %>
-                                    <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.handicapTransport', 'PMR transport')) : (item.title || t('home.services.handicapTransport', 'PMR transport')) %></a></h3>
+                                    <h3><a href="<%= wl('/services/details/' + encodeURIComponent(item.slug)) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || t('home.services.handicapTransport', 'PMR transport')) : (item.title || t('home.services.handicapTransport', 'PMR transport')) %></a></h3>
                                     <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) : (item.shortDescription || item.description || t('home.services.itemDescription', 'Wheelchair-accessible vans with ramps, lifts, and trained drivers—for hospital, work and daily trips.')) %></p>
-                                    <a class="read-more" href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= t('home.services.readMore', 'Read more') %></a>
+                                    <a class="read-more" href="<%= wl('/services/details/' + encodeURIComponent(item.slug)) %>"><%= t('home.services.readMore', 'Read more') %></a>
                                 </div>
                             </div>
                         </div>
                     <% }) %>
                 <% } else { %>
                     <div class="col-12 text-center text-muted">
-                        <p><%= t('pages.services.list.noServices', 'No services published yet. Add handicap, business or regular transport services in the admin panel.') %></p>
+                        <p><%= t('pages.services.list.noServices', 'No services published yet. Add PMR, business or regular transport services in the admin panel.') %></p>
                     </div>
                 <% } %>
             </div>
@@ -54,7 +55,7 @@
                     <div class="cta-content">
                         <h4><%= t('home.cta.serviceLabel', 'Taxiofany accessible transport') %></h4>
                         <h2><%= t('home.cta.feelYourJourney', 'Move with confidence') %></h2>
-                        <a href="/book-taxi" class="default-btn"><%= t('home.cta.bookTaxiBtn', 'Book accessible ride') %></a>
+                        <a href="<%= wl('/book-taxi') %>" class="default-btn"><%= t('home.cta.bookTaxiBtn', 'Book accessible ride') %></a>
                     </div>
                 </div>
                 <div class="col-lg-5">
@@ -78,7 +79,7 @@
             <div class="section-heading text-center mb-40">
                 <h4><span></span><%= t('home.blog.eyebrow', 'Mobility news') %></h4>
                 <h2><%= t('home.blog.title', 'Insights on accessible transport') %></h2>
-                <p><%= t('home.blog.description', 'Updates on handicap transport, vehicle adaptations, and travelling safely in Belgium.') %></p>
+                <p><%= t('home.blog.description', 'Updates on PMR transport, vehicle adaptations, and travelling safely in Belgium.') %></p>
             </div>
             <!--/.section-heading-->
             <div class="row grid-post">
@@ -89,7 +90,7 @@
                             <div class="post-card">
                                 <div class="post-thumb">
                                     <img src="<%= post.coverImage || '/assets/img/banner-1.jpg' %>" alt="<%= t('blog.postImageAlt', 'post') %>" />
-                                    <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="post-category"><%= postCatKey ? t('blog.category.' + postCatKey, post.category || t('home.blog.categoryBusiness')) : (post.category || t('home.blog.categoryBusiness')) %></a>
+                                    <a href="<%= wl('/blog/details/' + encodeURIComponent(post.slug)) %>" class="post-category"><%= postCatKey ? t('blog.category.' + postCatKey, post.category || t('home.blog.categoryBusiness')) : (post.category || t('home.blog.categoryBusiness')) %></a>
                                 </div>
                                 <div class="post-content-wrap">
                                     <ul class="post-meta">
@@ -98,10 +99,10 @@
                                     </ul>
                                     <div class="post-content">
                                         <h3>
-                                            <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="hover"><%= post.slug ? t('blog.' + post.slug + '.title', post.title || '') : (post.title || '') %></a>
+                                            <a href="<%= wl('/blog/details/' + encodeURIComponent(post.slug)) %>" class="hover"><%= post.slug ? t('blog.' + post.slug + '.title', post.title || '') : (post.title || '') %></a>
                                         </h3>
                                         <p><%= post.slug ? t('blog.' + post.slug + '.excerpt', post.excerpt || post.summary || '') : (post.excerpt || post.summary || '') %></p>
-                                        <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="read-more"><%= t('home.blog.readMore', 'Read more') %></a>
+                                        <a href="<%= wl('/blog/details/' + encodeURIComponent(post.slug)) %>" class="read-more"><%= t('home.blog.readMore', 'Read more') %></a>
                                     </div>
                                 </div>
                             </div>

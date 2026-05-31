@@ -38,7 +38,7 @@ const BASE_SERVICES = [
       'Dispatch tuned for clinics, hospitals and care homes',
       'Same booking flow as business and regular taxi',
     ],
-    tags: ['handicap', 'wheelchair', 'Belgium'],
+    tags: ['pmr', 'wheelchair', 'Belgium'],
     displayOrder: 1,
     isPublished: true,
   },
@@ -75,7 +75,7 @@ const BASE_SERVICES = [
     benefitPoints: [
       'Executive comfort and professional presentation',
       'Central coordination for multiple travellers',
-      'Combine with handicap fleet when colleagues need accessible vehicles',
+      'Combine with PMR fleet when colleagues need accessible vehicles',
     ],
     tags: ['business', 'corporate', 'airport'],
     displayOrder: 2,
@@ -113,7 +113,7 @@ const BASE_SERVICES = [
     ],
     benefitPoints: [
       'Ideal when mobility aids are not required',
-      'Same booking channels as handicap and business transport',
+      'Same booking channels as PMR and business transport',
       'Evening and weekend coverage subject to availability',
     ],
     tags: ['city', 'daily', 'taxi'],

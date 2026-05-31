@@ -7,7 +7,7 @@
             <div class="page-header-info">
                 <h4><%= t('pages.users.testimonials.testimonials', 'Testimonials') %></h4>
                 <h2><%= t('pages.users.testimonials.our_passengers', 'Passengers & caregivers') %> <span><%= t('pages.users.testimonials.reviews', 'reviews') %></span></h2>
-                <p><%= t('pages.users.testimonials.everything_your_taxi_business', 'Real feedback on handicap transport, punctuality') %> <br><%= t('pages.users.testimonials.needs_is_already_here', 'and caring drivers across Belgium.') %> </p>
+                <p><%= t('pages.users.testimonials.everything_your_taxi_business', 'Real feedback on PMR transport, punctuality') %> <br><%= t('pages.users.testimonials.needs_is_already_here', 'and caring drivers across Belgium.') %> </p>
             </div>
         </div>
     </section>
@@ -20,14 +20,15 @@
                     <div class="swiper-wrapper">
                         <% const testimonialItems = typeof testimonials !== 'undefined' && Array.isArray(testimonials) ? testimonials : []; %>
                         <% if (testimonialItems.length) { testimonialItems.forEach(function(item) { %>
+                            <% const testimonialSlot = Number(item.displayOrder) > 0 ? Number(item.displayOrder) : (item._id ? String(item._id) : ''); %>
                             <div class="swiper-slide">
                                 <div class="testi-item">
                                     <div class="quote-icon"><i class="las la-quote-right"></i></div>
-                                    <p><%= item._id ? t('testimonial.' + item._id + '.quote', item.quote || '') : (item.quote || '') %></p>
+                                    <p><%= testimonialSlot ? t('testimonial.default.' + testimonialSlot + '.quote', item.quote || '') : (item.quote || '') %></p>
                                     <div class="testi-author">
                                         <div class="author-thumb"><img src="<%= item.avatar || '/assets/img/profile-avatar.svg' %>" alt="<%= t('testimonials.authorAlt', 'Passenger') %>"></div>
                                         <div class="author-info">
-                                            <h3><%= item._id ? t('testimonial.' + item._id + '.name', item.name || '') : (item.name || '') %> <span><%= item._id ? t('testimonial.' + item._id + '.company', item.company || item.role || '') : (item.company || item.role || '') %></span></h3>
+                                            <h3><%= testimonialSlot ? t('testimonial.default.' + testimonialSlot + '.name', item.name || '') : (item.name || '') %> <span><%= testimonialSlot ? t('testimonial.default.' + testimonialSlot + '.company', item.company || item.role || '') : (item.company || item.role || '') %></span></h3>
                                         </div>
                                     </div>
                                 </div>

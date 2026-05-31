@@ -1,5 +1,6 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
+<% const wl = typeof withLocale === 'function' ? withLocale : function(p) { return p; }; %>
 
 <section class="page-header blog-details">
         <div class="container">
@@ -26,7 +27,7 @@
                         <div class="post-thumb"><img src="<%= blogPost && blogPost.coverImage ? blogPost.coverImage : '/assets/img/post-1.jpg' %>" alt="img"></div>
                         <p><%= blogPost && blogPost.content ? (blogPost.slug ? t('blog.' + blogPost.slug + '.content', blogPost.content) : blogPost.content) : t('pages.users.blog.details.financial_experts_support_or_help_you_to_to_find', 'Planning an accessible ride starts with clear communication: tell us your mobility needs, wheelchair dimensions, whether you use a hoist, and any time constraints for therapies or hospital appointments.') %></p>
 
-                        <p><%= blogPost && blogPost.contentSecondary ? (blogPost.slug ? t('blog.' + blogPost.slug + '.contentSecondary', blogPost.contentSecondary) : blogPost.contentSecondary) : t('pages.users.blog.details.unless_you_are_the_one_who_really_cares_about_th', 'Taxiofany combines handicap-first dispatch with business and regular taxi options—so families, employers and individuals can book the same trusted fleet.') %></p>
+                        <p><%= blogPost && blogPost.contentSecondary ? (blogPost.slug ? t('blog.' + blogPost.slug + '.contentSecondary', blogPost.contentSecondary) : blogPost.contentSecondary) : t('pages.users.blog.details.unless_you_are_the_one_who_really_cares_about_th', 'Taxiofany combines PMR-first dispatch with business and regular taxi options—so families, employers and individuals can book the same trusted fleet.') %></p>
 
                         <blockquote>
                             <i class="fas fa-quote-right"></i>
@@ -58,7 +59,7 @@
                                     <li><a href="#"><%= tagKey ? t('tag.' + tagKey, tag) : tag %></a></li>
                                 <% }) %>
                             <% } else { %>
-                                <li><a href="#"><%= t('pages.users.blog.details.business', 'handicap transport') %></a></li>
+                                <li><a href="#"><%= t('pages.users.blog.details.business', 'PMR transport') %></a></li>
                                 <li><a href="#"><%= t('pages.users.blog.details.marketing', 'wheelchair taxi') %></a></li>
                                 <li><a href="#"><%= t('pages.users.blog.details.startup', 'Belgium') %></a></li>
                                 <li><a href="#"><%= t('pages.users.blog.details.design', 'TFlex') %></a></li>
@@ -68,13 +69,13 @@
 
                         <ul class="post-navigation">
                             <li>
-                                <a href="<%= previousPost && previousPost.slug ? ('/blog/details/' + encodeURIComponent(previousPost.slug)) : '/blog/details' %>">
+                                <a href="<%= previousPost && previousPost.slug ? wl('/blog/details/' + encodeURIComponent(previousPost.slug)) : wl('/blog/details') %>">
                                     <span><i class="las la-angle-left"></i><%= t('pages.users.blog.details.previous', 'Previous') %></span>
                                     <%= previousPost && previousPost.title ? (previousPost.slug ? t('blog.' + previousPost.slug + '.title', previousPost.title) : previousPost.title) : t('pages.users.blog.details.how_to_start_initiating_an_startup_in_few_days', 'Previous post') %>
                                 </a>
                             </li>
                             <li>
-                                <a href="<%= nextPost && nextPost.slug ? ('/blog/details/' + encodeURIComponent(nextPost.slug)) : '/blog/details' %>">
+                                <a href="<%= nextPost && nextPost.slug ? wl('/blog/details/' + encodeURIComponent(nextPost.slug)) : wl('/blog/details') %>">
                                     <span><%= t('pages.users.blog.details.next', 'Next') %><i class="las la-angle-right"></i></span>
                                     <%= nextPost && nextPost.title ? (nextPost.slug ? t('blog.' + nextPost.slug + '.title', nextPost.title) : nextPost.title) : t('pages.users.blog.details.fresh_startup_ideas_for_digital_business', 'Next post') %>
                                 </a>
@@ -115,7 +116,7 @@
                                             <div class="comment-thumb"><img src="<%= comment.avatar || '/assets/img/comment-1.png' %>" alt="img"></div>
                                             <div class="comment-wrap">
                                                 <div class="comments-meta">
-                                                    <h4><%= comment.name || 'Guest' %> <span><%= comment.dateLabel || '' %></span></h4>
+                                                    <h4><%= comment.name || t('common.guest', 'Guest') %> <span><%= comment.dateLabel || '' %></span></h4>
                                                 </div>
                                                 <div class="comment-area">
                                                     <p><%= comment.message || '' %></p>
@@ -132,7 +133,7 @@
                                                             <div class="comment-thumb"><img src="<%= reply.avatar || '/assets/img/comment-2.png' %>" alt="img"></div>
                                                             <div class="comment-wrap">
                                                                 <div class="comments-meta">
-                                                                    <h4><%= reply.name || 'Guest' %> <span><%= reply.dateLabel || '' %></span></h4>
+                                                                    <h4><%= reply.name || t('common.guest', 'Guest') %> <span><%= reply.dateLabel || '' %></span></h4>
                                                                 </div>
                                                                 <div class="comment-area">
                                                                     <p><%= reply.message || '' %></p>

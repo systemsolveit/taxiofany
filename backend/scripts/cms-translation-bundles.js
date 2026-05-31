@@ -4,7 +4,7 @@
  */
 
 const SERVICE_BUNDLES = {
-  'PMR-transport': {
+  'handicap-transport': {
     en: {
       title: 'PMR Transport',
       shortDescription:
@@ -350,7 +350,7 @@ const BLOG_BUNDLES = {
       sectionParagraphOne:
         'Digitale bonnen zijn meestal oké als ze leesbaar zijn; sommige verzekeraars eisen gestempelde bewijzen — vraag het voor u papier vernietigt.',
       sectionParagraphTwo:
-        'Als u overstapt van regulier naar PMRvervoer, noteer de medische reden zodat controleurs het hogere tarief begrijpen.',
+        'Als u overstapt van regulier naar PMR-vervoer, noteer de medische reden zodat controleurs het hogere tarief begrijpen.',
       quoteText:
         'Dien bundels tijdig in; late dossiers krijgen zelden coulance.',
       quoteAuthor: '— Mobiliteitsadviseurs',
@@ -529,7 +529,7 @@ const BLOG_BUNDLES = {
       sectionParagraphTwo:
         'Train planners om urgente switches te melden — van zakelijke sedan naar toegankelijk busje moet met één telefoontje kunnen.',
       quoteText:
-        'GePMRtenvervoer staat naast beide — dezelfde boeking maar met erkende bevestiging en gespecialiseerde voertuigen.',
+        'PMR-vervoer staat naast beide — dezelfde boeking maar met erkende bevestiging en gespecialiseerde voertuigen.',
       quoteAuthor: '— Operations planner',
     },
     fr: {

@@ -59,7 +59,7 @@
                                 <select name="package-type" id="package-type" class="niceSelect">
                                     <option value="regular" selected><%= t('booking.package.regular', 'Regular Transport') %></option>
                                     <option value="business"><%= t('booking.package.business', 'Business Transport') %></option>
-                                    <option value="handicap"><%= t('booking.package.handicap', 'Handicap Transport') %></option>
+                                    <option value="handicap"><%= t('booking.package.handicap', 'PMR transport') %></option>
                                 </select>
                             </div>
                             <div class="form-field">
@@ -159,7 +159,7 @@
                     <div class="cta-content">
                         <h4><%= t('home.cta.serviceLabel', 'Taxiofany accessible transport') %></h4>
                         <h2><%= t('home.cta.feelYourJourney', 'Move with confidence') %></h2>
-                        <a href="/book-taxi" class="default-btn"><%= t('home.cta.bookTaxiBtn', 'Book accessible ride') %></a>
+                        <a href="<%= wl('/book-taxi') %>" class="default-btn"><%= t('home.cta.bookTaxiBtn', 'Book accessible ride') %></a>
                     </div>
                 </div>
                 <div class="col-lg-5">
@@ -239,8 +239,8 @@
                 <div class="col-lg-6">
                     <div class="section-heading text-md-start mb-30">
                         <h4 class="text-white-50" style="opacity:0.85"><span></span><%= t('home.professional.eyebrow', 'Accessibility first') %></h4>
-                        <h2 class="text-white"><%= t('home.professional.title', 'Handicap transport you can trust') %></h2>
-                        <p class="text-white-50" style="opacity:0.9"><%= t('home.professional.description', 'Handicap transport is our priority: adapted vehicles, trained drivers, and 24/7 dispatch for hospitals and care homes. We also provide executive business rides and everyday taxi—book on the web; no app required.') %></p>
+                        <h2 class="text-white"><%= t('home.professional.title', 'PMR transport you can trust') %></h2>
+                        <p class="text-white-50" style="opacity:0.9"><%= t('home.professional.description', 'PMR transport is our priority: adapted vehicles, trained drivers, and 24/7 dispatch for hospitals and care homes. We also provide executive business rides and everyday taxi—book on the web; no app required.') %></p>
                         <ul class="app-feature list-unstyled mt-4" style="padding-left: 0;">
                             <li class="d-flex align-items-start mb-3" style="gap: 0.75rem;">
                                 <i class="las la-shield-alt text-info" style="font-size: 1.75rem; margin-top: 0.15rem;"></i>
@@ -252,7 +252,7 @@
                             </li>
                             <li class="d-flex align-items-start" style="gap: 0.75rem;">
                                 <i class="las la-file-invoice-dollar text-info" style="font-size: 1.75rem; margin-top: 0.15rem;"></i>
-                                <div><strong class="text-white d-block"><%= t('home.professional.point3', 'Business & regular taxi too') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point3sub', 'Same booking flow—choose handicap, business or regular transport.') %></span></div>
+                                <div><strong class="text-white d-block"><%= t('home.professional.point3', 'Business & regular taxi too') %></strong><span class="text-white-50 small d-block"><%= t('home.professional.point3sub', 'Same booking flow—choose PMR, business or regular transport.') %></span></div>
                             </li>
                         </ul>
                         <div class="mt-4">
@@ -275,7 +275,7 @@
                     <div class="section-heading mb-10">
                         <h4><span></span><%= t('home.testimonial.eyebrow', 'Passenger stories') %></h4>
                         <h2><%= t('home.testimonial.title', 'Trusted for accessible rides') %></h2>
-                        <p><%= t('home.testimonial.description', 'Families and caregivers rely on Taxiofany for dignified, on-time handicap transport across Belgium.') %></p>
+                        <p><%= t('home.testimonial.description', 'Families and caregivers rely on Taxiofany for dignified, on-time PMR transport across Belgium.') %></p>
                     </div>
                     <div class="swiper-outside testi-pagination">
                         <div class="testimonial-carousel">
@@ -336,7 +336,7 @@
             <div class="section-heading text-center mb-40 wow fade-in-bottom" data-wow-delay="200ms">
                 <h4><span></span><%= t('home.blog.eyebrow', 'Mobility news') %></h4>
                 <h2><%= t('home.blog.title', 'Insights on accessible transport') %></h2>
-                <p><%= t('home.blog.description', 'Updates on handicap transport, vehicle adaptations, and travelling safely in Belgium.') %></p>
+                <p><%= t('home.blog.description', 'Updates on PMR transport, vehicle adaptations, and travelling safely in Belgium.') %></p>
             </div>
             <% if (homeBlogPosts.length) { %>
             <div class="row grid-post">

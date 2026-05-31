@@ -1,5 +1,6 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
+<% const wl = typeof withLocale === 'function' ? withLocale : function (p) { return p; }; %>
 
 <section class="page-header">
         <div class="page-header-shape"></div>
@@ -24,7 +25,7 @@
                         <div class="post-card">
                             <div class="post-thumb">
                                 <img src="<%= post.coverImage || '/assets/img/post-1.jpg' %>" alt="post">
-                                <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="post-category"><%= postCatKey ? t('blog.category.' + postCatKey, post.category || t('pages.users.blog.classic.business', 'Business')) : (post.category || t('pages.users.blog.classic.business', 'Business')) %></a>
+                                <a href="<%= wl('/blog/details/' + encodeURIComponent(post.slug)) %>" class="post-category"><%= postCatKey ? t('blog.category.' + postCatKey, post.category || t('pages.users.blog.classic.business', 'Business')) : (post.category || t('pages.users.blog.classic.business', 'Business')) %></a>
                             </div>
                             <div class="post-content-wrap">
                                 <ul class="post-meta">
@@ -32,9 +33,9 @@
                                     <li><i class="las la-user"></i><%= post.authorName || t('pages.users.blog.classic.elliot_alderson', 'Elliot Alderson') %></li>
                                 </ul>
                                 <div class="post-content">
-                                    <h3><a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="hover"><%= post.slug ? t('blog.' + post.slug + '.title', post.title || '') : (post.title || '') %></a></h3>
+                                    <h3><a href="<%= wl('/blog/details/' + encodeURIComponent(post.slug)) %>" class="hover"><%= post.slug ? t('blog.' + post.slug + '.title', post.title || '') : (post.title || '') %></a></h3>
                                     <p><%= post.slug ? t('blog.' + post.slug + '.excerpt', post.excerpt || '') : (post.excerpt || '') %></p>
-                                    <a href="/blog/details/<%= encodeURIComponent(post.slug) %>" class="read-more"><%= t('pages.users.blog.classic.read_more', 'Read More') %></a>
+                                    <a href="<%= wl('/blog/details/' + encodeURIComponent(post.slug)) %>" class="read-more"><%= t('pages.users.blog.classic.read_more', 'Read More') %></a>
                                 </div>
                             </div>
                         </div>
@@ -48,11 +49,11 @@
                             <% const currentPage = Number(blogPagination.page || 1); %>
                             <% const totalPages = Number(blogPagination.totalPages || 1); %>
                             <% const queryBase = `q=${encodeURIComponent((blogFilters && blogFilters.q) || '')}&category=${encodeURIComponent((blogFilters && blogFilters.category) || '')}`; %>
-                            <li><a href="/blog/classic?<%= queryBase %>&page=<%= currentPage > 1 ? currentPage - 1 : 1 %>"><i class="las la-arrow-left"></i></a></li>
+                            <li><a href="<%= wl('/blog/classic') %>?<%= queryBase %>&page=<%= currentPage > 1 ? currentPage - 1 : 1 %>"><i class="las la-arrow-left"></i></a></li>
                             <% for (let p = 1; p <= totalPages; p += 1) { %>
-                                <li><a href="/blog/classic?<%= queryBase %>&page=<%= p %>" class="<%= p === currentPage ? 'active' : '' %>"><%= p %></a></li>
+                                <li><a href="<%= wl('/blog/classic') %>?<%= queryBase %>&page=<%= p %>" class="<%= p === currentPage ? 'active' : '' %>"><%= p %></a></li>
                             <% } %>
-                            <li><a href="/blog/classic?<%= queryBase %>&page=<%= currentPage < totalPages ? currentPage + 1 : totalPages %>"><i class="las la-arrow-right"></i></a></li>
+                            <li><a href="<%= wl('/blog/classic') %>?<%= queryBase %>&page=<%= currentPage < totalPages ? currentPage + 1 : totalPages %>"><i class="las la-arrow-right"></i></a></li>
                         <% } %>
                     </ul>
                     <!--Pagination-->
@@ -60,7 +61,7 @@
                 <!--Blog Grid-->
                 <div class="col-lg-4 sm-padding">
                     <div class="sidebar-widget">
-                        <form action="/blog/classic" method="get" class="search-form">
+                        <form action="<%= wl('/blog/classic') %>" method="get" class="search-form">
                             <input type="text" class="form-control" name="q" value="<%= (blogFilters && blogFilters.q) || '' %>" placeholder="<%= t('common.search', 'Search') %>">
                             <input type="hidden" name="category" value="<%= (blogFilters && blogFilters.category) || '' %>">
                             <button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
@@ -74,7 +75,7 @@
                         <ul class="category-list">
                             <% if (blogSidebar && Array.isArray(blogSidebar.categories) && blogSidebar.categories.length) { %>
                                 <% blogSidebar.categories.forEach(function(category) { %>
-                                    <li><a href="/blog/classic?category=<%= encodeURIComponent(category.name) %>"><%= category.name %></a><span><%= category.count %></span></li>
+                                    <li><a href="<%= wl('/blog/classic') %>?category=<%= encodeURIComponent(category.name) %>"><%= category.name %></a><span><%= category.count %></span></li>
                                 <% }) %>
                             <% } else { %>
                                 <li class="text-muted"><%= t('blog.sidebar.noCategories', 'No categories yet.') %></li>
@@ -94,7 +95,7 @@
                                             <img src="<%= article.coverImage || '/assets/img/post-thumb-1.jpg' %>" alt="thumb">
                                         </div>
                                         <div class="thumb-post-info">
-                                            <h3><a href="/blog/details/<%= encodeURIComponent(article.slug) %>"><%= article.title %></a></h3>
+                                            <h3><a href="<%= wl('/blog/details/' + encodeURIComponent(article.slug)) %>"><%= article.title %></a></h3>
                                             <a href="#" class="date"><%= article.publishedAt ? new Date(article.publishedAt).toLocaleDateString(locale || 'nl') : t('common.dateUnavailable', 'Date unavailable') %></a>
                                         </div>
                                     </li>

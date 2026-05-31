@@ -1,3 +1,4 @@
+<% const wl = typeof withLocale === 'function' ? withLocale : function(p) { return p; }; %>
 <footer class="footer-section">
     <div class="footer-top-wrap bg-grey">
         <div class="container">
@@ -5,8 +6,8 @@
                 <div class="row align-items-end">
                     <div class="col-lg-8">
                         <div class="brand">
-                            <a class="footer-logo" href="/"><img src="/assets/img/logo-dark.png" alt="<%= t('footer.logoAlt', 'Taxiofany logo') %>"></a>
-                            <p><%= t('footer.description', 'Taxiofany — reliable handicap and wheelchair-accessible transport in Belgium. Our adapted vehicles offer ramps, lifts, 4-point restraints and trained drivers. 24/7 for hospital, care and daily rides. Business and regular taxi also available.') %></p>
+                            <a class="footer-logo" href="<%= wl('/') %>"><img src="/assets/img/logo-dark.png" alt="<%= t('footer.logoAlt', 'Taxiofany logo') %>"></a>
+                            <p><%= t('footer.description', 'Taxiofany — reliable PMR and wheelchair-accessible transport in Belgium. Our adapted vehicles offer ramps, lifts, 4-point restraints and trained drivers. 24/7 for hospital, care and daily rides. Business and regular taxi also available.') %></p>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -41,11 +42,11 @@
                             <h3><%= t('footer.usefulLinks') %></h3>
                         </div>
                         <ul class="footer-links">
-                            <li><a href="/book-taxi"><%= t('footer.taxiBooking') %></a></li>
-                            <li><a href="/faqs"><%= t('footer.helpCenter') %></a></li>
-                            <li><a href="/about"><%= t('footer.privacyPolicy') %></a></li>
-                            <li><a href="/about/company"><%= t('footer.terms') %></a></li>
-                            <li><a href="/contact"><%= t('footer.contactUs') %></a></li>
+                            <li><a href="<%= wl('/book-taxi') %>"><%= t('footer.taxiBooking') %></a></li>
+                            <li><a href="<%= wl('/faqs') %>"><%= t('footer.helpCenter') %></a></li>
+                            <li><a href="<%= wl('/about') %>"><%= t('footer.privacyPolicy') %></a></li>
+                            <li><a href="<%= wl('/about/company') %>"><%= t('footer.terms') %></a></li>
+                            <li><a href="<%= wl('/contact') %>"><%= t('footer.contactUs') %></a></li>
                         </ul>
                     </div>
                 </div>
@@ -121,7 +122,7 @@
     }
     const stickyWhatsappDigits = normalizeWhatsappDigits(stickyWhatsapp.phone || (siteSettings && siteSettings.header && siteSettings.header.phone) || '+32484262105');
 %>
-<% const stickyWhatsappMessage = stickyWhatsapp.message || t('footer.whatsapp.defaultMessage', 'Hello Taxiofany, I need wheelchair-accessible or handicap transport.'); %>
+<% const stickyWhatsappMessage = stickyWhatsapp.message || t('footer.whatsapp.defaultMessage', 'Hello Taxiofany, I need wheelchair-accessible or PMR transport.'); %>
 <% if (stickyWhatsapp.enabled !== false && stickyWhatsappDigits) { %>
     <a
         class="sticky-whatsapp-button"

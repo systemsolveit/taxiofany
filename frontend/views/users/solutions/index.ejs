@@ -1,12 +1,13 @@
 <%- include('../../shared/partials/legacy-head') %>
 <%- include('../../shared/partials/legacy-header-nav') %>
+<% const wl = typeof withLocale === 'function' ? withLocale : function (p) { return p; }; %>
 <section class="page-header">
   <div class="page-header-shape"></div>
   <div class="container">
     <div class="page-header-info">
       <h4><%= t('pages.users.solutions.solutions', 'Solutions') %></h4>
       <h2><%= t('solutions.header.title', 'Accessible') %> <span><%= t('solutions.header.highlight', 'transport') %></span></h2>
-      <p><%= t('solutions.header.description', 'Handicap and wheelchair-accessible transport leads our solutions—followed by business shuttles and everyday taxi, all bookable the same way.') %></p>
+      <p><%= t('solutions.header.description', 'PMR and wheelchair-accessible transport leads our solutions—followed by business shuttles and everyday taxi, all bookable the same way.') %></p>
     </div>
   </div>
 </section>
@@ -15,7 +16,7 @@
   <div class="container">
     <div class="section-heading text-center mb-40">
       <h4><span></span><%= t('home.services.eyebrow', 'What we offer') %></h4>
-      <h2><%= t('home.services.titleStart', 'Handicap transport first') %> <%= t('home.services.titleEnd', '—then business & regular taxi') %></h2>
+      <h2><%= t('home.services.titleStart', 'Persons with reduced mobility') %> <%= t('home.services.titleEnd', '—medical, business & taxi') %></h2>
     </div>
     <div class="row">
       <% const solutionServices = typeof services !== 'undefined' && Array.isArray(services) ? services : []; %>
@@ -28,15 +29,15 @@
               <div class="service-car"><img src="<%= item.serviceCarImage || '/assets/img/car-1.png' %>" alt="<%= t('taxi.carImageAlt', 'Wheelchair-accessible taxi van') %>"></div>
             </div>
             <div class="service-content">
-              <h3><a href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || '') : (item.title || '') %></a></h3>
+              <h3><a href="<%= wl('/services/details/' + encodeURIComponent(item.slug)) %>"><%= item.slug ? t('service.' + item.slug + '.title', item.title || '') : (item.title || '') %></a></h3>
               <p><%= item.slug ? t('service.' + item.slug + '.shortDescription', item.shortDescription || item.description || '') : (item.shortDescription || item.description || '') %></p>
-              <a class="read-more" href="/services/details/<%= encodeURIComponent(item.slug) %>"><%= t('home.services.readMore', 'Read more') %></a>
+              <a class="read-more" href="<%= wl('/services/details/' + encodeURIComponent(item.slug)) %>"><%= t('home.services.readMore', 'Read more') %></a>
             </div>
           </div>
         </div>
       <% }); } else { %>
         <div class="col-12">
-          <div class="alert alert-light border text-center mb-0"><%= t('pages.services.list.noServices', 'No services published yet—add handicap, business or regular services in the admin panel.') %></div>
+          <div class="alert alert-light border text-center mb-0"><%= t('pages.services.list.noServices', 'No services published yet—add PMR, business or regular services in the admin panel.') %></div>
         </div>
       <% } %>
     </div>
@@ -60,7 +61,7 @@
         </div>
       <% }); } else { %>
         <div class="col-12">
-          <div class="alert alert-light border text-center mb-0"><%= t('packages.empty', 'No packages published yet—create handicap, business or regular bundles in the admin panel.') %></div>
+          <div class="alert alert-light border text-center mb-0"><%= t('packages.empty', 'No packages published yet—create PMR, business or regular bundles in the admin panel.') %></div>
         </div>
       <% } %>
     </div>
