@@ -1,4 +1,6 @@
 # Ignore node_modules and dist directories for both backend and frontend
+/node_modules/
+**/node_modules/
 /backend/node_modules
 /backend/dist       
 /frontend/node_modules
