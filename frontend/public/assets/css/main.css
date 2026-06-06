@@ -67,6 +67,22 @@
     transform: translate(20px, 40px);
 }
 
+.about-img.about-img--single .about-img1 {
+    max-width: 520px;
+    width: 100%;
+    display: block;
+    aspect-ratio: 16 / 11;
+    object-fit: cover;
+    transform: translate(0, 28px);
+    border-radius: 22px;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.about-img.about-img--single:before {
+    display: none;
+}
+
 .about-img .about-img2 {
     max-width: 200px;
     position: absolute;

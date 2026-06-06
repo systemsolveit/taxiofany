@@ -27,6 +27,10 @@
     .about-img .about-img1 {
         transform: translate(-35px, -40px);
     }
+    .about-img.about-img--single .about-img1 {
+        max-width: 100%;
+        transform: translate(0, 0);
+    }
     .about-img .about-img2 {
         right: 30px;
         bottom: -100px;
@@ -119,6 +123,10 @@
     .about-img .about-img1 {
         max-width: 240px;
         transform: translate(20px, 10px);
+    }
+    .about-img.about-img--single .about-img1 {
+        max-width: 100%;
+        transform: translate(0, 0);
     }
     .about-img .about-img2 {
         right: 15px;

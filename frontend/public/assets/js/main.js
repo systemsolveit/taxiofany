@@ -284,39 +284,7 @@
             }
         });
 
-        // Custom Cursor
-        var cursor = $(".dl-cursor"),
-            linksCursor = $("a, .swiper-nav, .cursor-effect, .swiper-pagination > span, button, .menu-right-item > div"),
-            crossCursor = $("#sidebox-overlay, #searchbox-overlay");
-
-        $(window).on("mousemove", function (e) {
-            cursor.css({
-                transform: "translate(" + (e.clientX - 15) + "px," + (e.clientY - 15) + "px)",
-                visibility: "inherit",
-            });
-        });
-
-        $(window).on("mouseout", function () {
-            cursor.css("visibility", "hidden");
-        });
-
-        linksCursor.each(function () {
-            $(this).on("mouseleave", function () {
-                cursor.removeClass("cursor-grow");
-            });
-            $(this).on("mouseover", function () {
-                cursor.addClass("cursor-grow");
-            });
-        });
-
-        crossCursor.each(function () {
-            $(this).on("mouseleave", function () {
-                cursor.removeClass("cross");
-            });
-            $(this).on("mouseover", function () {
-                cursor.addClass("cross");
-            });
-        });
+        // Custom cursor disabled: use default browser cursor.
 
 
         //Related Taxi Carousel  
